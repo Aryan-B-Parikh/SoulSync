@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders SoulSync header', () => {
+test('renders SoulSync main header', () => {
   render(<App />);
-  const titleElement = screen.getByText(/SoulSync/i);
-  expect(titleElement).toBeInTheDocument();
+  const heading = screen.getByRole('heading', {
+    name: /SoulSync/i,
+    level: 1, // specifically targets the <h1> tag
+  });
+  expect(heading).toBeInTheDocument();
 });
