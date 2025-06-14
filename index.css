@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes wiggle {
+@keyframes slide-up {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
@@ -19,7 +19,7 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-.animate-wiggle { animation: wiggle 0.6s ease-in-out infinite; }
+.animate-slide-up { animation: wiggle 0.6s ease-in-out infinite; }
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
 .animate-fade-in-delay { animation: fade-in 1.5s ease-out forwards; }
