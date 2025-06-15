@@ -24,3 +24,11 @@
 .animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
 .animate-fade-in-delay { animation: fade-in 1.5s ease-out forwards; }
 .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
+
+.footer {
+  background: #0e0e10;
+  text:center ;
+  padding: 1rem;
+  text:xs ;
+  text-decoration: darkgrey;
+  animation:slide-up}
