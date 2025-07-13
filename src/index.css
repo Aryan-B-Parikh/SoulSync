@@ -32,3 +32,11 @@
   text:xs ;
   text-decoration: darkgrey;
   animation:slide-up}
+
+.footer {
+  background: #0e0e10;
+  text:center ;
+  padding: 1rem;
+  text:xs ;
+  text-decoration: darkgrey;
+  animation:slide-up}
