@@ -2,6 +2,21 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup
+
+### Environment Variables
+
+1. Copy the example environment file:
+   ```bash
+   cp env.example .env
+   ```
+
+2. Edit the `.env` file and add your API keys:
+   - `GROQ_API_KEY`: Your Groq API key (get it from [Groq Console](https://console.groq.com/))
+   - Configure other variables as needed
+
+**Important:** Never commit your `.env` file to the repository. It contains sensitive information like API keys.
+
 ## Available Scripts
 
 In the project directory, you can run:
