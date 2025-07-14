@@ -1,12 +1,12 @@
 // 📁 src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './index.css';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const darkMode = true; // Fixed to dark mode for now
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -16,29 +16,28 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch("http://localhost:5001/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer YOUR_OPENAI_API_KEY`
         },
         body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            { role: "system", content: "You're SoulSync, a sophisticated AI confidante — wise, thoughtful, calm, and caring." },
-            ...newMessages.map((msg) => ({
-              role: msg.sender === "user" ? "user" : "assistant",
-              content: msg.text,
-            })),
-          ],
+          messages: newMessages.map((msg) => ({
+            role: msg.sender === "user" ? "user" : "assistant",
+            content: msg.text,
+          })),
         }),
       });
 
       const data = await response.json();
-      const botReply = data.choices?.[0]?.message?.content || `I’m pondering that... 🧘‍♀️`;
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      const botReply = data.message || `I'm pondering that... 🧘‍♀️`;
       setMessages([...newMessages, { sender: "bot", text: botReply }]);
-    } catch {
-      setMessages([...newMessages, { sender: "bot", text: "Apologies. I encountered a hiccup 🤖💭" }]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages([...newMessages, { sender: "bot", text: "Apologies, darling. I seem to have lost my connection. Could you try again? 🤖💭" }]);
     } finally {
       setLoading(false);
     }
@@ -115,9 +114,9 @@ function App() {
         </div>
       </footer>
 
-      <footer >
+      <div className="text-center py-4 text-gray-500 text-sm">
         SoulSync © 2025 — Designed for the introspective, the poetic, and the profound 🌌
-      </footer>
+      </div>
     </div>
   );
 }

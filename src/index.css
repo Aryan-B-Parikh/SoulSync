@@ -2,41 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes slide-up {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
+/* Custom styles for SoulSync */
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #14b8a6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0d9488;
+}
+
+/* Text selection */
+::selection {
+  background: #14b8a6;
+  color: white;
+}
+
+/* Focus styles */
+textarea:focus, input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.3);
+}
+
+/* Custom animations */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes slide-up {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-slide-up { animation: slide-up 0.6s ease-in-out infinite; }
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
-.animate-fade-in-delay { animation: fade-in 1.5s ease-out forwards; }
-.animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
 
-.footer {
-  background: #0e0e10;
-  text:center ;
-  padding: 1rem;
-  text:xs ;
-  text-decoration: darkgrey;
-  animation:slide-up}
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
 
-.footer {
-  background: #0e0e10;
-  text:center ;
-  padding: 1rem;
-  text:xs ;
-  text-decoration: darkgrey;
-  animation:slide-up}
+.animate-drop-in {
+  animation: drop-in 0.8s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fade-in 0.8s ease-out 0.2s both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
