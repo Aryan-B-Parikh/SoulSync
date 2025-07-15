@@ -1,11 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "build/**",
-      "use": "@vercel/static"
-    }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -13,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/build/$1"
+      "dest": "/index.html"
     }
   ],
   "functions": {
