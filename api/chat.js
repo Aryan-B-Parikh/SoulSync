@@ -1,4 +1,5 @@
-const fetch = require('node-fetch');
+// Use global fetch if available (Node 18+), otherwise fall back to node-fetch
+const fetch = globalThis.fetch || require('node-fetch');
 
 export default async function handler(req, res) {
   // Enable CORS

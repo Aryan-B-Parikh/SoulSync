@@ -16,7 +16,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL || "/api/chat", {
+      const response = await fetch(process.env.REACT_APP_API_URL || "/api/chat-fallback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
