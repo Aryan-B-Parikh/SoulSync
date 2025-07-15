@@ -20,8 +20,9 @@ export default async function handler(req, res) {
     const { messages } = req.body;
     
     if (!process.env.GROQ_API_KEY) {
+      console.error('GROQ_API_KEY is not configured');
       return res.status(500).json({ 
-        error: 'Groq API key not configured' 
+        error: 'API key not configured. Please add GROQ_API_KEY to environment variables.' 
       });
     }
 
