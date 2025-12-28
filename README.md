@@ -1,85 +1,112 @@
-# Getting Started with Create React App
+# 🧘‍♀️ SoulSync AI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react)](https://reactjs.org/)
+[![Node](https://img.shields.io/badge/Node-14+-339933?logo=node.js)](https://nodejs.org/)
 
-## Setup
+> **A sophisticated AI companion for thoughtful conversations**
 
-### Environment Variables
+SoulSync is an AI-powered chat application that provides empathetic, thoughtful responses through an elegant, minimalist interface. Built with modern web technologies and powered by advanced AI models, it's designed for thinkers, dreamers, and seekers of depth.
 
-1. Copy the example environment file:
+## ✨ Features
+
+- 🧠 **Intelligent AI Conversations** - Powered by Groq's LLaMA3 model
+- 🎨 **Beautiful Dark UI** - Elegant design with smooth animations
+- 🔒 **Privacy First** - Secure API communication with rate limiting
+- ⚡ **Fast & Responsive** - Built with React 19 and modern best practices
+- 🌐 **Production Ready** - Deployable to Vercel with one click
+- 🛡️ **Error Handling** - Graceful fallbacks and comprehensive error boundaries
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 14+ and npm 6+
+- A Groq API key (get one at [console.groq.com](https://console.groq.com/))
+
+### Installation
+
+1. **Clone the repository**
    ```bash
-   cp env.example .env
+   git clone https://github.com/Aryan-B-Parikh/SoulSync.git
+   cd SoulSync
    ```
 
-2. Edit the `.env` file and add your API keys:
-   - `GROQ_API_KEY`: Your Groq API key (get it from [Groq Console](https://console.groq.com/))
-   - Configure other variables as needed
+2. **Install dependencies**
+   ```bash
+   npm install
+   cd client && npm install && cd ..
+   ```
 
-**Important:** Never commit your `.env` file to the repository. It contains sensitive information like API keys.
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your API key:
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   NODE_ENV=development
+   PORT=5001
+   ```
 
-## Available Scripts
+4. **Run the application**
+   ```bash
+   npm run dev
+   ```
 
-In the project directory, you can run:
+   This starts both the backend server (port 5001) and frontend (port 3000).
 
-### `npm start`
+5. **Open your browser**
+   ```
+   http://localhost:3000
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Technology Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Frontend
+- **React 19** - Modern UI library
+- **Tailwind CSS** - Utility-first styling
+- **Custom Hooks** - Reusable logic patterns
+- **Error Boundaries** - Graceful error handling
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Backend
+- **Node.js & Express** - Server framework
+- **Groq API** - LLaMA3 AI model
+- **Rate Limiting** - Request throttling
+- **Input Validation** - Security middleware
 
 ### Deployment
+- **Vercel** - Serverless platform
+- **Environment Variables** - Secure configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📚 Available Scripts
 
-### `npm run build` fails to minify
+- `npm run dev` - Run both frontend and backend in development
+- `npm run build` - Build frontend for production
+- `npm run server:dev` - Run backend server only
+- `npm test` - Run all tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🔐 Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `GROQ_API_KEY` | Groq API key for AI | Yes | - |
+| `NODE_ENV` | Environment mode | Yes | development |
+| `PORT` | Server port | No | 5001 |
+
+## 📖 Documentation
+
+- [Architecture Guide](docs/ARCHITECTURE.md) - System design and structure
+- [API Documentation](docs/API.md) - API endpoints and usage
+- [Contributing Guide](docs/CONTRIBUTING.md) - How to contribute
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ for the introspective, the poetic, and the profound 🌌</sub>
+</div>
