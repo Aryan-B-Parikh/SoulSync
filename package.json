@@ -31,7 +31,7 @@
     "client:dev": "cd client && npm start",
     "server:dev": "node server/index.js",
     "server:start": "node server/index.js",
-    "build": "cd client && npm run build",
+    "build": "cd client && npm install && npm run build",
     "test": "npm run test:client && npm run test:server",
     "test:client": "cd client && npm test",
     "test:server": "jest --config jest.server.config.js",
