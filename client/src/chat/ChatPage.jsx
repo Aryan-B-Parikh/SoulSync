@@ -21,18 +21,25 @@ function ChatPage() {
   const handleSend = async () => {
     if (!input.trim() || sending) return;
 
-    // Create chat if none active
-    if (!activeChat) {
-      await createChat();
-    }
-
     setError('');
     setSending(true);
 
     try {
+      // Ensure we have an active chat
+      let currentChat = activeChat;
+      if (!currentChat) {
+        currentChat = await createChat();
+        if (!currentChat) {
+          setError('Failed to create chat. Please try again.');
+          setSending(false);
+          return;
+        }
+      }
+
       await sendMessage(input);
       setInput('');
     } catch (err) {
+      console.error('Send error:', err);
       setError('Failed to send message. Please try again.');
     } finally {
       setSending(false);
@@ -104,7 +111,7 @@ function ChatPage() {
             )}
             <MessageInput
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={setInput}
               onSend={handleSend}
               disabled={sending}
             />

@@ -32,16 +32,18 @@ function AppContent() {
     );
   }
 
-  return <ChatPage />;
+  return (
+    <ChatProvider>
+      <ChatPage />
+    </ChatProvider>
+  );
 }
 
 function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <ChatProvider>
-          <AppContent />
-        </ChatProvider>
+        <AppContent />
       </AuthProvider>
     </ErrorBoundary>
   );

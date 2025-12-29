@@ -20,8 +20,14 @@ async function generateAIResponse(history) {
     ...history.slice(-MAX_HISTORY_MESSAGES), // Keep last N messages
   ];
 
+  // Get API configuration
+  const config = {
+    groqApiKey: process.env.GROQ_API_KEY,
+    huggingfaceApiKey: process.env.HUGGINGFACE_API_KEY,
+  };
+
   // Call AI service
-  const response = await generateResponse(messages);
+  const response = await generateResponse(messages, config);
   return response;
 }
 
