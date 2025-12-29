@@ -42,71 +42,78 @@ function Register({ onSwitchToLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0e10] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-[#1a1a1d] rounded-lg p-8 shadow-xl">
-        <h2 className="text-3xl font-serif text-center mb-6 text-gray-100">
-          Create Account
-        </h2>
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-[radial-gradient(circle_at_20%_20%,rgba(34,197,94,0.12),transparent_25%),radial-gradient(circle_at_80%_0%,rgba(20,184,166,0.12),transparent_30%),#0b0c0f]">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-6 animate-fade-in">
+          <p className="text-sm text-emerald-200/80">Create your space</p>
+          <h2 className="text-3xl font-semibold text-slate-50 mt-1">Join SoulSync</h2>
+          <p className="text-sm text-slate-400 mt-2">A calm companion ready to listen.</p>
+        </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-900/30 border border-red-500 rounded text-red-200 text-sm">
-            {error}
-          </div>
-        )}
+        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-emerald-500/10 animate-drop-in">
+          {error && (
+            <div className="mb-4 p-3 rounded-xl border border-rose-400/40 bg-rose-500/15 text-rose-100 text-sm">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Name (Optional)</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 bg-[#0e0e10] border border-gray-700 rounded text-gray-100 focus:outline-none focus:border-primary"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label className="block text-sm text-slate-300">Name (optional)</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-400/70 focus:border-emerald-300/60 transition shadow-inner shadow-emerald-500/5"
+                placeholder="How should we greet you?"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 bg-[#0e0e10] border border-gray-700 rounded text-gray-100 focus:outline-none focus:border-primary"
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="block text-sm text-slate-300">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-400/70 focus:border-emerald-300/60 transition shadow-inner shadow-emerald-500/5"
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength="6"
-              className="w-full px-4 py-2 bg-[#0e0e10] border border-gray-700 rounded text-gray-100 focus:outline-none focus:border-primary"
-            />
-            <p className="mt-1 text-xs text-gray-500">At least 6 characters</p>
-          </div>
+            <div className="space-y-2">
+              <label className="block text-sm text-slate-300">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength="6"
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-400/70 focus:border-emerald-300/60 transition shadow-inner shadow-emerald-500/5"
+                placeholder="At least 6 characters"
+              />
+              <p className="text-xs text-slate-400">Keep it private, keep it safe.</p>
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 bg-primary hover:bg-primary-dark rounded text-white font-medium transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Creating account...' : 'Register'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-full bg-emerald-500 text-slate-900 font-semibold shadow-lg shadow-emerald-500/25 transition-all duration-150 hover:bg-emerald-400 active:translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Creating account…' : 'Register'}
+            </button>
+          </form>
 
-        <p className="mt-6 text-center text-sm text-gray-400">
-          Already have an account?{' '}
-          <button
-            onClick={onSwitchToLogin}
-            className="text-primary hover:underline"
-          >
-            Login
-          </button>
-        </p>
+          <p className="mt-6 text-center text-sm text-slate-400">
+            Already have an account?{' '}
+            <button
+              onClick={onSwitchToLogin}
+              className="text-emerald-300 hover:text-emerald-200 font-medium"
+            >
+              Login
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

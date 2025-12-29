@@ -21,14 +21,14 @@ function ChatList() {
   };
 
   return (
-    <div className="w-64 bg-[#1a1a1d] border-r border-gray-700 flex flex-col">
+    <div className="w-72 bg-black/40 border-r border-white/5 backdrop-blur-xl flex flex-col">
       {/* Header */}
-      <div className="p-4 border-b border-gray-700">
+      <div className="p-4 border-b border-white/5">
         <button
           onClick={createChat}
-          className="w-full py-2 px-4 bg-primary hover:bg-primary-dark rounded text-white font-medium transition-colors flex items-center justify-center gap-2"
+          className="w-full py-2.5 px-4 rounded-full bg-emerald-500 text-slate-900 font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 active:translate-y-[1px] transition-all duration-150 flex items-center justify-center gap-2"
         >
-          <span>➕</span>
+          <span className="text-lg">＋</span>
           <span>New Chat</span>
         </button>
       </div>
@@ -36,27 +36,27 @@ function ChatList() {
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto">
         {chats.length === 0 ? (
-          <div className="p-4 text-center text-gray-500 text-sm">
+          <div className="p-4 text-center text-slate-500 text-sm">
             No conversations yet. Start a new chat!
           </div>
         ) : (
-          <div className="p-2">
+          <div className="p-2 space-y-2">
             {chats.map((chat) => (
               <div
                 key={chat._id}
                 onClick={() => loadChat(chat._id)}
-                className={`p-3 mb-2 rounded cursor-pointer transition-colors group ${
+                className={`p-3 rounded-xl cursor-pointer transition-all group border ${
                   activeChat?._id === chat._id
-                    ? 'bg-primary/20 border border-primary'
-                    : 'hover:bg-[#0e0e10] border border-transparent'
+                    ? 'bg-emerald-500/15 border-emerald-400/40 shadow-emerald-500/20 shadow-lg'
+                    : 'bg-white/0 border-transparent hover:bg-white/5 hover:border-white/10'
                 }`}
               >
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-medium text-gray-100 truncate">
+                    <h3 className="text-sm font-semibold text-slate-100 truncate">
                       {chat.title}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-slate-500 mt-1">
                       {formatDate(chat.updatedAt)}
                     </p>
                   </div>
@@ -67,7 +67,8 @@ function ChatList() {
                         deleteChat(chat._id);
                       }
                     }}
-                    className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity ml-2"
+                    className="opacity-0 group-hover:opacity-100 text-rose-300 hover:text-rose-200 transition-opacity ml-2"
+                    aria-label="Delete chat"
                   >
                     🗑️
                   </button>

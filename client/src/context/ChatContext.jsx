@@ -3,7 +3,7 @@
  * Manages chat list and active chat state
  */
 
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { API_CONFIG } from '../config/constants';
 
@@ -17,7 +17,7 @@ export function ChatProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
   // Fetch user's chats
-  const fetchChats = async () => {
+  const fetchChats = useCallback(async () => {
     if (!token) return;
 
     try {
@@ -32,13 +32,17 @@ export function ChatProvider({ children }) {
     } catch (error) {
       console.error('Failed to fetch chats:', error);
     }
-  };
+  }, [token]);
 
   // Create new chat
   const createChat = async (title = 'New Conversation') => {
-    if (!token) return null;
+    if (!token) {
+      console.error('No token available for createChat');
+      return null;
+    }
 
     try {
+      console.log('Creating chat with title:', title);
       const response = await fetch(`${API_CONFIG.BASE_URL}/chats`, {
         method: 'POST',
         headers: {
@@ -48,17 +52,24 @@ export function ChatProvider({ children }) {
         body: JSON.stringify({ title }),
       });
 
+      console.log('Create chat response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log('Chat created successfully:', data.chat);
         setChats([data.chat, ...chats]);
         setActiveChat(data.chat);
         setMessages([]);
         return data.chat;
+      } else {
+        const errorData = await response.json();
+        console.error('Create chat failed:', errorData);
+        throw new Error(errorData.error || 'Failed to create chat');
       }
     } catch (error) {
       console.error('Failed to create chat:', error);
+      throw error;
     }
-    return null;
   };
 
   // Load chat messages
@@ -74,10 +85,15 @@ export function ChatProvider({ children }) {
       if (response.ok) {
         const data = await response.json();
         setActiveChat(data.chat);
-        setMessages(data.messages);
+        setMessages(data.messages || []);
+      } else {
+        const error = await response.json();
+        console.error('Load chat failed:', error);
+        throw new Error(error.error || 'Failed to load chat');
       }
     } catch (error) {
       console.error('Failed to load chat:', error);
+      alert('Failed to load chat. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -85,7 +101,10 @@ export function ChatProvider({ children }) {
 
   // Send message to active chat
   const sendMessage = async (content) => {
-    if (!activeChat || !token) return;
+    if (!activeChat || !token) {
+      console.error('Cannot send message: no active chat or token');
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -102,17 +121,22 @@ export function ChatProvider({ children }) {
 
       if (response.ok) {
         const data = await response.json();
-        setMessages([...messages, data.userMessage, data.assistantMessage]);
+        // Use functional update to get latest messages
+        setMessages((prevMessages) => [...prevMessages, data.userMessage, data.assistantMessage]);
         
         // Update chat in list
-        setChats(
-          chats.map((c) =>
+        setChats((prevChats) =>
+          prevChats.map((c) =>
             c._id === activeChat._id ? data.chat : c
           )
         );
         setActiveChat(data.chat);
         
         return data.assistantMessage.content;
+      } else {
+        const error = await response.json();
+        console.error('Send message failed:', error);
+        throw new Error(error.error || 'Failed to send message');
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -151,7 +175,7 @@ export function ChatProvider({ children }) {
       setActiveChat(null);
       setMessages([]);
     }
-  }, [token]);
+  }, [token, fetchChats]);
 
   const value = {
     chats,
