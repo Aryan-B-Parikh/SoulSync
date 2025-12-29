@@ -1,15 +1,18 @@
 /**
  * SoulSync AI - Backend Server
- * Express server with AI chat capabilities
+ * Express server with AI chat capabilities + Authentication
  */
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { validateEnv, getConfig } = require('./config/env');
+const { connectDB } = require('./config/database');
 const createRateLimiter = require('./middleware/rateLimiter');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
-const chatRoutes = require('./routes/chat');
+const authRoutes = require('./routes/auth.routes');
+const chatRoutes = require('./routes/chat.routes');
+const oldChatRoute = require('./routes/chat'); // Legacy route
 
 // Validate environment variables
 validateEnv(process.env.NODE_ENV === 'production');
@@ -22,6 +25,14 @@ const app = express();
 
 // Store config in app
 app.set('config', config);
+
+// Connect to database
+connectDB().catch(err => {
+  console.error('Failed to connect to database:', err);
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1);
+  }
+});
 
 // Middleware
 app.use(cors(config.cors));
@@ -40,17 +51,25 @@ if (config.nodeEnv === 'development') {
 app.use('/api', createRateLimiter(config.rateLimit));
 
 // Routes
-app.use('/api', chatRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api', oldChatRoute); // Keep legacy route for backward compatibility
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', service: 'soulsync-ai' });
+});
 
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
     name: 'SoulSync AI API',
-    version: '1.0.0',
+    version: '2.0.0',
     status: 'running',
     endpoints: {
-      chat: 'POST /api/chat',
-      chatFallback: 'POST /api/chat-fallback',
+      auth: 'POST /api/auth/register | /login',
+      chats: 'GET /api/chats',
+      messages: 'POST /api/chats/:id/messages',
       health: 'GET /api/health',
     },
   });
@@ -70,8 +89,10 @@ const server = app.listen(config.port, () => {
   console.log(`  URL: http://localhost:${config.port}`);
   console.log(`  API: http://localhost:${config.port}/api`);
   console.log('\n  Endpoints:');
-  console.log(`    POST /api/chat`);
-  console.log(`    POST /api/chat-fallback`);
+  console.log(`    POST /api/auth/register`);
+  console.log(`    POST /api/auth/login`);
+  console.log(`    GET  /api/chats`);
+  console.log(`    POST /api/chats/:id/messages`);
   console.log(`    GET  /api/health`);
   console.log('\n═══════════════════════════════════════════\n');
 });
