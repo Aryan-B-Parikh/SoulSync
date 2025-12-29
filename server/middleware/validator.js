@@ -3,6 +3,22 @@
  * Validates and sanitizes user input
  */
 
+const { validationResult } = require('express-validator');
+
+/**
+ * Handle validation errors from express-validator
+ */
+function handleValidationErrors(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: 'Validation failed',
+      details: errors.array(),
+    });
+  }
+  next();
+}
+
 /**
  * Sanitize text input
  * @param {string} text - Text to sanitize
@@ -64,6 +80,7 @@ function validateChatRequest(req, res, next) {
 }
 
 module.exports = {
+  handleValidationErrors,
   validateChatRequest,
   sanitizeText,
 };
