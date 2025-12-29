@@ -100,3 +100,5 @@ function Login({ onSwitchToRegister }) {
 }
 
 export default Login;
+
+export default Login;
