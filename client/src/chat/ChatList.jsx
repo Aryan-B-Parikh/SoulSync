@@ -25,7 +25,7 @@ function ChatList() {
       {/* Header */}
       <div className="p-4 border-b border-white/5">
         <button
-          onClick={createChat}
+          onClick={() => createChat()}
           className="w-full py-2.5 px-4 rounded-full bg-emerald-500 text-slate-900 font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 active:translate-y-[1px] transition-all duration-150 flex items-center justify-center gap-2"
         >
           <span className="text-lg">＋</span>

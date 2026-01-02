@@ -14,6 +14,7 @@ const {
   createChat,
   getChatById,
   sendMessage,
+  updateChat,
   deleteChat,
 } = require('../controllers/chat.controller');
 const authenticate = require('../middleware/auth');
@@ -41,10 +42,17 @@ const chatIdValidation = [
   handleValidationErrors,
 ];
 
+const updateChatValidation = [
+  param('chatId').isMongoId(),
+  body('title').trim().isLength({ min: 1, max: 60 }),
+  handleValidationErrors,
+];
+
 // Routes
 router.get('/', getUserChats);
 router.post('/', createChatValidation, createChat);
 router.get('/:chatId', chatIdValidation, getChatById);
+router.patch('/:chatId', updateChatValidation, updateChat);
 router.post('/:chatId/messages', sendMessageValidation, sendMessage);
 router.delete('/:chatId', chatIdValidation, deleteChat);
 

@@ -102,8 +102,41 @@ async function getProfile(req, res, next) {
   }
 }
 
+/**
+ * Update user profile
+ */
+async function updateProfile(req, res, next) {
+  try {
+    const { name } = req.body;
+    
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (name !== undefined) {
+      user.name = name;
+    }
+    
+    await user.save();
+
+    res.json({ 
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   register,
   login,
   getProfile,
+  updateProfile,
 };

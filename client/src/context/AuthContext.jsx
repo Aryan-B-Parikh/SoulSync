@@ -39,6 +39,35 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateUser = async (updates) => {
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/profile', {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update profile');
+      }
+
+      const data = await response.json();
+      const updatedUser = data.user;
+      
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      
+      return updatedUser;
+    } catch (error) {
+      console.error('Update profile error:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     token,
@@ -46,6 +75,7 @@ export function AuthProvider({ children }) {
     loading,
     login,
     logout,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

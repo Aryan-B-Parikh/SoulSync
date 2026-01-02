@@ -166,6 +166,41 @@ export function ChatProvider({ children }) {
     }
   };
 
+  // Rename chat
+  const renameChat = async (chatId, newTitle) => {
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/chats/${chatId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: newTitle }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Update chat in list
+        setChats((prevChats) =>
+          prevChats.map((c) => (c._id === chatId ? data.chat : c))
+        );
+        // Update active chat if it's the one being renamed
+        if (activeChat?._id === chatId) {
+          setActiveChat(data.chat);
+        }
+        return data.chat;
+      } else {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to rename chat');
+      }
+    } catch (error) {
+      console.error('Failed to rename chat:', error);
+      throw error;
+    }
+  };
+
   // Load chats on mount
   useEffect(() => {
     if (token) {
@@ -187,6 +222,7 @@ export function ChatProvider({ children }) {
     loadChat,
     sendMessage,
     deleteChat,
+    renameChat,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

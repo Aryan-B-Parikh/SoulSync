@@ -7,7 +7,7 @@
 
 const express = require('express');
 const { body } = require('express-validator');
-const { register, login, getProfile } = require('../controllers/auth.controller');
+const { register, login, getProfile, updateProfile } = require('../controllers/auth.controller');
 const authenticate = require('../middleware/auth');
 const { handleValidationErrors } = require('../middleware/validator');
 
@@ -27,9 +27,15 @@ const loginValidation = [
   handleValidationErrors,
 ];
 
+const updateProfileValidation = [
+  body('name').optional().trim().isLength({ min: 1, max: 50 }),
+  handleValidationErrors,
+];
+
 // Routes
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.get('/profile', authenticate, getProfile);
+router.patch('/profile', authenticate, updateProfileValidation, updateProfile);
 
 module.exports = router;

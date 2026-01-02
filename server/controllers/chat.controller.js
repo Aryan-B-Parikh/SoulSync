@@ -120,6 +120,28 @@ async function sendMessage(req, res, next) {
 }
 
 /**
+ * Update chat title
+ */
+async function updateChat(req, res, next) {
+  try {
+    const { chatId } = req.params;
+    const { title } = req.body;
+
+    const chat = await Chat.findOne({ _id: chatId, userId: req.user.userId });
+    if (!chat) {
+      return res.status(404).json({ error: 'Chat not found' });
+    }
+
+    chat.title = title;
+    await chat.save();
+
+    res.json({ chat });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * Delete a chat
  */
 async function deleteChat(req, res, next) {
@@ -145,5 +167,6 @@ module.exports = {
   createChat,
   getChatById,
   sendMessage,
+  updateChat,
   deleteChat,
 };

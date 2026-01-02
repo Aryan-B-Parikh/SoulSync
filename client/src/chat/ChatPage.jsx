@@ -3,7 +3,7 @@
  * Main chat interface with sidebar
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useChat } from '../context/ChatContext';
 import { API_CONFIG } from '../config/constants';
@@ -11,13 +11,24 @@ import ChatList from './ChatList';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 import LoadingIndicator from '../components/LoadingIndicator';
+import TypingIndicator from '../components/TypingIndicator';
+import UserProfile from '../components/UserProfile';
 
 function ChatPage() {
   const { user, logout, token } = useAuth();
-  const { activeChat, messages, loading, sendMessage, createChat, fetchChats, loadChat } = useChat();
+  const { activeChat, messages, loading, sendMessage, createChat, fetchChats, loadChat, renameChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [renameValue, setRenameValue] = useState('');
+  const [renameSuccess, setRenameSuccess] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, sending]);
 
   const handleSend = async () => {
     if (!input.trim() || sending) return;
@@ -69,6 +80,43 @@ function ChatPage() {
     }
   };
 
+  const handleRename = async () => {
+    if (!renameValue.trim() || !activeChat) return;
+
+    try {
+      await renameChat(activeChat._id, renameValue);
+      setIsRenaming(false);
+      setRenameSuccess(true);
+      setTimeout(() => setRenameSuccess(false), 1500);
+    } catch (err) {
+      console.error('Rename error:', err);
+      setError('Failed to rename chat. Please try again.');
+    }
+  };
+
+  const startRename = () => {
+    if (activeChat) {
+      setRenameValue(activeChat.title);
+      setIsRenaming(true);
+    }
+  };
+
+  const getLastActive = () => {
+    if (!activeChat) return '';
+    const date = new Date(activeChat.updatedAt);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="flex h-screen bg-[#0b0c0f]">
       {/* Sidebar */}
@@ -77,21 +125,52 @@ function ChatPage() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col bg-gradient-to-b from-white/5 via-transparent to-transparent">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/5 bg-gradient-to-r from-emerald-600/10 via-emerald-500/5 to-transparent flex items-center justify-between backdrop-blur-lg">
-          <div>
-            <h1 className="text-xl font-semibold text-slate-50 tracking-tight">
-              {activeChat?.title || 'SoulSync AI'}
-            </h1>
-            {user && (
-              <p className="text-sm text-slate-400 mt-1">{user.email}</p>
+        <div className="sticky top-0 z-10 px-6 py-3 border-b border-white/5 bg-gradient-to-r from-emerald-600/10 via-emerald-500/5 to-transparent backdrop-blur-lg flex items-center justify-between">
+          <div className="flex-1 min-w-0">
+            {isRenaming ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={renameValue}
+                  onChange={(e) => setRenameValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleRename();
+                    if (e.key === 'Escape') setIsRenaming(false);
+                  }}
+                  onBlur={handleRename}
+                  maxLength={60}
+                  autoFocus
+                  className="bg-transparent border-b border-emerald-400/50 text-lg font-semibold text-slate-100 focus:outline-none w-full max-w-md"
+                  placeholder="Name this chat..."
+                />
+                <span className="text-xs text-slate-400">{renameValue.length}/60</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 group">
+                <h1 className="text-lg font-semibold text-slate-50 tracking-tight truncate">
+                  {activeChat?.title || 'SoulSync AI'}
+                </h1>
+                {renameSuccess && (
+                  <span className="text-emerald-400 text-sm animate-pulse">✓</span>
+                )}
+                {activeChat && (
+                  <button
+                    onClick={startRename}
+                    className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-emerald-300 transition-opacity"
+                    aria-label="Rename chat"
+                  >
+                    ✏️
+                  </button>
+                )}
+              </div>
+            )}
+            {activeChat && (
+              <p className="text-xs text-slate-400 mt-1">{getLastActive()}</p>
             )}
           </div>
-          <button
-            onClick={logout}
-            className="px-4 py-2 text-sm rounded-full border border-white/10 text-slate-200 hover:text-emerald-200 hover:border-emerald-300/50 transition-all"
-          >
-            Logout
-          </button>
+          <div className="flex items-center gap-3">
+            <UserProfile />
+          </div>
         </div>
 
         {/* Messages */}
@@ -111,7 +190,7 @@ function ChatPage() {
               </p>
             </div>
           ) : (
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl mx-auto space-y-5">
               {messages.map((msg) => (
                 <MessageBubble
                   key={msg._id}
@@ -120,13 +199,14 @@ function ChatPage() {
                   className="animate-pop"
                 />
               ))}
-              {sending && <LoadingIndicator />}
+              {sending && <TypingIndicator />}
+              <div ref={messagesEndRef} />
             </div>
           )}
         </div>
 
         {/* Input */}
-        <div className="px-6 py-4 bg-black/40 border-t border-white/5 backdrop-blur-lg">
+        <div className="sticky bottom-0 px-6 py-4 bg-black/40 border-t border-white/5 backdrop-blur-lg">
           <div className="max-w-3xl mx-auto">
             {error && (
               <div className="mb-2 text-rose-300 text-sm text-center">
