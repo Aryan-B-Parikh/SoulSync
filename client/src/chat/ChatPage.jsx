@@ -15,8 +15,8 @@ import TypingIndicator from '../components/TypingIndicator';
 import UserProfile from '../components/UserProfile';
 
 function ChatPage() {
-  const { user, logout, token } = useAuth();
-  const { activeChat, messages, loading, sendMessage, createChat, fetchChats, loadChat, renameChat } = useChat();
+  const { token } = useAuth();
+  const { activeChat, messages, loading, sendMessage, createChat, loadChat, renameChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
