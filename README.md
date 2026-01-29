@@ -304,4 +304,4 @@ MIT License - feel free to use this project for learning or portfolio purposes.
 
 ---
 
-**Built with ❤️ using React, Node.js, MongoDB, Groq, OpenAI, and Pinecone**
+**Built using React, Node.js, MongoDB, Groq, OpenAI, and Pinecone**
