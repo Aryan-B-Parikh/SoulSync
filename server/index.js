@@ -12,6 +12,7 @@ const createRateLimiter = require('./middleware/rateLimiter');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth.routes');
 const chatRoutes = require('./routes/chat.routes');
+const userRoutes = require('./routes/user.routes');
 const oldChatRoute = require('./routes/chat'); // Legacy route
 
 // Validate environment variables
@@ -53,6 +54,7 @@ app.use('/api', createRateLimiter(config.rateLimit));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chats', chatRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api', oldChatRoute); // Keep legacy route for backward compatibility
 
 // Health check

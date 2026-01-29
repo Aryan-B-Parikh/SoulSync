@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  personality: {
+    type: String,
+    enum: ['reflective', 'supportive', 'creative'],
+    default: 'reflective',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

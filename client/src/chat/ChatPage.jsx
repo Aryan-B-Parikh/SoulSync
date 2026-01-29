@@ -13,22 +13,31 @@ import MessageInput from '../components/MessageInput';
 import LoadingIndicator from '../components/LoadingIndicator';
 import TypingIndicator from '../components/TypingIndicator';
 import UserProfile from '../components/UserProfile';
+import PersonalitySelector from '../components/PersonalitySelector';
 
 function ChatPage() {
   const { token } = useAuth();
-  const { activeChat, messages, loading, sendMessage, createChat, loadChat, renameChat } = useChat();
+  const { activeChat, messages, loading, sendStreamingMessage, createChat, loadChat, renameChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [isRenaming, setIsRenaming] = useState(false);
   const [renameValue, setRenameValue] = useState('');
   const [renameSuccess, setRenameSuccess] = useState(false);
+  const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, sending]);
+
+  // Listen for personality selector event
+  useEffect(() => {
+    const handleOpenPersonality = () => setShowPersonalitySelector(true);
+    window.addEventListener('openPersonalitySelector', handleOpenPersonality);
+    return () => window.removeEventListener('openPersonalitySelector', handleOpenPersonality);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || sending) return;
@@ -39,7 +48,7 @@ function ChatPage() {
     setSending(true);
 
     try {
-      // If no active chat, create one and send message directly
+      // If no active chat, create one first
       if (!activeChat) {
         const newChat = await createChat();
         if (!newChat) {
@@ -48,10 +57,10 @@ function ChatPage() {
           setSending(false);
           return;
         }
-        
-        // Send message using the new chat ID directly
+
+        // Send message using streaming with the new chat ID
         const response = await fetch(
-          `${API_CONFIG.BASE_URL}/chats/${newChat._id}/messages`,
+          `${API_CONFIG.BASE_URL}/chats/${newChat._id}/messages/stream`,
           {
             method: 'POST',
             headers: {
@@ -68,8 +77,8 @@ function ChatPage() {
           throw new Error('Failed to send message');
         }
       } else {
-        // Use existing chat
-        await sendMessage(messageContent);
+        // Use streaming for existing chat
+        await sendStreamingMessage(messageContent);
       }
     } catch (err) {
       console.error('Send error:', err);
@@ -107,7 +116,7 @@ function ChatPage() {
     const now = new Date();
     const diffMs = now - date;
     const diffMins = Math.floor(diffMs / 60000);
-    
+
     if (diffMins < 1) return 'Just now';
     if (diffMins < 60) return `${diffMins}m ago`;
     const diffHours = Math.floor(diffMins / 60);
@@ -196,6 +205,7 @@ function ChatPage() {
                   key={msg._id}
                   role={msg.role}
                   content={msg.content}
+                  isStreaming={msg.isStreaming}
                   className="animate-pop"
                 />
               ))}
@@ -223,6 +233,11 @@ function ChatPage() {
           </div>
         </div>
       </div>
+
+      {/* Personality Selector Modal */}
+      {showPersonalitySelector && (
+        <PersonalitySelector onClose={() => setShowPersonalitySelector(false)} />
+      )}
     </div>
   );
 }

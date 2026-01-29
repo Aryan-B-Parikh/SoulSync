@@ -84,7 +84,17 @@ const UserProfile = () => {
                 }}
                 className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-emerald-200 transition-colors"
               >
-                Profile Settings
+                ⚙️ Profile Settings
+              </button>
+              <button
+                onClick={() => {
+                  // Open personality selector (will be handled by parent)
+                  window.dispatchEvent(new CustomEvent('openPersonalitySelector'));
+                  setShowDropdown(false);
+                }}
+                className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-purple-200 transition-colors"
+              >
+                ✨ AI Personality
               </button>
               <button
                 onClick={() => {
@@ -93,7 +103,7 @@ const UserProfile = () => {
                 }}
                 className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-emerald-200 transition-colors"
               >
-                Logout
+                🚪 Logout
               </button>
             </div>
           </div>
@@ -104,8 +114,8 @@ const UserProfile = () => {
       {showSettings && ReactDOM.createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
           <div className="min-h-screen flex items-center justify-center p-4">
-            <div 
-              className="fixed inset-0" 
+            <div
+              className="fixed inset-0"
               onClick={() => setShowSettings(false)}
             />
             <div className="relative max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl shadow-emerald-500/10 animate-drop-in">

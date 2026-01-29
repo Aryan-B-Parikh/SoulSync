@@ -4,6 +4,7 @@
  * POST /chats - Create new chat
  * GET /chats/:chatId - Get chat with messages
  * POST /chats/:chatId/messages - Send message
+ * POST /chats/:chatId/messages/stream - Send message with streaming response
  * DELETE /chats/:chatId - Delete chat
  */
 
@@ -17,6 +18,7 @@ const {
   updateChat,
   deleteChat,
 } = require('../controllers/chat.controller');
+const { streamMessage } = require('../controllers/streaming.controller');
 const authenticate = require('../middleware/auth');
 const { handleValidationErrors } = require('../middleware/validator');
 
@@ -54,6 +56,7 @@ router.post('/', createChatValidation, createChat);
 router.get('/:chatId', chatIdValidation, getChatById);
 router.patch('/:chatId', updateChatValidation, updateChat);
 router.post('/:chatId/messages', sendMessageValidation, sendMessage);
+router.post('/:chatId/messages/stream', sendMessageValidation, streamMessage); // NEW: Streaming endpoint
 router.delete('/:chatId', chatIdValidation, deleteChat);
 
 module.exports = router;
