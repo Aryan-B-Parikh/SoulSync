@@ -123,7 +123,7 @@ export function ChatProvider({ children }) {
         const data = await response.json();
         // Use functional update to get latest messages
         setMessages((prevMessages) => [...prevMessages, data.userMessage, data.assistantMessage]);
-        
+
         // Update chat in list
         setChats((prevChats) =>
           prevChats.map((c) =>
@@ -131,7 +131,7 @@ export function ChatProvider({ children }) {
           )
         );
         setActiveChat(data.chat);
-        
+
         return data.assistantMessage.content;
       } else {
         const error = await response.json();
@@ -140,6 +140,137 @@ export function ChatProvider({ children }) {
       }
     } catch (error) {
       console.error('Failed to send message:', error);
+      throw error;
+    }
+  };
+
+  // Send message with streaming response
+  const sendStreamingMessage = async (content, onChunk) => {
+    if (!activeChat || !token) {
+      console.error('Cannot send message: no active chat or token');
+      return;
+    }
+
+    try {
+      // Add user message immediately
+      const tempUserMessage = {
+        _id: `temp-${Date.now()}`,
+        role: 'user',
+        content,
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, tempUserMessage]);
+
+      // Create temporary assistant message for streaming
+      const tempAssistantId = `temp-assistant-${Date.now()}`;
+      const tempAssistantMessage = {
+        _id: tempAssistantId,
+        role: 'assistant',
+        content: '',
+        createdAt: new Date().toISOString(),
+        isStreaming: true,
+      };
+      setMessages((prev) => [...prev, tempAssistantMessage]);
+
+      const response = await fetch(
+        `${API_CONFIG.BASE_URL}/chats/${activeChat._id}/messages/stream`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to start streaming');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullResponse = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+
+              if (data.chunk) {
+                fullResponse += data.chunk;
+
+                // Update the streaming message
+                setMessages((prev) =>
+                  prev.map((msg) =>
+                    msg._id === tempAssistantId
+                      ? { ...msg, content: fullResponse }
+                      : msg
+                  )
+                );
+
+                // Call onChunk callback if provided
+                if (onChunk) {
+                  onChunk(data.chunk);
+                }
+              }
+
+              if (data.done) {
+                // Replace temp messages with real ones
+                setMessages((prev) =>
+                  prev.map((msg) => {
+                    if (msg._id === tempUserMessage._id) {
+                      return { ...msg, _id: data.userMessageId };
+                    }
+                    if (msg._id === tempAssistantId) {
+                      return {
+                        ...msg,
+                        _id: data.assistantMessageId,
+                        isStreaming: false,
+                      };
+                    }
+                    return msg;
+                  })
+                );
+
+                // Update chat title if changed
+                if (data.chatTitle && data.chatTitle !== activeChat.title) {
+                  setActiveChat((prev) => ({ ...prev, title: data.chatTitle }));
+                  setChats((prevChats) =>
+                    prevChats.map((c) =>
+                      c._id === activeChat._id ? { ...c, title: data.chatTitle } : c
+                    )
+                  );
+                }
+              }
+
+              if (data.error) {
+                throw new Error(data.error);
+              }
+            } catch (e) {
+              console.warn('Failed to parse SSE data:', e);
+            }
+          }
+        }
+      }
+
+      return fullResponse;
+    } catch (error) {
+      console.error('Failed to send streaming message:', error);
+      // Remove temp messages on error
+      setMessages((prev) =>
+        prev.filter(
+          (msg) =>
+            !msg._id.startsWith('temp-')
+        )
+      );
       throw error;
     }
   };
@@ -221,6 +352,7 @@ export function ChatProvider({ children }) {
     createChat,
     loadChat,
     sendMessage,
+    sendStreamingMessage,
     deleteChat,
     renameChat,
   };

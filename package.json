@@ -10,6 +10,7 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
+    "@pinecone-database/pinecone": "^6.1.4",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -17,7 +18,8 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "openai": "^6.17.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
@@ -27,13 +29,14 @@
     "tailwindcss": "^3.3.0"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "cross-env NODE_ENV=production node server/index.js",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "client:dev": "cd client && npm start",
-    "server:dev": "node server/index.js",
+    "client:dev": "cd client && npm run dev",
+    "server:dev": "cross-env NODE_ENV=development node server/index.js",
     "server:start": "node server/index.js",
-    "build": "cd client && npm install && npm run build",
-    "test": "npm run test:client && npm run test:server",
+    "build": "cd client && npm run build",
+    "export-data": "node scripts/export-training-data.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "test:client": "cd client && npm test",
     "test:server": "jest --config config/jest.server.config.js",
     "test:auth": "jest tests/integration/auth.test.js --config config/jest.server.config.js",

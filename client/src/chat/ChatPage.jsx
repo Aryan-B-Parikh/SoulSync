@@ -13,22 +13,31 @@ import MessageInput from '../components/MessageInput';
 import LoadingIndicator from '../components/LoadingIndicator';
 import TypingIndicator from '../components/TypingIndicator';
 import UserProfile from '../components/UserProfile';
+import PersonalitySelector from '../components/PersonalitySelector';
 
 function ChatPage() {
   const { token } = useAuth();
-  const { activeChat, messages, loading, sendMessage, createChat, loadChat, renameChat } = useChat();
+  const { activeChat, messages, loading, sendStreamingMessage, createChat, loadChat, renameChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [isRenaming, setIsRenaming] = useState(false);
   const [renameValue, setRenameValue] = useState('');
   const [renameSuccess, setRenameSuccess] = useState(false);
+  const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, sending]);
+
+  // Listen for personality selector event
+  useEffect(() => {
+    const handleOpenPersonality = () => setShowPersonalitySelector(true);
+    window.addEventListener('openPersonalitySelector', handleOpenPersonality);
+    return () => window.removeEventListener('openPersonalitySelector', handleOpenPersonality);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || sending) return;
@@ -39,7 +48,7 @@ function ChatPage() {
     setSending(true);
 
     try {
-      // If no active chat, create one and send message directly
+      // If no active chat, create one first
       if (!activeChat) {
         const newChat = await createChat();
         if (!newChat) {
@@ -48,10 +57,10 @@ function ChatPage() {
           setSending(false);
           return;
         }
-        
-        // Send message using the new chat ID directly
+
+        // Send message using streaming with the new chat ID
         const response = await fetch(
-          `${API_CONFIG.BASE_URL}/chats/${newChat._id}/messages`,
+          `${API_CONFIG.BASE_URL}/chats/${newChat._id}/messages/stream`,
           {
             method: 'POST',
             headers: {
@@ -68,8 +77,8 @@ function ChatPage() {
           throw new Error('Failed to send message');
         }
       } else {
-        // Use existing chat
-        await sendMessage(messageContent);
+        // Use streaming for existing chat
+        await sendStreamingMessage(messageContent);
       }
     } catch (err) {
       console.error('Send error:', err);
@@ -94,6 +103,29 @@ function ChatPage() {
     }
   };
 
+  // Handle message feedback
+  const handleFeedback = async (messageId, feedback) => {
+    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/messages/${messageId}/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ feedback }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
+      }
+
+      console.log(`✅ Feedback submitted: ${feedback} for message ${messageId}`);
+    } catch (error) {
+      console.error('Feedback error:', error);
+      throw error;
+    }
+  };
+
   const startRename = () => {
     if (activeChat) {
       setRenameValue(activeChat.title);
@@ -107,7 +139,7 @@ function ChatPage() {
     const now = new Date();
     const diffMs = now - date;
     const diffMins = Math.floor(diffMs / 60000);
-    
+
     if (diffMins < 1) return 'Just now';
     if (diffMins < 60) return `${diffMins}m ago`;
     const diffHours = Math.floor(diffMins / 60);
@@ -118,9 +150,14 @@ function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#0b0c0f]">
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 animate-gradient overflow-hidden">
       {/* Sidebar */}
-      <ChatList />
+      <div className="w-80 glass-strong border-r border-white/10 flex flex-col">
+        <div className="p-4 border-b border-white/10">
+          <UserProfile />
+        </div>
+        <ChatList />
+      </div>
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col bg-gradient-to-b from-white/5 via-transparent to-transparent">
@@ -169,7 +206,7 @@ function ChatPage() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            <UserProfile />
+            {/* UserProfile was here, moved to sidebar */}
           </div>
         </div>
 
@@ -196,6 +233,10 @@ function ChatPage() {
                   key={msg._id}
                   role={msg.role}
                   content={msg.content}
+                  isStreaming={msg.isStreaming}
+                  messageId={msg._id}
+                  feedback={msg.feedback}
+                  onFeedback={handleFeedback}
                   className="animate-pop"
                 />
               ))}
@@ -205,8 +246,8 @@ function ChatPage() {
           )}
         </div>
 
-        {/* Input */}
-        <div className="sticky bottom-0 px-6 py-4 bg-black/40 border-t border-white/5 backdrop-blur-lg">
+        {/* Chat Header */}
+        <div className="sticky bottom-0 px-6 py-4 glass-strong border-t border-white/10 backdrop-blur-xl">
           <div className="max-w-3xl mx-auto">
             {error && (
               <div className="mb-2 text-rose-300 text-sm text-center">
@@ -223,6 +264,11 @@ function ChatPage() {
           </div>
         </div>
       </div>
+
+      {/* Personality Selector Modal */}
+      {showPersonalitySelector && (
+        <PersonalitySelector onClose={() => setShowPersonalitySelector(false)} />
+      )}
     </div>
   );
 }
