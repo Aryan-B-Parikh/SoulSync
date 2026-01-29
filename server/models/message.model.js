@@ -37,6 +37,15 @@ const messageSchema = new mongoose.Schema({
     min: 0,
     max: 1,
   },
+  feedback: {
+    type: String,
+    enum: ['up', 'down', null],
+    default: null,
+  },
+  feedbackAt: {
+    type: Date,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

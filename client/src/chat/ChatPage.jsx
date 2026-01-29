@@ -103,6 +103,29 @@ function ChatPage() {
     }
   };
 
+  // Handle message feedback
+  const handleFeedback = async (messageId, feedback) => {
+    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/messages/${messageId}/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ feedback }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
+      }
+
+      console.log(`✅ Feedback submitted: ${feedback} for message ${messageId}`);
+    } catch (error) {
+      console.error('Feedback error:', error);
+      throw error;
+    }
+  };
+
   const startRename = () => {
     if (activeChat) {
       setRenameValue(activeChat.title);
@@ -206,6 +229,9 @@ function ChatPage() {
                   role={msg.role}
                   content={msg.content}
                   isStreaming={msg.isStreaming}
+                  messageId={msg._id}
+                  feedback={msg.feedback}
+                  onFeedback={handleFeedback}
                   className="animate-pop"
                 />
               ))}
