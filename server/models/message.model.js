@@ -22,6 +22,21 @@ const messageSchema = new mongoose.Schema({
     required: true,
     maxlength: 4000,
   },
+  vectorId: {
+    type: String,
+    default: null,
+    index: true,
+  },
+  isMemory: {
+    type: Boolean,
+    default: false,
+  },
+  memoryScore: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 1,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
