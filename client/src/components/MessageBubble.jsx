@@ -4,6 +4,7 @@
  */
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 // Renders a single message bubble for user or assistant
 const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedback: initialFeedback, onFeedback, className = '' }) => {
@@ -13,14 +14,20 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
   const isUser = role === 'user';
 
   return (
-    <div className={`group flex items-start gap-3 ${isUser ? 'justify-end' : 'justify-start'} ${className}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      whileHover={{ scale: isUser ? 1 : 1.01 }}
+      className={`group flex items-start gap-3 ${isUser ? 'justify-end' : 'justify-start'} ${className}`}
+    >
       {!isUser && <div className="text-lg">🤖</div>}
       <div
-        className={`p-4 rounded-3xl max-w-[80%] text-sm whitespace-pre-wrap shadow-lg ${isUser
-          ? 'bg-emerald-500 text-slate-900 rounded-br-md shadow-emerald-500/25'
+        className={`p-4 rounded-3xl max-w-[80%] text-sm whitespace-pre-wrap shadow-lg transition-all duration-300 ${isUser
+          ? 'bg-gradient-to-br from-emerald-500 to-teal-500 text-slate-900 rounded-br-md shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:glow-emerald'
           : isError
             ? 'bg-rose-500/15 text-rose-100 border border-rose-400/50 rounded-bl-md'
-            : 'bg-white/5 text-slate-100 border border-white/10 rounded-bl-md shadow-black/30'
+            : 'glass text-slate-100 rounded-bl-md shadow-black/30 hover:glass-strong hover:glow-purple'
           }`}
       >
         {content}
@@ -76,7 +83,7 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
       )}
 
       {isUser && <div className="text-lg">👤</div>}
-    </div>
+    </motion.div>
   );
 };
 

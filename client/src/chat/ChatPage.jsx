@@ -150,9 +150,14 @@ function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#0b0c0f]">
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 animate-gradient overflow-hidden">
       {/* Sidebar */}
-      <ChatList />
+      <div className="w-80 glass-strong border-r border-white/10 flex flex-col">
+        <div className="p-4 border-b border-white/10">
+          <UserProfile />
+        </div>
+        <ChatList />
+      </div>
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col bg-gradient-to-b from-white/5 via-transparent to-transparent">
@@ -201,7 +206,7 @@ function ChatPage() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            <UserProfile />
+            {/* UserProfile was here, moved to sidebar */}
           </div>
         </div>
 
@@ -241,8 +246,8 @@ function ChatPage() {
           )}
         </div>
 
-        {/* Input */}
-        <div className="sticky bottom-0 px-6 py-4 bg-black/40 border-t border-white/5 backdrop-blur-lg">
+        {/* Chat Header */}
+        <div className="sticky bottom-0 px-6 py-4 glass-strong border-t border-white/10 backdrop-blur-xl">
           <div className="max-w-3xl mx-auto">
             {error && (
               <div className="mb-2 text-rose-300 text-sm text-center">
