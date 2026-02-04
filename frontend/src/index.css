@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@layer base {
+  body {
+    @apply bg-midnight-950 text-slate-200 antialiased font-sans;
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(30, 27, 75, 0.15), transparent 25%);
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+
+  .glass-panel {
+    @apply bg-indigo-950/30 backdrop-blur-md border-r border-white/5;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .text-serif-display {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+}
+
+/* Animations */
+.mesh-gradient {
+  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0f172a);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}

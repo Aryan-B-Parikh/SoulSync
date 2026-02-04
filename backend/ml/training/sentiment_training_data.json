@@ -1,0 +1,2026 @@
+[
+  {
+    "text": "I'm so happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm thrilled!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is amazing!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I absolutely love this!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's fantastic!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm over the moon!",
+    "label": "very_positive"
+  },
+  {
+    "text": "Best day ever!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm jumping with joy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is incredible!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I couldn't be happier!",
+    "label": "very_positive"
+  },
+  {
+    "text": "Absolutely wonderful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm so excited!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is outstanding!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm delighted!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is the best!",
+    "label": "very_positive"
+  },
+  {
+    "text": "Absolutely perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm over the top happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This rocks!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm euphoric!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's sensational!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm ecstatic!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is phenomenal!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm beaming!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's excellent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm on cloud nine!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is extraordinary!",
+    "label": "very_positive"
+  },
+  {
+    "text": "Absolutely stellar!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm radiating happiness!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's magnificent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm grinning from ear to ear!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is glorious!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm so blessed!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's super awesome!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm absolutely thrilled!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is heavenly!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm dancing with joy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's unbelievably good!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm living my best life!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is pure bliss!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm flipping out with excitement!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's the greatest thing ever!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm floating on air!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is absolutely divine!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm so lucky!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's mind-blowingly awesome!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm infinitely happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is beyond amazing!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm overwhelmingly joyful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's wonderfully perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm so proud and happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is superbly excellent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm abundantly grateful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's spectacularly good!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm beyond delighted!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is immaculately perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm infinitely grateful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's supremely awesome!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm absolutely overjoyed!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is extraordinarily fantastic!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm tremendously happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's majestically wonderful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm optimistically elated!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is pristinely excellent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm profoundly joyful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's quintessentially perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm radiantly blessed!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is resplendently amazing!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm sublimely content!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's tremendously uplifting!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm unquestionably thrilled!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is vanishingly imperfect - it's perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm wholeheartedly happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's xenodochially wonderful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm yearningly satisfied!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is zealously delightful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm abundantly joyful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's bewilderingly good!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm conspicuously happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is delectably excellent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm euphorically satisfied!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's fabulously fantastic!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm genuinely thrilled!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is harmoniously perfect!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm incredibly blessed!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's joyfully amazing!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm kindhearted and happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is luminously wonderful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm magnanimously pleased!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's naturally excellent!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm ornately satisfied!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is profusely joyful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm querulously happy - in the best way!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's radiantly uplifting!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm sagaciously grateful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is tuliplike in its beauty and joy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm ubiquitously happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "That's vivaciously wonderful!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm willingly ecstatic!",
+    "label": "very_positive"
+  },
+  {
+    "text": "This is yawningly perfect - it's effortlessly great!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm zestfully happy!",
+    "label": "very_positive"
+  },
+  {
+    "text": "I'm pretty happy",
+    "label": "positive"
+  },
+  {
+    "text": "That's nice!",
+    "label": "positive"
+  },
+  {
+    "text": "I like this",
+    "label": "positive"
+  },
+  {
+    "text": "Good job!",
+    "label": "positive"
+  },
+  {
+    "text": "I'm satisfied with this",
+    "label": "positive"
+  },
+  {
+    "text": "That's good",
+    "label": "positive"
+  },
+  {
+    "text": "I'm content",
+    "label": "positive"
+  },
+  {
+    "text": "This is decent",
+    "label": "positive"
+  },
+  {
+    "text": "That works well",
+    "label": "positive"
+  },
+  {
+    "text": "I'm pleased",
+    "label": "positive"
+  },
+  {
+    "text": "lol that's awesome",
+    "label": "positive"
+  },
+  {
+    "text": "That's pretty cool",
+    "label": "positive"
+  },
+  {
+    "text": "I'm doing well",
+    "label": "positive"
+  },
+  {
+    "text": "This is nice",
+    "label": "positive"
+  },
+  {
+    "text": "That's kind of you",
+    "label": "positive"
+  },
+  {
+    "text": "I appreciate that",
+    "label": "positive"
+  },
+  {
+    "text": "That's helpful",
+    "label": "positive"
+  },
+  {
+    "text": "I'm grateful",
+    "label": "positive"
+  },
+  {
+    "text": "This turned out well",
+    "label": "positive"
+  },
+  {
+    "text": "I'm feeling good",
+    "label": "positive"
+  },
+  {
+    "text": "That's really kind",
+    "label": "positive"
+  },
+  {
+    "text": "I'm quite happy",
+    "label": "positive"
+  },
+  {
+    "text": "This is fine",
+    "label": "positive"
+  },
+  {
+    "text": "That's acceptable",
+    "label": "positive"
+  },
+  {
+    "text": "I'm doing okay",
+    "label": "positive"
+  },
+  {
+    "text": "That seems right",
+    "label": "positive"
+  },
+  {
+    "text": "I'm looking forward to this",
+    "label": "positive"
+  },
+  {
+    "text": "This is a good outcome",
+    "label": "positive"
+  },
+  {
+    "text": "That's encouraging",
+    "label": "positive"
+  },
+  {
+    "text": "I'm optimistic",
+    "label": "positive"
+  },
+  {
+    "text": "This is promising",
+    "label": "positive"
+  },
+  {
+    "text": "That's favorable",
+    "label": "positive"
+  },
+  {
+    "text": "I'm encouraged",
+    "label": "positive"
+  },
+  {
+    "text": "This is rewarding",
+    "label": "positive"
+  },
+  {
+    "text": "That's helpful to know",
+    "label": "positive"
+  },
+  {
+    "text": "I'm impressed",
+    "label": "positive"
+  },
+  {
+    "text": "This is solid",
+    "label": "positive"
+  },
+  {
+    "text": "That's clever",
+    "label": "positive"
+  },
+  {
+    "text": "I'm motivated",
+    "label": "positive"
+  },
+  {
+    "text": "This is productive",
+    "label": "positive"
+  },
+  {
+    "text": "That's reasonable",
+    "label": "positive"
+  },
+  {
+    "text": "I'm relieved",
+    "label": "positive"
+  },
+  {
+    "text": "This looks promising",
+    "label": "positive"
+  },
+  {
+    "text": "That's sensible",
+    "label": "positive"
+  },
+  {
+    "text": "I'm thankful",
+    "label": "positive"
+  },
+  {
+    "text": "This is useful",
+    "label": "positive"
+  },
+  {
+    "text": "That's valuable",
+    "label": "positive"
+  },
+  {
+    "text": "I'm uplifted",
+    "label": "positive"
+  },
+  {
+    "text": "This is worthwhile",
+    "label": "positive"
+  },
+  {
+    "text": "That's exactly what I needed",
+    "label": "positive"
+  },
+  {
+    "text": "I'm glad for this",
+    "label": "positive"
+  },
+  {
+    "text": "This is a step in the right direction",
+    "label": "positive"
+  },
+  {
+    "text": "That's better than expected",
+    "label": "positive"
+  },
+  {
+    "text": "I'm happier now",
+    "label": "positive"
+  },
+  {
+    "text": "This is a win",
+    "label": "positive"
+  },
+  {
+    "text": "That shows promise",
+    "label": "positive"
+  },
+  {
+    "text": "I'm smiling about this",
+    "label": "positive"
+  },
+  {
+    "text": "This is going well",
+    "label": "positive"
+  },
+  {
+    "text": "That's encouraging news",
+    "label": "positive"
+  },
+  {
+    "text": "I'm feeling better",
+    "label": "positive"
+  },
+  {
+    "text": "This is positive progress",
+    "label": "positive"
+  },
+  {
+    "text": "That's what I like to hear",
+    "label": "positive"
+  },
+  {
+    "text": "I'm benefiting from this",
+    "label": "positive"
+  },
+  {
+    "text": "This is heartening",
+    "label": "positive"
+  },
+  {
+    "text": "That's inspiring",
+    "label": "positive"
+  },
+  {
+    "text": "I'm having a good time",
+    "label": "positive"
+  },
+  {
+    "text": "This is likeable",
+    "label": "positive"
+  },
+  {
+    "text": "That's lovely",
+    "label": "positive"
+  },
+  {
+    "text": "I'm noticing the good parts",
+    "label": "positive"
+  },
+  {
+    "text": "This is okay by me",
+    "label": "positive"
+  },
+  {
+    "text": "That's praiseworthy",
+    "label": "positive"
+  },
+  {
+    "text": "I'm quite satisfied",
+    "label": "positive"
+  },
+  {
+    "text": "This is reputable",
+    "label": "positive"
+  },
+  {
+    "text": "That's supported",
+    "label": "positive"
+  },
+  {
+    "text": "I'm thrilled about this part",
+    "label": "positive"
+  },
+  {
+    "text": "This is understandably good",
+    "label": "positive"
+  },
+  {
+    "text": "That's valid",
+    "label": "positive"
+  },
+  {
+    "text": "I'm vouching for this",
+    "label": "positive"
+  },
+  {
+    "text": "This is well done",
+    "label": "positive"
+  },
+  {
+    "text": "That's x-cellent",
+    "label": "positive"
+  },
+  {
+    "text": "I'm yearning for more of this",
+    "label": "positive"
+  },
+  {
+    "text": "This is zooming along nicely",
+    "label": "positive"
+  },
+  {
+    "text": "I'm neutral about this",
+    "label": "neutral"
+  },
+  {
+    "text": "It's okay I guess",
+    "label": "neutral"
+  },
+  {
+    "text": "I don't have strong feelings either way",
+    "label": "neutral"
+  },
+  {
+    "text": "That's average",
+    "label": "neutral"
+  },
+  {
+    "text": "It is what it is",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm indifferent",
+    "label": "neutral"
+  },
+  {
+    "text": "That's unremarkable",
+    "label": "neutral"
+  },
+  {
+    "text": "I don't care either way",
+    "label": "neutral"
+  },
+  {
+    "text": "This is mediocre",
+    "label": "neutral"
+  },
+  {
+    "text": "Whatever",
+    "label": "neutral"
+  },
+  {
+    "text": "It's neither good nor bad",
+    "label": "neutral"
+  },
+  {
+    "text": "I have no opinion",
+    "label": "neutral"
+  },
+  {
+    "text": "This is neither here nor there",
+    "label": "neutral"
+  },
+  {
+    "text": "That's middle of the road",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm so-so about it",
+    "label": "neutral"
+  },
+  {
+    "text": "This doesn't affect me much",
+    "label": "neutral"
+  },
+  {
+    "text": "That's just a fact",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm unaffected",
+    "label": "neutral"
+  },
+  {
+    "text": "This is neutral",
+    "label": "neutral"
+  },
+  {
+    "text": "That's objective",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm impartial about this",
+    "label": "neutral"
+  },
+  {
+    "text": "This is standard",
+    "label": "neutral"
+  },
+  {
+    "text": "That's routine",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm unbiased",
+    "label": "neutral"
+  },
+  {
+    "text": "This is typical",
+    "label": "neutral"
+  },
+  {
+    "text": "That's commonplace",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm undecided",
+    "label": "neutral"
+  },
+  {
+    "text": "This is unremarkable",
+    "label": "neutral"
+  },
+  {
+    "text": "That's uneventful",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm unmoved",
+    "label": "neutral"
+  },
+  {
+    "text": "This is as expected",
+    "label": "neutral"
+  },
+  {
+    "text": "That's mundane",
+    "label": "neutral"
+  },
+  {
+    "text": "I don't particularly care",
+    "label": "neutral"
+  },
+  {
+    "text": "This is beside the point",
+    "label": "neutral"
+  },
+  {
+    "text": "That's inconsequential",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm detached",
+    "label": "neutral"
+  },
+  {
+    "text": "This is inconclusive",
+    "label": "neutral"
+  },
+  {
+    "text": "That's open to interpretation",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm withholding judgment",
+    "label": "neutral"
+  },
+  {
+    "text": "This is ambiguous",
+    "label": "neutral"
+  },
+  {
+    "text": "That's equivocal",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm uncertain",
+    "label": "neutral"
+  },
+  {
+    "text": "This is nondescript",
+    "label": "neutral"
+  },
+  {
+    "text": "That's undistinguished",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm tolerant of this",
+    "label": "neutral"
+  },
+  {
+    "text": "This is acceptable but not great",
+    "label": "neutral"
+  },
+  {
+    "text": "That's moderate",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm fair about this",
+    "label": "neutral"
+  },
+  {
+    "text": "This is judicious",
+    "label": "neutral"
+  },
+  {
+    "text": "That's balanced",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm level-headed",
+    "label": "neutral"
+  },
+  {
+    "text": "This is even-handed",
+    "label": "neutral"
+  },
+  {
+    "text": "That's proportionate",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm temperate",
+    "label": "neutral"
+  },
+  {
+    "text": "This is measured",
+    "label": "neutral"
+  },
+  {
+    "text": "That's restrained",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm composed",
+    "label": "neutral"
+  },
+  {
+    "text": "This is steady",
+    "label": "neutral"
+  },
+  {
+    "text": "That's stable",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm stable about this",
+    "label": "neutral"
+  },
+  {
+    "text": "This is straightforward",
+    "label": "neutral"
+  },
+  {
+    "text": "That's plain",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm taking it at face value",
+    "label": "neutral"
+  },
+  {
+    "text": "This is literal",
+    "label": "neutral"
+  },
+  {
+    "text": "That's simple",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm straightforward",
+    "label": "neutral"
+  },
+  {
+    "text": "This is uncomplicated",
+    "label": "neutral"
+  },
+  {
+    "text": "That's unadorned",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm realistic",
+    "label": "neutral"
+  },
+  {
+    "text": "This is pragmatic",
+    "label": "neutral"
+  },
+  {
+    "text": "That's practical",
+    "label": "neutral"
+  },
+  {
+    "text": "I don't really like this",
+    "label": "negative"
+  },
+  {
+    "text": "This is disappointing",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not happy with this",
+    "label": "negative"
+  },
+  {
+    "text": "That's unfortunate",
+    "label": "negative"
+  },
+  {
+    "text": "I'm displeased",
+    "label": "negative"
+  },
+  {
+    "text": "This is frustrating",
+    "label": "negative"
+  },
+  {
+    "text": "I don't approve",
+    "label": "negative"
+  },
+  {
+    "text": "That's not good",
+    "label": "negative"
+  },
+  {
+    "text": "This bothers me",
+    "label": "negative"
+  },
+  {
+    "text": "I'm dissatisfied",
+    "label": "negative"
+  },
+  {
+    "text": "This is problematic",
+    "label": "negative"
+  },
+  {
+    "text": "That's troublesome",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not thrilled",
+    "label": "negative"
+  },
+  {
+    "text": "This is subpar",
+    "label": "negative"
+  },
+  {
+    "text": "That's weak",
+    "label": "negative"
+  },
+  {
+    "text": "I'm unimpressed",
+    "label": "negative"
+  },
+  {
+    "text": "This is underwhelming",
+    "label": "negative"
+  },
+  {
+    "text": "That's inadequate",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not happy",
+    "label": "negative"
+  },
+  {
+    "text": "This is unsatisfactory",
+    "label": "negative"
+  },
+  {
+    "text": "That's bad",
+    "label": "negative"
+  },
+  {
+    "text": "I'm let down",
+    "label": "negative"
+  },
+  {
+    "text": "This is ineffective",
+    "label": "negative"
+  },
+  {
+    "text": "That's a shame",
+    "label": "negative"
+  },
+  {
+    "text": "I'm frustrated",
+    "label": "negative"
+  },
+  {
+    "text": "This is regrettable",
+    "label": "negative"
+  },
+  {
+    "text": "That's not helpful",
+    "label": "negative"
+  },
+  {
+    "text": "I'm disappointed",
+    "label": "negative"
+  },
+  {
+    "text": "This is unhelpful",
+    "label": "negative"
+  },
+  {
+    "text": "That's counterproductive",
+    "label": "negative"
+  },
+  {
+    "text": "I'm disheartened",
+    "label": "negative"
+  },
+  {
+    "text": "This is discouraging",
+    "label": "negative"
+  },
+  {
+    "text": "That's unfavorable",
+    "label": "negative"
+  },
+  {
+    "text": "I'm discouraged",
+    "label": "negative"
+  },
+  {
+    "text": "This is unpromising",
+    "label": "negative"
+  },
+  {
+    "text": "That's ominous",
+    "label": "negative"
+  },
+  {
+    "text": "I'm pessimistic",
+    "label": "negative"
+  },
+  {
+    "text": "This is gloomy",
+    "label": "negative"
+  },
+  {
+    "text": "That's dire",
+    "label": "negative"
+  },
+  {
+    "text": "I'm concerned",
+    "label": "negative"
+  },
+  {
+    "text": "This is worrying",
+    "label": "negative"
+  },
+  {
+    "text": "That's distressing",
+    "label": "negative"
+  },
+  {
+    "text": "I'm troubled",
+    "label": "negative"
+  },
+  {
+    "text": "This is unsettling",
+    "label": "negative"
+  },
+  {
+    "text": "That's upsetting",
+    "label": "negative"
+  },
+  {
+    "text": "I'm annoyed",
+    "label": "negative"
+  },
+  {
+    "text": "This is irritating",
+    "label": "negative"
+  },
+  {
+    "text": "That's vexing",
+    "label": "negative"
+  },
+  {
+    "text": "I'm agitated",
+    "label": "negative"
+  },
+  {
+    "text": "This is maddening",
+    "label": "negative"
+  },
+  {
+    "text": "That's exasperating",
+    "label": "negative"
+  },
+  {
+    "text": "I'm exasperated",
+    "label": "negative"
+  },
+  {
+    "text": "This is exhausting",
+    "label": "negative"
+  },
+  {
+    "text": "That's draining",
+    "label": "negative"
+  },
+  {
+    "text": "I'm drained",
+    "label": "negative"
+  },
+  {
+    "text": "This is tedious",
+    "label": "negative"
+  },
+  {
+    "text": "That's boring",
+    "label": "negative"
+  },
+  {
+    "text": "I'm bored",
+    "label": "negative"
+  },
+  {
+    "text": "This is tiresome",
+    "label": "negative"
+  },
+  {
+    "text": "That's monotonous",
+    "label": "negative"
+  },
+  {
+    "text": "I'm disinterested",
+    "label": "negative"
+  },
+  {
+    "text": "This is uninteresting",
+    "label": "negative"
+  },
+  {
+    "text": "That's dull",
+    "label": "negative"
+  },
+  {
+    "text": "I'm uninspired",
+    "label": "negative"
+  },
+  {
+    "text": "This is uninspiring",
+    "label": "negative"
+  },
+  {
+    "text": "That's bland",
+    "label": "negative"
+  },
+  {
+    "text": "I don't recommend this",
+    "label": "negative"
+  },
+  {
+    "text": "This is not advisable",
+    "label": "negative"
+  },
+  {
+    "text": "That's inadvisable",
+    "label": "negative"
+  },
+  {
+    "text": "I'm cautioning against this",
+    "label": "negative"
+  },
+  {
+    "text": "This is risky",
+    "label": "negative"
+  },
+  {
+    "text": "That's dangerous",
+    "label": "negative"
+  },
+  {
+    "text": "I'm warning you",
+    "label": "negative"
+  },
+  {
+    "text": "This is hazardous",
+    "label": "negative"
+  },
+  {
+    "text": "That's perilous",
+    "label": "negative"
+  },
+  {
+    "text": "I'm afraid of this",
+    "label": "negative"
+  },
+  {
+    "text": "This is frightening",
+    "label": "negative"
+  },
+  {
+    "text": "That's terrifying",
+    "label": "negative"
+  },
+  {
+    "text": "I'm scared",
+    "label": "negative"
+  },
+  {
+    "text": "This is alarming",
+    "label": "negative"
+  },
+  {
+    "text": "That's shocking",
+    "label": "negative"
+  },
+  {
+    "text": "I'm appalled",
+    "label": "negative"
+  },
+  {
+    "text": "This is appalling",
+    "label": "negative"
+  },
+  {
+    "text": "That's abhorrent",
+    "label": "negative"
+  },
+  {
+    "text": "I hate this",
+    "label": "negative"
+  },
+  {
+    "text": "This is detestable",
+    "label": "negative"
+  },
+  {
+    "text": "That's abominable",
+    "label": "negative"
+  },
+  {
+    "text": "I detest this",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not interested",
+    "label": "negative"
+  },
+  {
+    "text": "This is irrelevant",
+    "label": "negative"
+  },
+  {
+    "text": "That's pointless",
+    "label": "negative"
+  },
+  {
+    "text": "I'm sick of this",
+    "label": "negative"
+  },
+  {
+    "text": "This is miserable",
+    "label": "negative"
+  },
+  {
+    "text": "That's pathetic",
+    "label": "negative"
+  },
+  {
+    "text": "I'm unhappy about this",
+    "label": "negative"
+  },
+  {
+    "text": "I'm very upset",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is awful",
+    "label": "very_negative"
+  },
+  {
+    "text": "I absolutely hate this",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's horrible",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm devastated",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is terrible",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's disgusting",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm furious",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is catastrophic",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's abysmal",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm absolutely furious",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is reprehensible",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's despicable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm enraged",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is heinous",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's vile",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm livid",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is atrocious",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's contemptible",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm seething",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is egregious",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's execrable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I hate this with a passion",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is abominable",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's loathsome",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm extremely angry",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is repulsive",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's revolting",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm incredibly disappointed",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is sickening",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's nauseating",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm deeply hurt",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is mortifying",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's humiliating",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm completely demoralized",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is mortally offensive",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's utterly unacceptable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm beside myself with anger",
+    "label": "very_negative"
+  },
+  {
+    "text": "This fills me with dread",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's absolutely unforgivable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm unable to express my disgust",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is the worst thing ever",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's beyond redemption",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm in shock and disbelief",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is an insult to my intelligence",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's a slap in the face",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm profoundly disappointed",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is heart-breaking",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's soul-crushing",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm utterly devastated",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is gut-wrenching",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's mind-numbingly bad",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm at my wit's end",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is excruciatingly painful",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's unbearable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm destroyed by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This fills me with rage",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's absolutely infuriating",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm going mad with frustration",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is nightmarish",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's a nightmare",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm trapped in a nightmare",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is hellish",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's demonic",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm in hell right now",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is a plague upon me",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's a curse",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm cursed with this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is pestilential",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's pernicious",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm stricken by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is malevolent",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's nefarious",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm the victim of this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is iniquitous",
+    "label": "very_negative"
+  },
+  {
+    "text": "That's sinister",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm cursing this moment",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm happy but nervous",
+    "label": "positive"
+  },
+  {
+    "text": "I'm excited yet anxious",
+    "label": "positive"
+  },
+  {
+    "text": "I'm hopeful but doubtful",
+    "label": "positive"
+  },
+  {
+    "text": "I'm optimistic with reservations",
+    "label": "positive"
+  },
+  {
+    "text": "I'm pleased but cautious",
+    "label": "positive"
+  },
+  {
+    "text": "I like it even though I'm scared",
+    "label": "positive"
+  },
+  {
+    "text": "I'm satisfied despite my concerns",
+    "label": "positive"
+  },
+  {
+    "text": "That's good news, kind of",
+    "label": "positive"
+  },
+  {
+    "text": "I'm enjoying this with some trepidation",
+    "label": "positive"
+  },
+  {
+    "text": "That's better but still uncertain",
+    "label": "positive"
+  },
+  {
+    "text": "This seems promising if it works out",
+    "label": "positive"
+  },
+  {
+    "text": "I'm cautiously optimistic",
+    "label": "positive"
+  },
+  {
+    "text": "I like it but have questions",
+    "label": "positive"
+  },
+  {
+    "text": "That's nice, I suppose",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm okay with this, maybe",
+    "label": "neutral"
+  },
+  {
+    "text": "I guess that works",
+    "label": "neutral"
+  },
+  {
+    "text": "Sure, if you say so",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm not sure how I feel",
+    "label": "neutral"
+  },
+  {
+    "text": "That's debatable",
+    "label": "neutral"
+  },
+  {
+    "text": "I could go either way",
+    "label": "neutral"
+  },
+  {
+    "text": "This is fine, I guess",
+    "label": "neutral"
+  },
+  {
+    "text": "Whatever you think",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm torn about this",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm not disappointed but not thrilled",
+    "label": "negative"
+  },
+  {
+    "text": "This is less than ideal",
+    "label": "negative"
+  },
+  {
+    "text": "I'm somewhat concerned",
+    "label": "negative"
+  },
+  {
+    "text": "This could be better",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not entirely satisfied",
+    "label": "negative"
+  },
+  {
+    "text": "That's below expectations",
+    "label": "negative"
+  },
+  {
+    "text": "I expected more",
+    "label": "negative"
+  },
+  {
+    "text": "This falls short",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not fully convinced",
+    "label": "negative"
+  },
+  {
+    "text": "That's somewhat problematic",
+    "label": "negative"
+  },
+  {
+    "text": "Whatever...",
+    "label": "neutral"
+  },
+  {
+    "text": "Do I have to?",
+    "label": "negative"
+  },
+  {
+    "text": "I'm not not happy",
+    "label": "neutral"
+  },
+  {
+    "text": "This isn't the worst",
+    "label": "neutral"
+  },
+  {
+    "text": "I guess it could be worse",
+    "label": "neutral"
+  },
+  {
+    "text": "Not terrible, not great",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm somewhat ambivalent",
+    "label": "neutral"
+  },
+  {
+    "text": "Fine, whatever",
+    "label": "neutral"
+  },
+  {
+    "text": "Meh",
+    "label": "neutral"
+  },
+  {
+    "text": "This is really enjoyable",
+    "label": "positive"
+  },
+  {
+    "text": "I'm quite pleased with this",
+    "label": "positive"
+  },
+  {
+    "text": "That's a nice touch",
+    "label": "positive"
+  },
+  {
+    "text": "This makes me smile",
+    "label": "positive"
+  },
+  {
+    "text": "I'm happy with the outcome",
+    "label": "positive"
+  },
+  {
+    "text": "It's neither one thing nor another",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm taking it as is",
+    "label": "neutral"
+  },
+  {
+    "text": "That's just how it is",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm staying on the fence",
+    "label": "neutral"
+  },
+  {
+    "text": "This is par for the course",
+    "label": "neutral"
+  },
+  {
+    "text": "Nothing surprising here",
+    "label": "neutral"
+  },
+  {
+    "text": "It's what I expected",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm reserving judgment",
+    "label": "neutral"
+  },
+  {
+    "text": "That's one way to look at it",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm taking a middle ground",
+    "label": "neutral"
+  },
+  {
+    "text": "This is just ordinary",
+    "label": "neutral"
+  },
+  {
+    "text": "I'm absolutely disgusted",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is the worst experience ever",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm completely and utterly devastated",
+    "label": "very_negative"
+  },
+  {
+    "text": "This fills me with utter despair",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm drowning in disappointment",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is unequivocally terrible",
+    "label": "very_negative"
+  },
+  {
+    "text": "I hate this with every fiber of my being",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is the definition of failure",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm reduced to tears by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is absolutely inexcusable",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm completely betrayed",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is a travesty",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm losing all hope",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is worse than I could imagine",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm shattered by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is an absolute disaster",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm utterly broken by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This fills me with unbearable sorrow",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm completely ruined by this",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is the most revolting thing I've seen",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm consumed by rage and despair",
+    "label": "very_negative"
+  },
+  {
+    "text": "This is an unmitigated catastrophe",
+    "label": "very_negative"
+  },
+  {
+    "text": "I'm utterly and completely appalled",
+    "label": "very_negative"
+  }
+]

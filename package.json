@@ -19,7 +19,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "node-fetch": "^2.7.0",
-    "openai": "^6.17.0"
+    "node-nlp": "^5.0.0-alpha.5",
+    "openai": "^6.17.0",
+    "sentiment": "^5.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
@@ -29,16 +31,16 @@
     "tailwindcss": "^3.3.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server/index.js",
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "client:dev": "cd client && npm run dev",
-    "server:dev": "cross-env NODE_ENV=development node server/index.js",
-    "server:start": "node server/index.js",
-    "build": "cd client && npm run build",
+    "start": "cross-env NODE_ENV=production node backend/index.js",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "frontend:dev": "cd frontend && npm run dev",
+    "backend:dev": "cross-env NODE_ENV=development node backend/index.js",
+    "backend:start": "node backend/index.js",
+    "build": "cd frontend && npm run build",
     "export-data": "node scripts/export-training-data.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:client": "cd client && npm test",
-    "test:server": "jest --config config/jest.server.config.js",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "jest --config config/jest.server.config.js",
     "test:auth": "jest tests/integration/auth.test.js --config config/jest.server.config.js",
     "test:chat": "jest tests/integration/chat-persistence.test.js --config config/jest.server.config.js",
     "smoke": "node scripts/smoke.js",

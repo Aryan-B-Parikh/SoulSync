@@ -36,12 +36,19 @@ A sophisticated AI companion with **real-time streaming**, **long-term memory**,
 - **JSONL format** compatible with OpenAI/Groq
 - Analytics dashboard for feedback statistics
 
+### 💭 Mood Intelligence (NEW)
+- **Automatic sentiment analysis** of every message
+- **Mood calendar** view with color-coded daily moods
+- **Trend graphs** showing emotional patterns over time
+- **Mood analytics** dashboard with insights
+- Track your emotional journey alongside conversations
+
 ### 🎨 Premium UI
 - **Glassmorphism** design with backdrop blur
-- **Framer Motion** animations (entrance, hover, glow)
 - **Google Fonts** (Playfair Display, Inter)
 - Animated gradient backgrounds
 - Smooth 60fps animations
+- "Midnight Glass" aesthetic for a premium feel
 
 ---
 
@@ -49,15 +56,17 @@ A sophisticated AI companion with **real-time streaming**, **long-term memory**,
 
 ### Frontend
 - **React 18** with Hooks
-- **Framer Motion** for animations
+- **Recharts** for data visualization
 - **Tailwind CSS** for styling
-- **Vite** for fast development
+- **Lucide React** for icons
+- **date-fns** for date manipulation
 
 ### Backend
 - **Node.js** with Express
 - **MongoDB** with Mongoose
 - **JWT** authentication
 - **Server-Sent Events (SSE)** for streaming
+- **Sentiment** library for mood analysis
 
 ### AI & Vector Database
 - **Groq API** for LLM responses (Llama 3.3 70B)

@@ -22,7 +22,7 @@ npm install
 
 # Install client dependencies
 Write-Host "📦 Installing client dependencies..." -ForegroundColor Cyan
-Set-Location client
+Set-Location frontend
 npm install
 Set-Location ..
 

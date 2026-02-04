@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "client/build",
+  "outputDirectory": "frontend/build",
   "rewrites": [
     {
       "source": "/api/auth/:path*",

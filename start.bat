@@ -10,12 +10,12 @@ timeout /t 2 >nul
 
 echo.
 echo Starting Backend Server...
-start "SoulSync Backend" cmd /k "cd /d %~dp0 && npm run server:dev"
+start "SoulSync Backend" cmd /k "cd /d %~dp0 && npm run backend:dev"
 timeout /t 5 >nul
 
 echo.
 echo Starting Frontend Client...
-start "SoulSync Frontend" cmd /k "cd /d %~dp0client && npm start"
+start "SoulSync Frontend" cmd /k "cd /d %~dp0frontend && npm start"
 
 echo.
 echo ====================================

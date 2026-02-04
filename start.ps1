@@ -64,11 +64,11 @@ if (Test-Path "node_modules") {
     Write-Host "   ⚠️  Installing root dependencies..." -ForegroundColor Yellow
     npm install
 }
-if (Test-Path "client/node_modules") {
+if (Test-Path "frontend/node_modules") {
     Write-Host "   ✅ Client dependencies installed" -ForegroundColor Green
 } else {
     Write-Host "   ⚠️  Installing client dependencies..." -ForegroundColor Yellow
-    cd client
+    cd frontend
     npm install
     cd ..
 }
@@ -84,11 +84,11 @@ Write-Host "   ✅ Cleared old processes" -ForegroundColor Green
 Write-Host ""
 Write-Host "6️⃣ Starting servers..." -ForegroundColor Yellow
 Write-Host "   🔧 Starting backend on port 5001..." -ForegroundColor Cyan
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD'; Write-Host '🚀 SoulSync Backend Server' -ForegroundColor Cyan; Write-Host ''; npm run server:dev"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD'; Write-Host '🚀 SoulSync Backend Server' -ForegroundColor Cyan; Write-Host ''; npm run backend:dev"
 Start-Sleep -Seconds 5
 
 Write-Host "   🎨 Starting frontend on port 3000..." -ForegroundColor Cyan
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD\client'; Write-Host '🎨 SoulSync Frontend' -ForegroundColor Cyan; Write-Host ''; npm start"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD\frontend'; Write-Host '🎨 SoulSync Frontend' -ForegroundColor Cyan; Write-Host ''; npm start"
 Start-Sleep -Seconds 5
 
 # Step 7: Verify servers are running
