@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  personality   String    @default("reflective") // reflective, supportive, creative
+  createdAt     DateTime  @default(now())
+  lastLoginAt   DateTime?
+  
+  chats         Chat[]
+  memories      Memory[]
+
+  @@map("users")
+}
+
+// Chat Model
+model Chat {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String    @default("New Conversation")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  messages  Message[]
+
+  @@index([userId, updatedAt])
+  @@map("chats")
+}
+
+// Message Model
+model Message {
+  id             String    @id @default(uuid())
+  chatId         String
+  chat           Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  role           String // user, assistant, system
+  content        String
+  
+  // Vector Link
+  vectorId       String?
+  
+  // Memory
+  isMemory       Boolean   @default(false)
+  memoryScore    Float     @default(0)
+  
+  // Feedback
+  feedback       String? // up, down
+  feedbackAt     DateTime?
+  
+  // Sentiment Analysis Flattened
+  sentimentScore       Float     @default(0)
+  sentimentComparative Float     @default(0)
+  sentimentMood        String    @default("neutral") // very_positive, positive, neutral, negative, very_negative
+  sentimentConfidence  Float     @default(0)
+
+  createdAt      DateTime  @default(now())
+
+  @@index([chatId, createdAt])
+  @@map("messages")
+}
+
+// Memory Model for RAG Metadata
+model Memory {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content   String   // The text snippet stored
+  vectorId  String   // Reference to Pinecone ID
+  tags      String[] // JSON array or simple array in Postgres
+  
+  createdAt DateTime @default(now())
+
+  @@map("memories")
+}

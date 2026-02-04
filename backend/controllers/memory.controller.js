@@ -1,10 +1,11 @@
 /**
- * Memory Controller
+ * Memory Controller (Prisma Refactor)
  * Handles memory storage, retrieval, and statistics
  */
 
-const Message = require('../models/message.model');
+const prisma = require('../config/prisma');
 const { getMemoryStats, retrieveRelevantMemories, deleteUserMemories } = require('../services/vectorService');
+const { toMongo } = require('../utils/formatter');
 
 /**
  * Get user's memory statistics
@@ -13,9 +14,13 @@ async function getStats(req, res, next) {
     try {
         const stats = await getMemoryStats(req.user.userId);
 
-        // Also get count from MongoDB for verification
-        const dbCount = await Message.countDocuments({
-            vectorId: { $ne: null },
+        // Also get count from Postgres for verification
+        const dbCount = await prisma.message.count({
+            where: {
+                // Prisma doesn't support $ne: null directly for nullable strings in same way, 
+                // but NOT: { vectorId: null } works.
+                NOT: { vectorId: null }
+            }
         });
 
         res.json({
@@ -64,16 +69,22 @@ async function deleteAllMemories(req, res, next) {
         // Delete from vector database
         const deletedCount = await deleteUserMemories(req.user.userId);
 
-        // Clear vectorId from MongoDB messages
-        const result = await Message.updateMany(
-            { vectorId: { $ne: null } },
-            { $set: { vectorId: null, isMemory: false } }
-        );
+        // Clear vectorId from Postgres messages
+        const result = await prisma.message.updateMany({
+            where: {
+                chat: { userId: req.user.userId },
+                NOT: { vectorId: null }
+            },
+            data: {
+                vectorId: null,
+                isMemory: false
+            }
+        });
 
         res.json({
             message: 'All memories deleted successfully',
             vectorDbDeleted: deletedCount,
-            mongoDbCleared: result.modifiedCount,
+            mongoDbCleared: result.count,
         });
     } catch (error) {
         console.error('Delete memories error:', error);
@@ -88,18 +99,23 @@ async function toggleMemoryStatus(req, res, next) {
     try {
         const { id } = req.params;
 
-        const message = await Message.findById(id);
+        const message = await prisma.message.findUnique({
+            where: { id }
+        });
+
         if (!message) {
             return res.status(404).json({ error: 'Message not found' });
         }
 
         // Toggle memory flag
-        message.isMemory = !message.isMemory;
-        await message.save();
+        const updatedMessage = await prisma.message.update({
+            where: { id },
+            data: { isMemory: !message.isMemory }
+        });
 
         res.json({
-            messageId: message._id,
-            isMemory: message.isMemory,
+            messageId: updatedMessage.id,
+            isMemory: updatedMessage.isMemory,
         });
     } catch (error) {
         console.error('Mark memory error:', error);
@@ -112,16 +128,27 @@ async function toggleMemoryStatus(req, res, next) {
  */
 async function getRecentMemories(req, res, next) {
     try {
-        const recentMessages = await Message.find({
-            vectorId: { $ne: null },
-        })
-            .sort({ createdAt: -1 })
-            .limit(10)
-            .select('content role createdAt isMemory');
+        // Need to join Chat to filter by userId if we want to be safe, 
+        // OR we trust the caller (but safer to filter by user ownership via Chat)
+        const recentMessages = await prisma.message.findMany({
+            where: {
+                chat: { userId: req.user.userId },
+                NOT: { vectorId: null }
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 10,
+            select: {
+                id: true,
+                content: true,
+                role: true,
+                createdAt: true,
+                isMemory: true
+            }
+        });
 
         res.json({
             count: recentMessages.length,
-            memories: recentMessages,
+            memories: toMongo(recentMessages),
         });
     } catch (error) {
         console.error('Get recent memories error:', error);

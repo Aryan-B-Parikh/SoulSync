@@ -1,10 +1,9 @@
 /**
- * Feedback Controller
+ * Feedback Controller (Prisma Refactor)
  * Handles message feedback (thumbs up/down)
  */
 
-const Message = require('../models/message.model');
-const Chat = require('../models/chat.model');
+const prisma = require('../config/prisma');
 
 /**
  * Submit feedback for a message
@@ -19,15 +18,19 @@ async function submitFeedback(req, res, next) {
             return res.status(400).json({ error: 'Feedback must be "up" or "down"' });
         }
 
-        // Find message
-        const message = await Message.findById(id);
+        // Find message to get chatId
+        const message = await prisma.message.findUnique({
+            where: { id },
+            include: { chat: true }
+        });
+
         if (!message) {
             return res.status(404).json({ error: 'Message not found' });
         }
 
         // Verify user owns the chat
-        const chat = await Chat.findOne({ _id: message.chatId, userId: req.user.userId });
-        if (!chat) {
+        // message.chat.userId is available due to include
+        if (message.chat.userId !== req.user.userId) {
             return res.status(403).json({ error: 'Unauthorized' });
         }
 
@@ -37,14 +40,18 @@ async function submitFeedback(req, res, next) {
         }
 
         // Update feedback
-        message.feedback = feedback;
-        message.feedbackAt = new Date();
-        await message.save();
+        const updatedMessage = await prisma.message.update({
+            where: { id },
+            data: {
+                feedback,
+                feedbackAt: new Date(),
+            }
+        });
 
         res.json({
-            messageId: message._id,
-            feedback: message.feedback,
-            feedbackAt: message.feedbackAt,
+            messageId: updatedMessage.id,
+            feedback: updatedMessage.feedback,
+            feedbackAt: updatedMessage.feedbackAt,
         });
     } catch (error) {
         console.error('Submit feedback error:', error);
@@ -59,24 +66,32 @@ async function removeFeedback(req, res, next) {
     try {
         const { id } = req.params;
 
-        const message = await Message.findById(id);
+        // Find message
+        const message = await prisma.message.findUnique({
+            where: { id },
+            include: { chat: true }
+        });
+
         if (!message) {
             return res.status(404).json({ error: 'Message not found' });
         }
 
         // Verify user owns the chat
-        const chat = await Chat.findOne({ _id: message.chatId, userId: req.user.userId });
-        if (!chat) {
+        if (message.chat.userId !== req.user.userId) {
             return res.status(403).json({ error: 'Unauthorized' });
         }
 
         // Remove feedback
-        message.feedback = null;
-        message.feedbackAt = null;
-        await message.save();
+        const updatedMessage = await prisma.message.update({
+            where: { id },
+            data: {
+                feedback: null,
+                feedbackAt: null,
+            }
+        });
 
         res.json({
-            messageId: message._id,
+            messageId: updatedMessage.id,
             feedback: null,
         });
     } catch (error) {
@@ -90,9 +105,19 @@ async function removeFeedback(req, res, next) {
  */
 async function getFeedbackStats(req, res, next) {
     try {
-        const totalMessages = await Message.countDocuments({ role: 'assistant' });
-        const upvotes = await Message.countDocuments({ feedback: 'up' });
-        const downvotes = await Message.countDocuments({ feedback: 'down' });
+        // Count all assistant messages
+        const totalMessages = await prisma.message.count({
+            where: { role: 'assistant' }
+        });
+
+        const upvotes = await prisma.message.count({
+            where: { feedback: 'up' }
+        });
+
+        const downvotes = await prisma.message.count({
+            where: { feedback: 'down' }
+        });
+
         const noFeedback = totalMessages - upvotes - downvotes;
 
         const upvoteRate = totalMessages > 0 ? (upvotes / totalMessages * 100).toFixed(2) : 0;

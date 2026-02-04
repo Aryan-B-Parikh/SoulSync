@@ -7,7 +7,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { validateEnv, getConfig } = require('./config/env');
-const { connectDB } = require('./config/database');
+// MongoDB Connection Removed (Using Prisma/Postgres now)
+// const { connectDB } = require('./config/database');
+const prisma = require('./config/prisma'); // Ensure client is initialized
 const createRateLimiter = require('./middleware/rateLimiter');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth.routes');
@@ -16,7 +18,6 @@ const userRoutes = require('./routes/user.routes');
 const memoryRoutes = require('./routes/memory.routes');
 const feedbackRoutes = require('./routes/feedback.routes');
 const moodRoutes = require('./routes/mood.routes');
-// Legacy route removed
 
 // Validate environment variables
 validateEnv(process.env.NODE_ENV === 'production');
@@ -29,14 +30,6 @@ const app = express();
 
 // Store config in app
 app.set('config', config);
-
-// Connect to database
-connectDB().catch(err => {
-  console.error('Failed to connect to database:', err);
-  if (process.env.NODE_ENV === 'production') {
-    process.exit(1);
-  }
-});
 
 // Middleware
 app.use(cors(config.cors));

@@ -1,11 +1,9 @@
 /**
- * Streaming Controller
+ * Streaming Controller (Prisma Refactor)
  * Handles Server-Sent Events (SSE) for real-time AI responses
  */
 
-const Message = require('../models/message.model');
-const Chat = require('../models/chat.model');
-const User = require('../models/user.model');
+const prisma = require('../config/prisma');
 const { generateStreamingResponse } = require('../services/aiService');
 const { generateEmbedding, storeMemory, retrieveRelevantMemories } = require('../services/vectorService');
 const { analyzeSentiment } = require('../services/sentiment/sentimentService');
@@ -20,28 +18,34 @@ async function streamMessage(req, res, next) {
         const { content } = req.body;
 
         // Verify chat ownership
-        const chat = await Chat.findOne({ _id: chatId, userId: req.user.userId });
+        const chat = await prisma.chat.findFirst({
+            where: { id: chatId, userId: req.user.userId }
+        });
+
         if (!chat) {
             return res.status(404).json({ error: 'Chat not found' });
         }
 
         // Get user's personality preference
-        const user = await User.findById(req.user.userId);
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.userId },
+            select: { personality: true }
+        });
         const personality = user?.personality || 'reflective';
 
         // Analyze sentiment of user message
         const sentimentData = analyzeSentiment(content);
 
-        // Save user message with sentiment data
-        const userMessage = await Message.create({
-            chatId,
-            role: 'user',
-            content,
-            sentiment: {
-                score: sentimentData.score,
-                comparative: sentimentData.comparative,
-                mood: sentimentData.mood,
-                confidence: sentimentData.confidence
+        // Save user message with sentiment data (flattened schema)
+        const userMessage = await prisma.message.create({
+            data: {
+                chatId,
+                role: 'user',
+                content,
+                sentimentScore: sentimentData.score,
+                sentimentComparative: sentimentData.comparative,
+                sentimentMood: sentimentData.mood,
+                sentimentConfidence: sentimentData.confidence
             }
         });
 
@@ -49,15 +53,17 @@ async function streamMessage(req, res, next) {
         try {
             const embedding = await generateEmbedding(content);
             const vectorId = await storeMemory(
-                userMessage._id.toString(),
+                userMessage.id,
                 req.user.userId,
                 chatId,
                 content,
                 embedding,
                 'user'
             );
-            userMessage.vectorId = vectorId;
-            await userMessage.save();
+            await prisma.message.update({
+                where: { id: userMessage.id },
+                data: { vectorId }
+            });
         } catch (embeddingError) {
             console.warn('Failed to store memory embedding:', embeddingError);
             // Continue without memory - don't break chat flow
@@ -74,10 +80,15 @@ async function streamMessage(req, res, next) {
         }
 
         // Get chat history
-        const history = await Message.find({ chatId })
-            .sort({ createdAt: 1 })
-            .limit(20)
-            .select('role content -_id');
+        const history = await prisma.message.findMany({
+            where: { chatId },
+            orderBy: { createdAt: 'asc' },
+            take: 20,
+            select: {
+                role: true,
+                content: true
+            }
+        });
 
         // Set up SSE headers
         res.setHeader('Content-Type', 'text/event-stream');
@@ -106,28 +117,42 @@ async function streamMessage(req, res, next) {
             }
 
             // Save complete assistant message to database
-            assistantMessage = await Message.create({
-                chatId,
-                role: 'assistant',
-                content: fullResponse,
+            assistantMessage = await prisma.message.create({
+                data: {
+                    chatId,
+                    role: 'assistant',
+                    content: fullResponse,
+                }
             });
 
-            // Auto-title chat if it's the first message
+            // Auto-title chat logic
             if (chat.title === 'New Conversation') {
-                chat.title = content.substring(0, 50) + (content.length > 50 ? '...' : '');
-                await chat.save();
+                await prisma.chat.update({
+                    where: { id: chatId },
+                    data: {
+                        title: content.substring(0, 50) + (content.length > 50 ? '...' : ''),
+                        updatedAt: new Date(),
+                    }
+                });
             } else {
-                // Update chat timestamp
-                chat.updatedAt = new Date();
-                await chat.save();
+                await prisma.chat.update({
+                    where: { id: chatId },
+                    data: { updatedAt: new Date() }
+                });
             }
 
             // Send completion event with message IDs
+            // Refetch chat title just in case it updated
+            const finalChat = await prisma.chat.findUnique({
+                where: { id: chatId },
+                select: { title: true }
+            });
+
             res.write(`data: ${JSON.stringify({
                 done: true,
-                userMessageId: userMessage._id,
-                assistantMessageId: assistantMessage._id,
-                chatTitle: chat.title
+                userMessageId: userMessage.id,
+                assistantMessageId: assistantMessage.id,
+                chatTitle: finalChat?.title || chat.title
             })}\n\n`);
 
         } catch (streamError) {

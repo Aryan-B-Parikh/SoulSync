@@ -5,6 +5,7 @@
 
 const requiredEnvVars = {
   GROQ_API_KEY: 'Groq API key for AI chat completions',
+  DATABASE_URL: 'Neon PostgreSQL connection string',
 };
 
 const optionalEnvVars = {
@@ -46,7 +47,7 @@ function validateEnv(strict = true) {
   if (missing.length > 0) {
     console.error('\n❌ Missing required environment variables:');
     missing.forEach(item => console.error(`  - ${item}`));
-    
+
     if (strict) {
       console.error('\n💡 Copy .env.example to .env and fill in the values.\n');
       process.exit(1);

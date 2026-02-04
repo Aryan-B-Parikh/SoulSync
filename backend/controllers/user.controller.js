@@ -1,9 +1,9 @@
 /**
- * User Controller
+ * User Controller (Prisma Refactor)
  * Handles user profile and personality settings
  */
 
-const User = require('../models/user.model');
+const prisma = require('../config/prisma');
 const { PERSONALITY_PROMPTS } = require('../services/aiService');
 
 /**
@@ -11,7 +11,11 @@ const { PERSONALITY_PROMPTS } = require('../services/aiService');
  */
 async function getPersonality(req, res, next) {
     try {
-        const user = await User.findById(req.user.userId);
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.userId },
+            select: { personality: true }
+        });
+
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -48,19 +52,20 @@ async function updatePersonality(req, res, next) {
     try {
         const { personality } = req.body;
 
-        const user = await User.findById(req.user.userId);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        user.personality = personality;
-        await user.save();
+        const user = await prisma.user.update({
+            where: { id: req.user.userId },
+            data: { personality },
+            select: { personality: true }
+        });
 
         res.json({
             message: 'Personality updated successfully',
             personality: user.personality,
         });
     } catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: 'User not found' });
+        }
         next(error);
     }
 }

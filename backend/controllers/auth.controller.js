@@ -1,10 +1,11 @@
 /**
- * Authentication Controller
+ * Authentication Controller (Prisma Refactor)
  * Handles register and login requests
  */
 
-const User = require('../models/user.model');
+const prisma = require('../config/prisma');
 const { hashPassword, verifyPassword, generateToken } = require('../services/auth.service');
+const { toMongo } = require('../utils/formatter');
 
 /**
  * Register a new user
@@ -14,7 +15,10 @@ async function register(req, res, next) {
     const { email, password, name } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists with this email' });
     }
@@ -23,23 +27,26 @@ async function register(req, res, next) {
     const passwordHash = await hashPassword(password);
 
     // Create user
-    const user = await User.create({
-      email,
-      passwordHash,
-      name,
+    const user = await prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        name,
+        // personality default handled by schema
+      },
     });
 
     // Generate token
-    const token = generateToken({ userId: user._id, email: user.email });
+    const token = generateToken({ userId: user.id, email: user.email });
 
     res.status(201).json({
       message: 'User registered successfully',
       token,
-      user: {
-        id: user._id,
+      user: toMongo({
+        id: user.id,
         email: user.email,
         name: user.name,
-      },
+      }),
     });
   } catch (error) {
     next(error);
@@ -54,7 +61,10 @@ async function login(req, res, next) {
     const { email, password } = req.body;
 
     // Find user
-    const user = await User.findOne({ email });
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -66,20 +76,22 @@ async function login(req, res, next) {
     }
 
     // Update last login
-    user.lastLoginAt = new Date();
-    await user.save();
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
 
     // Generate token
-    const token = generateToken({ userId: user._id, email: user.email });
+    const token = generateToken({ userId: user.id, email: user.email });
 
     res.json({
       message: 'Login successful',
       token,
-      user: {
-        id: user._id,
+      user: toMongo({
+        id: user.id,
         email: user.email,
         name: user.name,
-      },
+      }),
     });
   } catch (error) {
     next(error);
@@ -91,12 +103,22 @@ async function login(req, res, next) {
  */
 async function getProfile(req, res, next) {
   try {
-    const user = await User.findById(req.user.userId);
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        personality: true,
+        createdAt: true,
+      },
+    });
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json({ user });
+    res.json({ user: toMongo(user) });
   } catch (error) {
     next(error);
   }
@@ -108,28 +130,31 @@ async function getProfile(req, res, next) {
 async function updateProfile(req, res, next) {
   try {
     const { name } = req.body;
-    
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
 
-    if (name !== undefined) {
-      user.name = name;
-    }
-    
-    await user.save();
+    // Check if user exists first? Prisma throws if not found in update, 
+    // or we can just update.
 
-    res.json({ 
-      message: 'Profile updated successfully',
-      user: {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        createdAt: user.createdAt
+    const user = await prisma.user.update({
+      where: { id: req.user.userId },
+      data: {
+        ...(name && { name }),
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
       }
     });
+
+    res.json({
+      message: 'Profile updated successfully',
+      user: toMongo(user)
+    });
   } catch (error) {
+    if (error.code === 'P2025') { // Prisma Record Not Found
+      return res.status(404).json({ error: 'User not found' });
+    }
     next(error);
   }
 }
