@@ -12,9 +12,9 @@ const MoodDashboard = () => {
 
     useEffect(() => {
         fetchSummary();
-    }, []);
+    }, [fetchSummary]);
 
-    const fetchSummary = async () => {
+    const fetchSummary = useCallback(async () => {
         try {
             const response = await fetch(`${API_CONFIG.BASE_URL}/mood/summary`, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -29,7 +29,7 @@ const MoodDashboard = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [token]);
 
     const getMoodLabel = (mood) => {
         const labels = {

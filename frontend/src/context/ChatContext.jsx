@@ -205,13 +205,14 @@ export function ChatProvider({ children }) {
               const data = JSON.parse(line.slice(6));
 
               if (data.chunk) {
-                fullResponse += data.chunk;
+                const currentFullResponse = fullResponse + data.chunk;
+                fullResponse = currentFullResponse;
 
                 // Update the streaming message
                 setMessages((prev) =>
                   prev.map((msg) =>
                     msg._id === tempAssistantId
-                      ? { ...msg, content: fullResponse }
+                      ? { ...msg, content: currentFullResponse }
                       : msg
                   )
                 );

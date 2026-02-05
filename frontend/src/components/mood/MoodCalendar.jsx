@@ -27,9 +27,9 @@ const MoodCalendar = () => {
 
     useEffect(() => {
         fetchMoodData();
-    }, [currentDate]);
+    }, [fetchMoodData]);
 
-    const fetchMoodData = async () => {
+    const fetchMoodData = useCallback(async () => {
         setLoading(true);
         const month = format(currentDate, 'yyyy-MM');
 
@@ -51,7 +51,7 @@ const MoodCalendar = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [currentDate, token]);
 
     const goToPreviousWeek = () => setCurrentDate(prev => subWeeks(prev, 1));
     const goToNextWeek = () => setCurrentDate(prev => addWeeks(prev, 1));
