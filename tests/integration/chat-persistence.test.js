@@ -4,29 +4,26 @@
  */
 
 const request = require('supertest');
-const mongoose = require('mongoose');
-const app = require('../../server/index');
-const User = require('../../server/models/user.model');
-const Chat = require('../../server/models/chat.model');
-const Message = require('../../server/models/message.model');
-const { connectDB, disconnectDB } = require('../../server/config/database');
+const app = require('../../backend/index');
+const prisma = require('../../backend/config/prisma');
 
 describe('Chat Persistence Endpoints', () => {
   let token;
   let userId;
 
   beforeAll(async () => {
-    await connectDB();
+    // Database is already connected via Prisma in backend/index.js
   });
 
   afterAll(async () => {
-    await disconnectDB();
+    await prisma.$disconnect();
   });
 
   beforeEach(async () => {
-    await User.deleteMany({});
-    await Chat.deleteMany({});
-    await Message.deleteMany({});
+    // Clean up database using Prisma (order matters due to foreign keys)
+    await prisma.message.deleteMany({});
+    await prisma.chat.deleteMany({});
+    await prisma.user.deleteMany({});
 
     // Create test user and get token
     const res = await request(app)
@@ -36,7 +33,7 @@ describe('Chat Persistence Endpoints', () => {
         password: 'password123',
       });
     token = res.body.token;
-    userId = res.body.user._id;
+    userId = res.body.user._id || res.body.user.id;
   });
 
   describe('POST /api/chats', () => {
@@ -239,8 +236,10 @@ describe('Chat Persistence Endpoints', () => {
 
       expect(getRes.status).toBe(404);
 
-      // Verify messages are deleted
-      const messages = await Message.find({ chatId });
+      // Verify messages are deleted using Prisma
+      const messages = await prisma.message.findMany({
+        where: { chatId: parseInt(chatId) || chatId }
+      });
       expect(messages).toHaveLength(0);
     });
 
