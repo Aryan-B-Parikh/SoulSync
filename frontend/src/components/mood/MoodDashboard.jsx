@@ -10,10 +10,6 @@ const MoodDashboard = () => {
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchSummary();
-    }, [fetchSummary]);
-
     const fetchSummary = useCallback(async () => {
         try {
             const response = await fetch(`${API_CONFIG.BASE_URL}/mood/summary`, {
@@ -30,6 +26,10 @@ const MoodDashboard = () => {
             setLoading(false);
         }
     }, [token]);
+
+    useEffect(() => {
+        fetchSummary();
+    }, [fetchSummary]);
 
     const getMoodLabel = (mood) => {
         const labels = {
