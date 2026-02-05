@@ -21,10 +21,10 @@
     "node-fetch": "^2.7.0",
     "node-nlp": "^5.0.0-alpha.5",
     "openai": "^6.17.0",
-    "sentiment": "^5.0.2"
+    "sentiment": "^5.0.2",
+    "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
     "cross-env": "^7.0.3",
@@ -33,6 +33,7 @@
     "tailwindcss": "^3.3.0"
   },
   "scripts": {
+    "postinstall": "npx prisma generate --schema=backend/prisma/schema.prisma",
     "start": "cross-env NODE_ENV=production node backend/index.js",
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
     "frontend:dev": "cd frontend && npm run dev",
