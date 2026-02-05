@@ -23,7 +23,10 @@ lerna-debug.log*
 client/build/
 
 # Testing
-/coverage
+coverage/
+
+# Legacy/Backup files
+_legacy_backup/
 .nyc_output/
 
 # IDE and editors

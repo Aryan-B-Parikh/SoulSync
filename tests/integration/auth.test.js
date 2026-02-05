@@ -4,22 +4,23 @@
  */
 
 const request = require('supertest');
-const mongoose = require('mongoose');
-const app = require('../../server/index');
-const User = require('../../server/models/user.model');
-const { connectDB, disconnectDB } = require('../../server/config/database');
+const app = require('../../backend/index');
+const prisma = require('../../backend/config/prisma');
 
 describe('Authentication Endpoints', () => {
   beforeAll(async () => {
-    await connectDB();
+    // Database is already connected via Prisma in backend/index.js
   });
 
   afterAll(async () => {
-    await disconnectDB();
+    await prisma.$disconnect();
   });
 
   beforeEach(async () => {
-    await User.deleteMany({});
+    // Clean up database using Prisma
+    await prisma.message.deleteMany({});
+    await prisma.chat.deleteMany({});
+    await prisma.user.deleteMany({});
   });
 
   describe('POST /api/auth/register', () => {
