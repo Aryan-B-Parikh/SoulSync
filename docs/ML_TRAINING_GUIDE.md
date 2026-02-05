@@ -56,12 +56,12 @@ if (quickResult.confidence < 70) {
 return quickResult; // Fast path
 ```
 
-## Files Created
+## Files Overview
 
-1. **`backend/scripts/train_ml_model.js`** - Training script
-2. **`backend/tests/sentiment-ml-validation.test.js`** - Validation tests
-3. **`backend/services/sentimentServiceML.js`** - Production ML service
-4. **`backend/models/sentiment-model.nlp`** - Trained model (created after training)
+1. **`backend/ml/scripts/train_sentiment_model.js`** - Training script
+2. **`backend/tests/integration/sentiment-ml-validation.test.js`** - Validation tests
+3. **`backend/services/sentiment/sentimentServiceML.js`** - Production ML service
+4. **`backend/ml/models/sentiment-model.nlp`** - Trained model (created after training)
 
 ## Expected Results
 
