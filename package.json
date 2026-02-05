@@ -51,8 +51,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "verify": "npm run lint && npm run test",
     "setup": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
-    "deploy": "bash scripts/deploy.sh",
-    "vercel-build": "cd client && npm install && npm run build"
+    "deploy": "bash scripts/deploy.sh"
   },
   "eslintConfig": {
     "extends": [
