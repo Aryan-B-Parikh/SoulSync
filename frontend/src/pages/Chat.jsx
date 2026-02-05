@@ -19,7 +19,7 @@ import { Menu, X, Heart, MessageSquare, Sparkles } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
-  const { activeChat, messages, loading, sendStreamingMessage, createChat, loadChat, renameChat } = useChat();
+  const { activeChat, messages, loading, sendStreamingMessage, createChat, loadChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
