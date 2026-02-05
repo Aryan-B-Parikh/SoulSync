@@ -10,7 +10,7 @@ export const AI_CONFIG = {
 };
 
 export const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_URL || '/api',
+  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
   ENDPOINTS: {
     CHAT: '/chat',
     CHAT_FALLBACK: '/chat-fallback',
