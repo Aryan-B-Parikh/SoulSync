@@ -43,12 +43,18 @@ A sophisticated AI companion with **real-time streaming**, **long-term memory**,
 - **Mood analytics** dashboard with insights
 - Track your emotional journey alongside conversations
 
+### 👤 User Profile System
+- **Profile Settings**: Customizable display name and settings
+- **Sidebar Integration**: Quick access to profile, mood, and settings
+- **Persistent Stats**: View your journey statistics (join date, etc.)
+
 ### 🎨 Premium UI
 - **Glassmorphism** design with backdrop blur
 - **Google Fonts** (Playfair Display, Inter)
-- Animated gradient backgrounds
-- Smooth 60fps animations
-- "Midnight Glass" aesthetic for a premium feel
+- **Animated gradient backgrounds**
+- **Smooth 60fps animations**
+- **"Midnight Glass" aesthetic for a premium feel**
+- **Interactive Personality Selector Modal**
 
 ---
 
