@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ThumbsUp, ThumbsDown, Sparkles } from 'lucide-react';
 
 const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedback: initialFeedback, onFeedback, className = '' }) => {
   const [feedback, setFeedback] = useState(initialFeedback || null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Sync feedback state when initialFeedback prop changes
+  useEffect(() => {
+    setFeedback(initialFeedback || null);
+  }, [initialFeedback]);
 
   const isUser = role === 'user';
 

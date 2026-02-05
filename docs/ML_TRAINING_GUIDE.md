@@ -4,7 +4,7 @@
 
 ### 1. Train the Model
 ```bash
-node backend/scripts/train_ml_model.js
+node backend/ml/scripts/train_sentiment_model.js
 ```
 
 This will:
@@ -15,7 +15,7 @@ This will:
 
 ### 2. Validate the Model
 ```bash
-node backend/tests/sentiment-ml-validation.test.js
+node backend/tests/integration/sentiment-ml-validation.test.js
 ```
 
 This will:
@@ -84,7 +84,7 @@ Expected ML: 93-95%
 ### Model Not Found
 ```bash
 # Train the model first:
-node backend/scripts/train_ml_model.js
+node backend/ml/scripts/train_sentiment_model.js
 ```
 
 ### Low Accuracy
@@ -119,4 +119,4 @@ node backend/scripts/train_ml_model.js
 
 ---
 
-**Ready to train!** Run: `node backend/scripts/train_ml_model.js`
+**Ready to train!** Run: `node backend/ml/scripts/train_sentiment_model.js`
