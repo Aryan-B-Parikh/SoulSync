@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./public/index.html"
@@ -18,6 +19,30 @@ module.exports = {
           950: '#2e1065',
         },
         primary: '#14b8a6',
+        // Semantic Theme Colors
+        background: {
+          light: '#fafaf9', // Stone-50
+          dark: '#020617',  // Slate-950
+        },
+        surface: {
+          light: 'rgba(255, 255, 255, 0.6)',
+          dark: 'rgba(255, 255, 255, 0.05)',
+        },
+        'text-primary': {
+          light: '#1e1b4b', // Indigo-950
+          dark: '#f1f5f9',  // Slate-100
+        },
+        'text-muted': {
+          light: '#64748b', // Slate-500
+          dark: '#94a3b8',  // Slate-400
+        },
+        // The "Soul" Accents
+        soul: {
+          violet: '#8b5cf6',
+          gold: '#fbbf24',
+          rain: '#7dd3fc',
+          sage: '#86efac',
+        },
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'serif'],

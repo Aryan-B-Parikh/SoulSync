@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth, parseISO } from 'date-fns';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, addWeeks, subWeeks } from 'date-fns';
 import { useAuth } from '../../context/AuthContext';
 import { API_CONFIG } from '../../config/constants';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const MoodCalendar = () => {
     const { token } = useAuth();
@@ -10,14 +11,19 @@ const MoodCalendar = () => {
     const [loading, setLoading] = useState(true);
     const [selectedDay, setSelectedDay] = useState(null);
 
-    // Mood color mapping
+    // Mood color mapping - Better dark mode colors
     const moodColors = {
-        very_positive: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/40', text: 'text-emerald-400', emoji: '😊' },
-        positive: { bg: 'bg-lime-500/20', border: 'border-lime-500/40', text: 'text-lime-400', emoji: '🙂' },
-        neutral: { bg: 'bg-slate-500/20', border: 'border-slate-500/40', text: 'text-slate-400', emoji: '😐' },
-        negative: { bg: 'bg-amber-500/20', border: 'border-amber-500/40', text: 'text-amber-400', emoji: '😔' },
-        very_negative: { bg: 'bg-red-500/20', border: 'border-red-500/40', text: 'text-red-400', emoji: '😢' }
+        very_positive: { bg: 'bg-emerald-500/30', border: 'border-emerald-400', text: 'text-emerald-300', emoji: '😊' },
+        positive: { bg: 'bg-lime-500/30', border: 'border-lime-400', text: 'text-lime-300', emoji: '🙂' },
+        neutral: { bg: 'bg-slate-400/30', border: 'border-slate-400', text: 'text-slate-300', emoji: '😐' },
+        negative: { bg: 'bg-amber-500/30', border: 'border-amber-400', text: 'text-amber-300', emoji: '😔' },
+        very_negative: { bg: 'bg-red-500/30', border: 'border-red-400', text: 'text-red-300', emoji: '😢' }
     };
+
+    // Get current week's days
+    const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
+    const weekEnd = endOfWeek(currentDate, { weekStartsOn: 0 });
+    const daysInWeek = eachDayOfInterval({ start: weekStart, end: weekEnd });
 
     useEffect(() => {
         fetchMoodData();
@@ -34,7 +40,6 @@ const MoodCalendar = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                // Convert array to object keyed by date
                 const dataMap = (data.days || []).reduce((acc, day) => {
                     acc[day.date] = day;
                     return acc;
@@ -48,84 +53,86 @@ const MoodCalendar = () => {
         }
     };
 
-    const goToPreviousMonth = () => {
-        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1));
-    };
+    const goToPreviousWeek = () => setCurrentDate(prev => subWeeks(prev, 1));
+    const goToNextWeek = () => setCurrentDate(prev => addWeeks(prev, 1));
+    const goToToday = () => setCurrentDate(new Date());
 
-    const goToNextMonth = () => {
-        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1));
-    };
-
-    const monthStart = startOfMonth(currentDate);
-    const monthEnd = endOfMonth(currentDate);
-    const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
-
-    // Get first day offset
-    const firstDayOfWeek = monthStart.getDay();
+    const isToday = (day) => isSameDay(day, new Date());
 
     return (
-        <div className="glass-card rounded-2xl p-6 animate-fade-in">
+        <div className="bg-white dark:bg-slate-800/90 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl p-5 shadow-lg relative">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-5">
                 <button
-                    onClick={goToPreviousMonth}
-                    className="px-3 py-1 rounded-lg hover:bg-white/5 transition-colors text-slate-400 hover:text-slate-200"
+                    onClick={goToPreviousWeek}
+                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-text-muted-light dark:text-text-muted-dark hover:text-text-primary-light dark:hover:text-white"
                 >
-                    ←
+                    <ChevronLeft className="w-5 h-5" />
                 </button>
-                <h3 className="font-serif text-lg text-slate-200">
-                    {format(currentDate, 'MMMM yyyy')}
-                </h3>
+
+                <div className="flex items-center gap-3">
+                    <h3 className="font-serif text-lg text-text-primary-light dark:text-white">
+                        {format(weekStart, 'MMM d')} - {format(weekEnd, 'MMM d, yyyy')}
+                    </h3>
+                    <button
+                        onClick={goToToday}
+                        className="text-xs px-2 py-1 rounded-md bg-soul-violet/20 text-soul-violet hover:bg-soul-violet/30 transition-colors"
+                    >
+                        Today
+                    </button>
+                </div>
+
                 <button
-                    onClick={goToNextMonth}
-                    className="px-3 py-1 rounded-lg hover:bg-white/5 transition-colors text-slate-400 hover:text-slate-200"
+                    onClick={goToNextWeek}
+                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-text-muted-light dark:text-text-muted-dark hover:text-text-primary-light dark:hover:text-white"
                 >
-                    →
+                    <ChevronRight className="w-5 h-5" />
                 </button>
             </div>
 
-            {/* Weekday Headers */}
-            <div className="grid grid-cols-7 gap-2 mb-3">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                    <div key={day} className="text-center text-xs text-slate-500 font-medium">
-                        {day}
-                    </div>
-                ))}
-            </div>
-
-            {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2">
-                {/* Empty cells for offset */}
-                {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                    <div key={`empty-${i}`} />
-                ))}
-
-                {/* Days */}
-                {daysInMonth.map(day => {
+            {/* Week Grid */}
+            <div className="grid grid-cols-7 gap-3">
+                {daysInWeek.map(day => {
                     const dateKey = format(day, 'yyyy-MM-dd');
                     const dayMood = moodData[dateKey];
                     const mood = dayMood?.mood || null;
                     const moodStyle = mood ? moodColors[mood] : null;
+                    const today = isToday(day);
 
                     return (
                         <button
                             key={dateKey}
                             onClick={() => setSelectedDay(dayMood ? day : null)}
-                            className={`aspect-square rounded-lg p-1 flex flex-col items-center justify-center text-sm transition-all duration-200 border ${mood
+                            className={`relative flex flex-col items-center p-3 rounded-xl transition-all duration-200 border-2 ${mood
                                 ? `${moodStyle.bg} ${moodStyle.border} hover:scale-105`
-                                : 'border-transparent hover:bg-white/5'
-                                } ${selectedDay && isSameDay(day, selectedDay)
-                                    ? 'ring-2 ring-violet-500/50'
-                                    : ''
+                                : 'border-transparent bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10'
+                                } ${selectedDay && isSameDay(day, selectedDay) ? 'ring-2 ring-soul-violet ring-offset-2 ring-offset-transparent' : ''
+                                } ${today ? 'ring-2 ring-soul-gold/50' : ''
                                 }`}
                         >
-                            <span className={mood ? moodStyle.text : 'text-slate-600'}>
+                            {/* Day name */}
+                            <span className="text-xs font-medium text-text-muted-light dark:text-slate-400 mb-1">
+                                {format(day, 'EEE')}
+                            </span>
+
+                            {/* Date */}
+                            <span className={`text-lg font-medium ${mood
+                                ? moodStyle.text
+                                : today
+                                    ? 'text-soul-gold'
+                                    : 'text-text-primary-light dark:text-white'
+                                }`}>
                                 {day.getDate()}
                             </span>
+
+                            {/* Mood emoji */}
                             {mood && (
-                                <span className="text-lg leading-none mt-0.5">
-                                    {moodColors[mood].emoji}
-                                </span>
+                                <span className="text-xl mt-1">{moodColors[mood].emoji}</span>
+                            )}
+
+                            {/* Today indicator */}
+                            {today && !mood && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-soul-gold mt-1" />
                             )}
                         </button>
                     );
@@ -134,31 +141,25 @@ const MoodCalendar = () => {
 
             {/* Selected Day Details */}
             {selectedDay && moodData[format(selectedDay, 'yyyy-MM-dd')] && (
-                <div className="mt-6 pt-6 border-t border-white/5 animate-slide-up">
-                    <h4 className="text-sm font-medium text-slate-300 mb-3">
-                        {format(selectedDay, 'MMMM d, yyyy')}
-                    </h4>
-                    <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="mt-5 pt-5 border-t border-black/5 dark:border-white/10">
+                    <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-slate-500">Mood</p>
-                            <p className="text-slate-300 capitalize mt-1">
-                                {moodData[format(selectedDay, 'yyyy-MM-dd')].mood.replace('_', ' ')}
+                            <h4 className="text-sm font-medium text-text-primary-light dark:text-white">
+                                {format(selectedDay, 'EEEE, MMMM d')}
+                            </h4>
+                            <p className="text-xs text-text-muted-light dark:text-slate-400 mt-1 capitalize">
+                                {moodData[format(selectedDay, 'yyyy-MM-dd')].mood.replace('_', ' ')} • {moodData[format(selectedDay, 'yyyy-MM-dd')].messageCount} messages
                             </p>
                         </div>
-                        <div>
-                            <p className="text-slate-500">Messages</p>
-                            <p className="text-slate-300 mt-1">
-                                {moodData[format(selectedDay, 'yyyy-MM-dd')].messageCount}
-                            </p>
-                        </div>
+                        <span className="text-3xl">{moodColors[moodData[format(selectedDay, 'yyyy-MM-dd')].mood].emoji}</span>
                     </div>
                 </div>
             )}
 
-            {/* Loading */}
+            {/* Loading overlay */}
             {loading && (
-                <div className="absolute inset-0 bg-midnight-950/50 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                    <div className="w-8 h-8 border-2 border-violet-500/20 border-t-violet-500 rounded-full animate-spin" />
+                <div className="absolute inset-0 bg-white/50 dark:bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-soul-violet/20 border-t-soul-violet rounded-full animate-spin" />
                 </div>
             )}
         </div>
@@ -166,3 +167,4 @@ const MoodCalendar = () => {
 };
 
 export default MoodCalendar;
+

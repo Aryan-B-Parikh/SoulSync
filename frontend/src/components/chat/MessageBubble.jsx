@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ThumbsUp, ThumbsDown, Sparkles, User as UserIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ThumbsUp, ThumbsDown, Sparkles } from 'lucide-react';
 
 const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedback: initialFeedback, onFeedback, className = '' }) => {
   const [feedback, setFeedback] = useState(initialFeedback || null);
@@ -8,34 +9,75 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
   const isUser = role === 'user';
 
   return (
-    <div className={`group flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} ${className} animate-fade-in`}>
-      {/* Avatar */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={`group flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} ${className}`}
+    >
+      {/* AI Avatar - Pulsing Orb */}
       {!isUser && (
-        <div className="w-8 h-8 rounded-full bg-violet-900/50 flex items-center justify-center border border-white/10 shrink-0 mt-1">
-          <Sparkles className="w-4 h-4 text-violet-400" />
-        </div>
+        <motion.div
+          className={`w-9 h-9 rounded-full bg-gradient-to-br from-soul-violet to-soul-gold flex items-center justify-center shrink-0 mt-1 shadow-lg ${isStreaming ? 'shadow-soul-violet/50' : 'shadow-soul-violet/20'}`}
+          animate={isStreaming ? {
+            scale: [1, 1.1, 1],
+            boxShadow: [
+              '0 0 20px rgba(139, 92, 246, 0.3)',
+              '0 0 35px rgba(139, 92, 246, 0.6)',
+              '0 0 20px rgba(139, 92, 246, 0.3)'
+            ]
+          } : {}}
+          transition={{
+            duration: 1.5,
+            repeat: isStreaming ? Infinity : 0,
+            ease: "easeInOut"
+          }}
+        >
+          <Sparkles className="w-4 h-4 text-white" />
+        </motion.div>
       )}
 
-      <div className={`flex flex-col max-w-[80%] ${isUser ? 'items-end' : 'items-start'}`}>
+      <div className={`flex flex-col max-w-[85%] ${isUser ? 'items-end' : 'items-start'}`}>
         {/* Message Content */}
         <div
           className={`relative text-sm whitespace-pre-wrap transition-all duration-300 ${isUser
-              ? 'glass px-6 py-3 rounded-2xl rounded-tr-sm text-slate-200'
-              : isError
-                ? 'text-rose-300 bg-rose-900/20 px-4 py-2 rounded-lg border border-rose-500/20'
-                : 'text-slate-200 font-serif text-lg leading-relaxed px-1' // AI: No bubble, larger serif text
+            ? 'bg-surface-light dark:bg-surface-dark backdrop-blur-md px-6 py-3 rounded-2xl rounded-tr-sm text-text-primary-light dark:text-text-primary-dark shadow-sm border border-white/10 font-sans'
+            : isError
+              ? 'text-rose-500 bg-rose-500/10 px-4 py-2 rounded-lg border border-rose-500/20'
+              : 'text-text-primary-light dark:text-text-primary-dark font-serif text-lg leading-relaxed px-1'
             }`}
         >
           {content}
 
+          {/* Glowing Streaming Cursor */}
           {isStreaming && (
-            <span className="inline-block w-1.5 h-4 ml-1 bg-violet-400 animate-pulse align-middle" />
+            <motion.span
+              className="inline-block w-2 h-5 ml-1 bg-gradient-to-t from-soul-violet to-soul-gold rounded-sm align-middle"
+              animate={{
+                opacity: [1, 0.4, 1],
+                boxShadow: [
+                  '0 0 8px rgba(139, 92, 246, 0.8)',
+                  '0 0 15px rgba(251, 191, 36, 0.6)',
+                  '0 0 8px rgba(139, 92, 246, 0.8)'
+                ]
+              }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
           )}
         </div>
 
         {/* Feedback Actions (AI Only) */}
         {!isUser && !isStreaming && !isError && messageId && (
-          <div className="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity px-1">
+          <motion.div
+            className="flex gap-2 mt-2 px-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <button
               onClick={async () => {
                 if (submitting || feedback) return;
@@ -48,7 +90,7 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
                 }
               }}
               disabled={submitting || feedback !== null}
-              className={`p-1 rounded-full hover:bg-white/5 transition-colors ${feedback === 'up' ? 'text-emerald-400' : 'text-slate-600 hover:text-emerald-400'
+              className={`p-1.5 rounded-full hover:bg-surface-light dark:hover:bg-surface-dark transition-all opacity-0 group-hover:opacity-100 ${feedback === 'up' ? 'text-emerald-500 opacity-100' : 'text-text-muted-light dark:text-text-muted-dark hover:text-emerald-400'
                 }`}
             >
               <ThumbsUp className="w-3.5 h-3.5" />
@@ -65,23 +107,17 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
                 }
               }}
               disabled={submitting || feedback !== null}
-              className={`p-1 rounded-full hover:bg-white/5 transition-colors ${feedback === 'down' ? 'text-rose-400' : 'text-slate-600 hover:text-rose-400'
+              className={`p-1.5 rounded-full hover:bg-surface-light dark:hover:bg-surface-dark transition-all opacity-0 group-hover:opacity-100 ${feedback === 'down' ? 'text-rose-500 opacity-100' : 'text-text-muted-light dark:text-text-muted-dark hover:text-rose-400'
                 }`}
             >
               <ThumbsDown className="w-3.5 h-3.5" />
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
-
-      {/* User Avatar */}
-      {isUser && (
-        <div className="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center border border-white/10 shrink-0 mt-1">
-          <UserIcon className="w-4 h-4 text-slate-400" />
-        </div>
-      )}
-    </div>
+    </motion.div>
   );
 };
 
 export default MessageBubble;
+

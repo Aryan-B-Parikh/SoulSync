@@ -7,10 +7,7 @@
 
 @layer base {
   body {
-    @apply bg-midnight-950 text-slate-200 antialiased font-sans;
-    background-image:
-      radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(30, 27, 75, 0.15), transparent 25%);
+    @apply bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark antialiased font-sans transition-colors duration-300;
   }
 }
 
@@ -47,7 +44,107 @@
 
 /* Animations */
 .mesh-gradient {
-  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0f172a);
+  background: linear-gradient(-45deg, #fdfbf7, #f3f4f6, #e0e7ff, #fdfbf7);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
+}
+
+.dark .mesh-gradient {
+  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0f172a);
+}
+
+/* Aurora Background Animations */
+@keyframes aurora-float-1 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(50px, 30px) scale(1.1);
+  }
+
+  50% {
+    transform: translate(20px, -40px) scale(0.95);
+  }
+
+  75% {
+    transform: translate(-30px, 20px) scale(1.05);
+  }
+}
+
+@keyframes aurora-float-2 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(-40px, -30px) scale(1.05);
+  }
+
+  50% {
+    transform: translate(30px, 50px) scale(0.9);
+  }
+
+  75% {
+    transform: translate(50px, -20px) scale(1.1);
+  }
+}
+
+@keyframes aurora-float-3 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(-60px, 40px) scale(1.15);
+  }
+
+  66% {
+    transform: translate(40px, -50px) scale(0.85);
+  }
+}
+
+@keyframes aurora-float-4 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  20% {
+    transform: translate(30px, -40px) scale(1.1);
+  }
+
+  40% {
+    transform: translate(-20px, 30px) scale(0.95);
+  }
+
+  60% {
+    transform: translate(40px, 20px) scale(1.05);
+  }
+
+  80% {
+    transform: translate(-30px, -30px) scale(1);
+  }
+}
+
+/* Gradient Animation */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }

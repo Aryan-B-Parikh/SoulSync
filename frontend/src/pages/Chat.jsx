@@ -1,6 +1,6 @@
 /**
  * Authenticated Chat Page
- * Main chat interface with Midnight Glass design
+ * Main chat interface with Floating Glass design
  */
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -14,7 +14,8 @@ import TypingIndicator from '../components/chat/TypingIndicator';
 import MoodDashboard from '../components/mood/MoodDashboard';
 import UserProfile from '../components/profile/UserProfile';
 import PersonalitySelector from '../components/profile/PersonalitySelector';
-import { Menu, X, Heart } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
+import { Menu, X, Heart, MessageSquare, Sparkles } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
@@ -22,7 +23,9 @@ function ChatPage() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
-  const messagesEndRef = useRef(null); const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar state
+  const messagesEndRef = useRef(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar state
+  const [sidebarHovered, setSidebarHovered] = useState(false); // Desktop hover state
   const [view, setView] = useState('chat'); // 'chat' or 'mood'
   const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
 
@@ -100,51 +103,86 @@ function ChatPage() {
     }
   };
 
+  // Determine if sidebar should be expanded
+  const isSidebarExpanded = sidebarOpen || sidebarHovered;
+
   return (
-    <div className="flex h-screen bg-midnight-950 text-slate-200 overflow-hidden font-sans">
+    <div className="flex h-screen w-full overflow-hidden font-sans p-3 gap-3">
 
       {/* Mobile Sidebar Toggle - Visible only on mobile */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 glass rounded-full text-slate-300"
+        className="md:hidden fixed top-6 left-6 z-50 p-2.5 bg-surface-dark/80 backdrop-blur-xl rounded-full text-text-primary-dark border border-white/10 shadow-lg"
       >
-        {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+        {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
       </button>
 
-      {/* Sidebar (Memory Lane) */}
-      <div className={`
-        fixed md:relative z-40 h-full w-80 glass-panel flex flex-col transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-      `}>
+      {/* Sidebar (Collapsible Dock) */}
+      <div
+        className={`
+          fixed md:relative z-40 h-[calc(100vh-24px)] 
+          ${isSidebarExpanded ? 'w-72' : 'w-16'} 
+          bg-white dark:bg-slate-800/95 backdrop-blur-2xl 
+          rounded-2xl border border-black/5 dark:border-white/10
+          flex flex-col transition-all duration-300 ease-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          shadow-xl shadow-black/10 dark:shadow-black/30
+        `}
+        onMouseEnter={() => setSidebarHovered(true)}
+        onMouseLeave={() => setSidebarHovered(false)}
+      >
         {/* User Profile / Status */}
-        <div className="p-6 border-b border-white/5">
-          <UserProfile />
+        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'}`}>
+          {isSidebarExpanded ? (
+            <>
+              <UserProfile />
+              <ThemeToggle />
+            </>
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-soul-violet to-soul-gold flex items-center justify-center text-white font-semibold text-sm">
+              <Sparkles size={18} />
+            </div>
+          )}
         </div>
 
         {/* Chat List */}
-        <div className="flex-1 overflow-y-auto px-2 py-4">
-          {/* Passing styles to ChatList to match the theme if needed, but existing ChatList might look okay if basic text */}
-          <ChatList />
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+          {isSidebarExpanded ? (
+            <div className="px-2 py-4">
+              <ChatList />
+            </div>
+          ) : (
+            <div className="flex flex-col items-center py-4 gap-3">
+              {/* Icon-only mode - show recent chat indicators */}
+              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-text-muted-dark hover:bg-white/10 cursor-pointer transition-colors">
+                <MessageSquare size={16} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mood Journal Button */}
-        <div className="p-4 border-t border-white/5">
+        <div className={`p-3 border-t border-white/5 ${!isSidebarExpanded ? 'flex justify-center' : ''}`}>
           <button
             onClick={() => setView(view === 'chat' ? 'mood' : 'chat')}
-            className={`w-full py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${view === 'mood'
-              ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
-              : 'bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200'
-              }`}
+            className={`
+              ${isSidebarExpanded ? 'w-full py-2.5 px-4' : 'w-10 h-10'} 
+              rounded-xl transition-all duration-300 flex items-center justify-center gap-2
+              ${view === 'mood'
+                ? 'bg-soul-violet/20 text-soul-violet border border-soul-violet/30'
+                : 'bg-white/5 hover:bg-white/10 text-text-muted-light dark:text-text-muted-dark hover:text-text-primary-light dark:hover:text-text-primary-dark'
+              }
+            `}
           >
             <Heart className="w-4 h-4" />
-            <span className="text-sm font-medium">{view === 'mood' ? 'Back to Chat' : 'Mood Journal'}</span>
+            {isSidebarExpanded && <span className="text-sm font-medium">{view === 'mood' ? 'Back to Chat' : 'Mood Journal'}</span>}
           </button>
         </div>
       </div>
 
 
-      {/* Main Chat Area (The Canvas) */}
-      <div className="flex-1 flex flex-col relative bg-midnight-950">
+      {/* Main Chat Area (Levitating Glass Container) */}
+      <div className="flex-1 flex flex-col relative bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-300">
 
         {view === 'mood' ? (
           // Mood Dashboard View
@@ -153,9 +191,8 @@ function ChatPage() {
           // Chat View
           <>
             {/* Header */}
-            <div className="h-16 flex items-center justify-center border-b border-white/5 relative z-10 glass-subtle">
-              <h1 className="font-serif text-xl tracking-widest text-slate-300 opacity-80">SoulSync</h1>
-              <div className="absolute top-1/2 right-6 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse"></div>
+            <div className="h-14 flex items-center justify-center border-b border-white/5 relative z-10">
+              <h1 className="font-serif text-lg tracking-widest text-text-muted-light dark:text-slate-400 opacity-80">SoulSync</h1>
             </div>
 
             {/* Messages Stream */}
@@ -163,7 +200,7 @@ function ChatPage() {
               {loading && !activeChat ? (
                 <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70 animate-fade-in">
                   <span className="text-4xl filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">✨</span>
-                  <p className="font-serif text-lg text-slate-400 italic">"The soul speaks in whispers."</p>
+                  <p className="font-serif text-lg text-text-muted-light dark:text-slate-400 italic">"The soul speaks in whispers."</p>
                 </div>
               ) : (
                 <div className="max-w-3xl mx-auto space-y-8 pb-32">
@@ -191,9 +228,9 @@ function ChatPage() {
             </div>
 
             {/* Floating Input Area (The Wand) */}
-            <div className="absolute bottom-8 left-0 right-0 px-4 md:px-0 z-20 pointer-events-none">
+            <div className="absolute bottom-6 left-0 right-0 px-4 md:px-8 z-20 pointer-events-none">
               {/* Pointer events auto applied to children */}
-              <div className="pointer-events-auto w-full">
+              <div className="pointer-events-auto w-full max-w-3xl mx-auto">
                 <MessageInput
                   value={input}
                   onChange={setInput}
@@ -216,3 +253,4 @@ function ChatPage() {
 }
 
 export default ChatPage;
+

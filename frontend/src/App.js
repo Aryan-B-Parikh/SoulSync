@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ChatProvider } from './context/ChatContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import AuroraBackground from './components/AuroraBackground';
 import LandingPage from './pages/Landing';
 import AuthPage from './pages/Auth';
 import ChatPage from './pages/Chat';
@@ -20,9 +22,9 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-midnight-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
         <div className="w-16 h-1 bg-white/10 overflow-hidden rounded-full">
-          <div className="w-full h-full bg-violet-500/50 animate-progress origin-left" />
+          <div className="w-full h-full bg-soul-violet/50 animate-progress origin-left" />
         </div>
       </div>
     );
@@ -52,10 +54,15 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <AppContent />
+        <ThemeProvider>
+          {/* Ambient Aurora Background */}
+          <AuroraBackground />
+          <AppContent />
+        </ThemeProvider>
       </AuthProvider>
     </ErrorBoundary>
   );
 }
 
 export default App;
+

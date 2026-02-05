@@ -56,7 +56,7 @@ const UserProfile = () => {
             className="fixed inset-0 z-40"
             onClick={() => setShowDropdown(false)}
           />
-          <div className="absolute top-12 right-0 w-64 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-emerald-500/10 p-4 z-50 animate-fade-in">
+          <div className="absolute top-12 left-0 w-64 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-emerald-500/10 p-4 z-50 animate-fade-in">
             {/* Profile Header */}
             <div className="flex items-center gap-3 pb-3 border-b border-white/10">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-slate-900 font-semibold">
