@@ -7,25 +7,42 @@ export default function AuthCard({ onComplete }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
-        username: '',
+        name: '',
         email: '',
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
 
-    const { login, register } = useAuth(); // Assuming AuthContext exposes these
+    const { login } = useAuth(); // AuthContext only exposes login (state setter)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
+        const endpoint = isLogin ? '/auth/login' : '/auth/register';
+        const url = `http://localhost:5001/api${endpoint}`;
+
         try {
-            if (isLogin) {
-                await login(formData.username, formData.password);
-            } else {
-                await register(formData.username, formData.email, formData.password);
+            const body = isLogin
+                ? { email: formData.email, password: formData.password }
+                : { email: formData.email, password: formData.password, name: formData.name };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Authentication failed');
             }
+
+            // Update Global Auth State
+            login(data.token, data.user);
+
             onComplete?.();
         } catch (err) {
             setError(err.message || 'Something went wrong');
@@ -60,33 +77,34 @@ export default function AuthCard({ onComplete }) {
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-4">
-                            {/* Username Input */}
-                            <div className="group relative">
-                                <User className="absolute left-0 top-3 w-5 h-5 text-slate-500 group-focus-within:text-violet-400 transition-colors" />
-                                <input
-                                    type="text"
-                                    placeholder="Identity (Username)"
-                                    value={formData.username}
-                                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                                    className="w-full bg-transparent border-b border-white/10 py-3 pl-8 text-slate-200 placeholder-slate-600 focus:border-violet-500 focus:outline-none transition-colors"
-                                    required
-                                />
-                            </div>
 
-                            {/* Email Input (Register only) */}
+                            {/* Name Input (Register Only) */}
                             {!isLogin && (
                                 <div className="group relative animate-fade-in">
-                                    <Mail className="absolute left-0 top-3 w-5 h-5 text-slate-500 group-focus-within:text-violet-400 transition-colors" />
+                                    <User className="absolute left-0 top-3 w-5 h-5 text-slate-500 group-focus-within:text-violet-400 transition-colors" />
                                     <input
-                                        type="email"
-                                        placeholder="Contact (Email)"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        type="text"
+                                        placeholder="Identity (Name)"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="w-full bg-transparent border-b border-white/10 py-3 pl-8 text-slate-200 placeholder-slate-600 focus:border-violet-500 focus:outline-none transition-colors"
                                         required
                                     />
                                 </div>
                             )}
+
+                            {/* Email Input (Always Visible) */}
+                            <div className="group relative">
+                                <Mail className="absolute left-0 top-3 w-5 h-5 text-slate-500 group-focus-within:text-violet-400 transition-colors" />
+                                <input
+                                    type="email"
+                                    placeholder="Contact (Email)"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    className="w-full bg-transparent border-b border-white/10 py-3 pl-8 text-slate-200 placeholder-slate-600 focus:border-violet-500 focus:outline-none transition-colors"
+                                    required
+                                />
+                            </div>
 
                             {/* Password Input */}
                             <div className="group relative">

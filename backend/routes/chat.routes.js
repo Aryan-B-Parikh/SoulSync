@@ -34,18 +34,18 @@ const createChatValidation = [
 ];
 
 const sendMessageValidation = [
-  param('chatId').isMongoId(),
+  param('chatId').isUUID(),
   body('content').trim().isLength({ min: 1, max: 4000 }),
   handleValidationErrors,
 ];
 
 const chatIdValidation = [
-  param('chatId').isMongoId(),
+  param('chatId').isUUID(),
   handleValidationErrors,
 ];
 
 const updateChatValidation = [
-  param('chatId').isMongoId(),
+  param('chatId').isUUID(),
   body('title').trim().isLength({ min: 1, max: 60 }),
   handleValidationErrors,
 ];

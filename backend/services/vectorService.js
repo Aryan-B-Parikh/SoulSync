@@ -1,62 +1,75 @@
 /**
  * Vector Service
  * Handles vector database operations for RAG-based memory
- * Uses Pinecone for vector storage and OpenAI for embeddings
+ * Uses Pinecone for vector storage and Transformers.js (Local) for embeddings
  */
 
 const { Pinecone } = require('@pinecone-database/pinecone');
-const OpenAI = require('openai');
 
 // Initialize clients
 let pinecone = null;
 let pineconeIndex = null;
-let openai = null;
+let embeddingPipeline = null;
+
+// Lazy load transformers to avoid startup delay if not needed immediately
+let pipeline = null;
 
 /**
- * Initialize Pinecone client and index
+ * Initialize Pinecone client and Local Embedding Model
  */
 async function initializePinecone() {
-    if (pinecone) return; // Already initialized
+    if (pinecone && embeddingPipeline) return; // Already initialized
 
     try {
-        // Initialize Pinecone
-        pinecone = new Pinecone({
-            apiKey: process.env.PINECONE_API_KEY,
-        });
+        console.log('🔌 Initializing Vector Service...');
 
-        // Get or create index
-        const indexName = process.env.PINECONE_INDEX_NAME || 'soulsync-memories';
+        // 1. Initialize Local Embedding Model
+        if (!embeddingPipeline) {
+            console.log('🤖 Loading local embedding model (Xenova/all-MiniLM-L6-v2)...');
+            // Lazy import for ESM compatibility
+            const { pipeline: transformerPipeline } = await import('@xenova/transformers');
 
-        try {
-            // Try to get existing index
-            pineconeIndex = pinecone.index(indexName);
-            console.log(`✅ Connected to Pinecone index: ${indexName}`);
-        } catch (error) {
-            console.log(`📝 Index ${indexName} not found, creating...`);
-
-            // Create index if it doesn't exist
-            await pinecone.createIndex({
-                name: indexName,
-                dimension: 1536, // OpenAI embedding dimension
-                metric: 'cosine',
-                spec: {
-                    serverless: {
-                        cloud: 'aws',
-                        region: process.env.PINECONE_ENVIRONMENT || 'us-east-1',
-                    },
-                },
-            });
-
-            // Wait for index to be ready
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            pineconeIndex = pinecone.index(indexName);
-            console.log(`✅ Created Pinecone index: ${indexName}`);
+            // Using a quantized model by default which is small (~22MB)
+            embeddingPipeline = await transformerPipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+            console.log('✅ Local embedding model loaded');
         }
 
-        // Initialize OpenAI for embeddings
-        openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY || process.env.GROQ_API_KEY,
-        });
+        // 2. Initialize Pinecone
+        if (!pinecone) {
+            pinecone = new Pinecone({
+                apiKey: process.env.PINECONE_API_KEY,
+            });
+
+            const indexName = process.env.PINECONE_INDEX_NAME || 'soulsync-memories';
+
+            try {
+                // Check if index exists by describing it
+                await pinecone.describeIndex(indexName);
+                pineconeIndex = pinecone.index(indexName);
+                console.log(`✅ Connected to Pinecone index: ${indexName}`);
+            } catch (error) {
+                console.log(`📝 Index ${indexName} not found (or error), creating...`);
+
+                // Create index if it doesn't exist
+                await pinecone.createIndex({
+                    name: indexName,
+                    dimension: 384, // Important: MiniLM-L6-v2 dimension is 384
+                    metric: 'cosine',
+                    spec: {
+                        serverless: {
+                            cloud: 'aws',
+                            region: process.env.PINECONE_ENVIRONMENT || 'us-east-1',
+                        },
+                    },
+                });
+
+                // Wait for index to be ready
+                console.log('⏳ Waiting for index initialization...');
+                await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10s
+                pineconeIndex = pinecone.index(indexName);
+                console.log(`✅ Created Pinecone index: ${indexName}`);
+            }
+        }
 
         console.log('✅ Vector service initialized successfully');
     } catch (error) {
@@ -66,20 +79,20 @@ async function initializePinecone() {
 }
 
 /**
- * Generate embedding for text using OpenAI
+ * Generate embedding for text using Local Transformer
  * @param {string} text - Text to embed
  * @returns {Promise<number[]>} - Embedding vector
  */
 async function generateEmbedding(text) {
     try {
-        if (!openai) await initializePinecone();
+        if (!embeddingPipeline) await initializePinecone();
 
-        const response = await openai.embeddings.create({
-            model: process.env.EMBEDDING_MODEL || 'text-embedding-3-small',
-            input: text,
-        });
+        // Generate embedding
+        // pooling: 'mean' and normalize: true are recommended for sentence similarity
+        const output = await embeddingPipeline(text, { pooling: 'mean', normalize: true });
 
-        return response.data[0].embedding;
+        // Convert Tensor to standard Array
+        return Array.from(output.data);
     } catch (error) {
         console.error('Failed to generate embedding:', error);
         throw error;
@@ -172,12 +185,7 @@ async function retrieveRelevantMemories(userId, query, topK = 3) {
 async function deleteUserMemories(userId) {
     try {
         if (!pineconeIndex) await initializePinecone();
-
-        // Pinecone doesn't support bulk delete by metadata filter in free tier
-        // This is a placeholder - in production, you'd need to track vector IDs
         console.warn('Delete user memories not fully implemented - requires tracking vector IDs');
-
-        // For now, return 0
         return 0;
     } catch (error) {
         console.error('Failed to delete user memories:', error);
@@ -195,8 +203,9 @@ async function getMemoryStats(userId) {
         if (!pineconeIndex) await initializePinecone();
 
         // Query to get total count (approximate)
+        // Note: For MiniLM-L6-v2, dimension is 384
         const statsResponse = await pineconeIndex.query({
-            vector: new Array(1536).fill(0), // Dummy vector
+            vector: new Array(384).fill(0), // Dummy vector (size 384)
             topK: 10000,
             includeMetadata: true,
             filter: {

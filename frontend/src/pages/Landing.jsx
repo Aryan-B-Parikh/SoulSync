@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
+import Footer from '../components/landing/Footer';
 
 export default function LandingPage({ onStart }) {
     return (
@@ -7,7 +8,15 @@ export default function LandingPage({ onStart }) {
             {/* Background Overlay */}
             <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
 
-            <div className="relative z-10 max-w-4xl mx-auto space-y-12">
+            {/* Header / Logo */}
+            <div className="absolute top-8 left-0 right-0 flex justify-center z-20 animate-fade-in">
+                <div className="flex items-center gap-2 glass-subtle px-6 py-2 rounded-full">
+                    <span className="text-2xl">✨</span>
+                    <span className="font-serif text-xl tracking-widest text-slate-200">SoulSync</span>
+                </div>
+            </div>
+
+            <div className="relative z-10 max-w-4xl mx-auto space-y-12 flex-1 flex flex-col justify-center">
                 {/* Main Content */}
                 <div className="space-y-6 animate-fade-in">
                     <h1 className="text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-400 drop-shadow-sm leading-tight">
@@ -38,8 +47,8 @@ export default function LandingPage({ onStart }) {
             </div>
 
             {/* Footer */}
-            <div className="absolute bottom-8 text-center text-slate-500 text-sm font-light animate-fade-in" style={{ animationDelay: '0.8s' }}>
-                <p>Powered by Groq & LLaMA</p>
+            <div className="w-full pb-4 relative z-20 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+                <Footer />
             </div>
         </div>
     );

@@ -56,6 +56,23 @@ async function callGroqAPI(messages, apiKey, personality = 'reflective') {
 }
 
 /**
+ * Call Groq API for streaming chat completion
+ * @param {Array} messages - Conversation history
+ * @param {string} apiKey - Groq API key
+ * @param {string} personality - Personality mode
+ * @param {string} systemPrompt - Full system prompt including memories
+ * @yields {string} Response chunks
+ */
+async function* callGroqAPIStreaming(messages, apiKey, personality, systemPrompt) {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: AI_CONFIG.MODEL,
+      messages: [
         { role: 'system', content: systemPrompt },
         ...messages,
       ],
@@ -163,23 +180,31 @@ async function generateResponse(messages, config, personality = 'reflective') {
   }
 }
 
-// Helper function to format time ago (assuming it's needed for memories)
+/**
+ * Helper function to format time ago
+ * @param {string} timestamp - ISO timestamp
+ * @returns {string} - Human-readable time ago
+ */
 function getTimeAgo(timestamp) {
   const now = new Date();
   const past = new Date(timestamp);
-  const seconds = Math.floor((now - past) / 1000);
+  const diffMs = now - past;
+  const diffMins = Math.floor(diffMs / 60000);
 
-  if (seconds < 60) return `${seconds} seconds ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} minutes ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hours ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days} days ago`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months} months ago`;
-  const years = Math.floor(months / 12);
-  return `${years} years ago`;
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+
+  const diffWeeks = Math.floor(diffDays / 7);
+  if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+
+  const diffMonths = Math.floor(diffDays / 30);
+  return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
 }
 
 /**
@@ -236,33 +261,6 @@ function validateMessages(messages) {
       typeof msg.role === 'string' &&
       typeof msg.content === 'string'
   );
-}
-
-/**
- * Helper function to format time ago
- * @param {string} timestamp - ISO timestamp
- * @returns {string} - Human-readable time ago
- */
-function getTimeAgo(timestamp) {
-  const now = new Date();
-  const past = new Date(timestamp);
-  const diffMs = now - past;
-  const diffMins = Math.floor(diffMs / 60000);
-
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-
-  const diffWeeks = Math.floor(diffDays / 7);
-  if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
-
-  const diffMonths = Math.floor(diffDays / 30);
-  return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
 }
 
 module.exports = {

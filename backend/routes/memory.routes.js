@@ -17,7 +17,18 @@ const {
 
 const router = express.Router();
 
-// All routes require authentication
+// Debug Route: Force Init (Public)
+router.get('/init', async (req, res) => {
+    try {
+        const { initializePinecone } = require('../services/vectorService');
+        await initializePinecone();
+        res.json({ message: 'Pinecone Initialized Successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// All routes after this require authentication
 router.use(authenticate);
 
 // Validation
@@ -56,5 +67,16 @@ router.post('/messages/:id/mark-memory', toggleMemoryStatus);
  * GET /api/memory/recent
  */
 router.get('/recent', getRecentMemories);
+
+// Debug Route: Force Init
+router.get('/init', async (req, res) => {
+    try {
+        const { initializePinecone } = require('../services/vectorService');
+        await initializePinecone();
+        res.json({ message: 'Pinecone Initialized Successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;
