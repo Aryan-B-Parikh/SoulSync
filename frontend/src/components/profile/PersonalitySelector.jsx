@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { API_CONFIG } from '../config/constants';
+import { useAuth } from '../../context/AuthContext';
+import { API_CONFIG } from '../../config/constants';
 
 const PERSONALITIES = [
     {
@@ -37,23 +37,23 @@ export default function PersonalitySelector({ onClose }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchPersonality();
-    }, []);
+        const fetchPersonality = async () => {
+            try {
+                const response = await fetch(`${API_CONFIG.BASE_URL}/user/personality`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
 
-    const fetchPersonality = async () => {
-        try {
-            const response = await fetch(`${API_CONFIG.BASE_URL}/user/personality`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setCurrentPersonality(data.personality);
+                if (response.ok) {
+                    const data = await response.json();
+                    setCurrentPersonality(data.personality);
+                }
+            } catch (error) {
+                console.error('Failed to fetch personality:', error);
             }
-        } catch (error) {
-            console.error('Failed to fetch personality:', error);
-        }
-    };
+        };
+
+        fetchPersonality();
+    }, [token]);
 
     const updatePersonality = async (personality) => {
         setLoading(true);

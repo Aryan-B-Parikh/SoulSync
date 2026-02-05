@@ -12,6 +12,8 @@ import MessageBubble from '../components/chat/MessageBubble';
 import MessageInput from '../components/chat/MessageInput';
 import TypingIndicator from '../components/chat/TypingIndicator';
 import MoodDashboard from '../components/mood/MoodDashboard';
+import UserProfile from '../components/profile/UserProfile';
+import PersonalitySelector from '../components/profile/PersonalitySelector';
 import { Menu, X, Heart } from 'lucide-react';
 
 function ChatPage() {
@@ -20,16 +22,21 @@ function ChatPage() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
-  const [isRenaming, setIsRenaming] = useState(false);
-  const [renameValue, setRenameValue] = useState('');
-  const messagesEndRef = useRef(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar state
+  const messagesEndRef = useRef(null); const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar state
   const [view, setView] = useState('chat'); // 'chat' or 'mood'
+  const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, sending]);
+
+  // Handle opening personality selector from UserProfile
+  useEffect(() => {
+    const handleOpenPersonalitySelector = () => setShowPersonalitySelector(true);
+    window.addEventListener('openPersonalitySelector', handleOpenPersonalitySelector);
+    return () => window.removeEventListener('openPersonalitySelector', handleOpenPersonalitySelector);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || sending) return;
@@ -76,15 +83,6 @@ function ChatPage() {
     }
   };
 
-  const handleRename = async () => {
-    if (!renameValue.trim() || !activeChat) return;
-    try {
-      await renameChat(activeChat._id, renameValue);
-      setIsRenaming(false);
-    } catch (err) {
-      console.error('Rename error:', err);
-    }
-  };
 
   // Feedback handler
   const handleFeedback = async (messageId, feedback) => {
@@ -120,16 +118,7 @@ function ChatPage() {
       `}>
         {/* User Profile / Status */}
         <div className="p-6 border-b border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-900/50 flex items-center justify-center border border-white/10 relative">
-              <span className="text-lg">🧘</span>
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-midnight-900 animate-pulse-slow"></div>
-            </div>
-            <div>
-              <h3 className="font-serif text-slate-100 tracking-wide">My Journey</h3>
-              <p className="text-xs text-slate-500">Reflecting...</p>
-            </div>
-          </div>
+          <UserProfile />
         </div>
 
         {/* Chat List */}
@@ -218,7 +207,10 @@ function ChatPage() {
 
       </div>
 
-
+      {/* Personality Selector Modal */}
+      {showPersonalitySelector && (
+        <PersonalitySelector onClose={() => setShowPersonalitySelector(false)} />
+      )}
     </div>
   );
 }
