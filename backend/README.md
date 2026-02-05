@@ -4,18 +4,19 @@
 
 ```
 backend/
-├── config/             # Configuration
+├── config/             # Configuration (Prisma, etc.)
 ├── controllers/        # Request handlers
-├── middleware/         # Express middleware
-├── models/             # MongoDB schemas
+├── middleware/         # Express middleware (auth, validation)
 ├── routes/             # API routes
 ├── services/           # Business logic
 │   └── sentiment/      # Sentiment analysis services
-├── ml/                 # Machine Learning 🆕
+├── ml/                 # Machine Learning
 │   ├── models/         # Trained ML models
 │   ├── training/       # Training datasets
 │   └── scripts/        # Training scripts
-├── tests/              # Tests 🆕
+├── prisma/             # Database
+│   └── schema.prisma   # Database schema
+├── tests/              # Tests
 │   ├── unit/           # Unit tests
 │   └── integration/    # Integration tests
 ├── docs/               # Documentation
@@ -25,7 +26,20 @@ backend/
 
 ## Quick Commands
 
-### Run Tests
+### Development
+```bash
+npm run dev              # Start server with nodemon
+```
+
+### Database
+```bash
+npx prisma generate      # Generate Prisma Client
+npx prisma db push       # Push schema to database
+npx prisma studio        # Open database GUI
+npx prisma migrate dev   # Create migration
+```
+
+### Tests
 ```bash
 # Sentiment analysis (production)
 node tests/unit/sentiment.test.js
@@ -42,17 +56,13 @@ node tests/integration/sentiment-ml-validation.test.js
 node ml/scripts/train_sentiment_model.js
 ```
 
-### Analyze Training Data
-```bash
-node ml/scripts/analyze_training_data.js
-```
-
 ## Key Files
 
 ### Production
+- **Database**: `prisma/schema.prisma` (PostgreSQL with Prisma)
 - **Sentiment**: `services/sentiment/sentimentService.js` (93.3% accuracy)
+- **Vector Memory**: `services/vectorService.js` (Pinecone)
 - **Routes**: `routes/*.routes.js`
-- **Models**: `models/*.model.js`
 
 ### ML/Experimental
 - **ML Service**: `services/sentiment/sentimentServiceML.js`
@@ -62,22 +72,72 @@ node ml/scripts/analyze_training_data.js
 ## Import Examples
 
 ```javascript
+// Prisma client
+const prisma = require('./config/prisma');
+
 // Sentiment service
 const { analyzeSentiment } = require('./services/sentiment/sentimentService');
 
 // ML sentiment service
 const { analyzeSentimentML } = require('./services/sentiment/sentimentServiceML');
 
-// Models
-const User = require('./models/user.model');
-const Chat = require('./models/chat.model');
+// Vector service
+const { storeInMemory, retrieveRelevantMemories } = require('./services/vectorService');
 ```
+
+## Database Schema (Prisma)
+
+```prisma
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  name        String?
+  personality String   @default("supportive")
+  chats       Chat[]
+  createdAt   DateTime @default(now())
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  title     String    @default("New Conversation")
+  userId    String
+  user      User      @relation(...)
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  role      String   // 'user' or 'assistant'
+  chatId    String
+  chat      Chat     @relation(...)
+  vectorId  String?  // Pinecone vector ID
+  sentiment String?  // 'positive', 'negative', etc.
+  feedback  String?  // 'up' or 'down'
+  isMemory  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+```
+
+## API Routes Overview
+
+| Route | Methods | Description |
+|-------|---------|-------------|
+| `/api/auth` | POST | Register, Login |
+| `/api/chats` | GET, POST, PATCH, DELETE | Chat CRUD |
+| `/api/chats/:id/messages` | GET, POST | Messages |
+| `/api/mood` | GET | Mood analytics |
+| `/api/memory` | GET, DELETE | Memory management |
+| `/api/user` | GET, PUT | Profile & personality |
 
 ## Notes
 
-- All MongoDB schemas are in `models/`
+- Database: PostgreSQL via Neon (serverless)
+- ORM: Prisma for type-safe queries
 - All ML-related files are in `ml/`
 - Tests are categorized by type (`unit/`, `integration/`)
-- No duplicate files!
 
-Last Updated: 2026-02-04
+Last Updated: 2026-02-05

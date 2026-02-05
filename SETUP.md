@@ -4,102 +4,85 @@
 
 ✅ **Already Configured:**
 - Groq API Key
-- JWT Secret (secure random generated)
-- All code and dependencies
+- OpenAI API Key
+- Pinecone API Key
+- JWT Secret
 
 ❌ **Need to Configure:**
-- Database connection (MongoDB)
+- Database connection (PostgreSQL via Neon)
 
-## Option 1: MongoDB Atlas (Cloud - RECOMMENDED) ⭐
+## Option 1: Neon PostgreSQL (Cloud - RECOMMENDED) ⭐
 
 **Best for:** Quick start, no local installation needed, free tier available
 
 ### Steps:
 
-1. **Create MongoDB Atlas Account**
-   - Go to https://www.mongodb.com/cloud/atlas/register
+1. **Create Neon Account**
+   - Go to https://neon.tech
    - Sign up for free (no credit card required)
 
-2. **Create a Cluster**
-   - Click "Create" → "Deploy a database"
-   - Choose **FREE** tier (M0 Sandbox)
-   - Select a cloud provider and region (closest to you)
-   - Click "Create Cluster" (takes 3-5 minutes)
+2. **Create a Project**
+   - Click "Create Project"
+   - Name: `soulsync`
+   - Region: Select closest to you
+   - Click "Create Project"
 
-3. **Create Database User**
-   - Go to "Database Access" in left menu
-   - Click "Add New Database User"
-   - Choose "Password" authentication
-   - Username: `soulsync_user` (or your choice)
-   - Password: Click "Autogenerate Secure Password" (SAVE THIS!)
-   - Database User Privileges: "Read and write to any database"
-   - Click "Add User"
-
-4. **Whitelist Your IP**
-   - Go to "Network Access" in left menu
-   - Click "Add IP Address"
-   - Click "Allow Access from Anywhere" (for development)
-   - Click "Confirm"
-
-5. **Get Connection String**
-   - Go to "Database" in left menu
-   - Click "Connect" on your cluster
-   - Choose "Connect your application"
-   - Copy the connection string (looks like):
+3. **Get Connection String**
+   - Copy the connection string from the dashboard
+   - It looks like:
      ```
-     mongodb+srv://soulsync_user:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+     postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
      ```
 
-6. **Update `.env` File**
-   - Open `d:\Aryan\Github\SoulSync\.env`
-   - Replace the `MONGODB_URI` line:
-     ```env
-     MONGODB_URI=mongodb+srv://soulsync_user:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/soulsync?retryWrites=true&w=majority
-     ```
-   - Replace `YOUR_PASSWORD` with the password from step 3
-   - Add database name `/soulsync` before the `?`
+4. **Update `backend/.env` File**
+   ```env
+   DATABASE_URL=postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
+   ```
 
-7. **Done!** Skip to "Testing Connection" section below.
+5. **Initialize Database**
+   ```powershell
+   cd backend
+   npx prisma generate
+   npx prisma db push
+   ```
+
+6. **Done!** Skip to "Testing Connection" section below.
 
 ---
 
-## Option 2: Local MongoDB (Advanced)
+## Option 2: Local PostgreSQL (Advanced)
 
 **Best for:** Developers who want full control, offline development
 
 ### Steps:
 
-1. **Download MongoDB Community Server**
-   - Go to https://www.mongodb.com/try/download/community
-   - Select:
-     - Version: 7.0 or later
-     - Platform: Windows
-     - Package: msi
-   - Download and run installer
+1. **Download PostgreSQL**
+   - Go to https://www.postgresql.org/download/windows/
+   - Download and run the installer
 
-2. **Install MongoDB**
-   - Run the `.msi` installer
-   - Choose "Complete" installation
-   - Install as a Windows Service (check the box)
-   - Install MongoDB Compass (GUI tool)
-   - Click "Next" and "Install"
+2. **Install PostgreSQL**
+   - Run the installer with default options
+   - Set a password for the `postgres` user
+   - Default port: 5432
 
-3. **Verify Installation**
-   Open PowerShell and run:
+3. **Create Database**
    ```powershell
-   # Check if MongoDB service is running
-   Get-Service MongoDB
-   
-   # It should show "Status: Running"
+   psql -U postgres
+   CREATE DATABASE soulsync;
+   \q
    ```
 
-4. **MongoDB is Already Configured**
-   Your `.env` already has the local connection:
+4. **Update `backend/.env` File**
    ```env
-   MONGODB_URI=mongodb://localhost:27017/soulsync
+   DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/soulsync
    ```
 
-5. **Done!** Continue to "Testing Connection" section below.
+5. **Initialize Database**
+   ```powershell
+   cd backend
+   npx prisma generate
+   npx prisma db push
+   ```
 
 ---
 
@@ -107,22 +90,24 @@
 
 Let's verify everything works:
 
-1. **Start the server:**
+1. **Start the backend:**
    ```powershell
-   npm run server:dev
+   cd backend
+   npm run dev
    ```
 
 2. **Look for these messages:**
    ```
-   ✓ MongoDB connected
+   ✓ Database connected (Prisma)
    ✓ Server running on port 5001
    ✓ Auth routes mounted: /api/auth
    ✓ Chat routes mounted: /api/chats
+   ✓ Mood routes mounted: /api/mood
    ```
 
 3. **If you see errors:**
-   - MongoDB connection error → Check connection string in `.env`
-   - Port already in use → Stop other processes or change PORT in `.env`
+   - Database connection error → Check `DATABASE_URL` in `.env`
+   - Port already in use → Stop other processes or change PORT
 
 ---
 
@@ -130,86 +115,80 @@ Let's verify everything works:
 
 Once the server starts successfully:
 
-1. **Start both server and client:**
+1. **Start both backend and frontend:**
    ```powershell
+   # Terminal 1 - Backend
+   cd backend
+   npm run dev
+
+   # Terminal 2 - Frontend
+   cd frontend
    npm run dev
    ```
 
 2. **Open browser:**
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
 
-3. **You should see the Login page!**
-
-4. **Register a new account:**
-   - Click "Register"
-   - Enter name (optional), email, password
+3. **Register a new account:**
+   - Enter name, email, password
    - Click "Register"
    - You'll be auto-logged in!
 
-5. **Start chatting:**
-   - Click "New Chat"
+4. **Start chatting:**
+   - Click "New Journey"
    - Send a message
-   - Get AI response
-   - Chat is automatically saved!
-
----
-
-## Run Smoke Tests
-
-Verify all endpoints work:
-
-```powershell
-# Make sure server is running first
-npm run server:dev
-
-# In another terminal:
-npm run smoke
-```
-
-You should see:
-```
-🔥 Running smoke tests...
-1️⃣ Testing health endpoint... ✅
-2️⃣ Testing user registration... ✅
-3️⃣ Testing profile endpoint... ✅
-4️⃣ Testing chat creation... ✅
-5️⃣ Testing message sending... ✅
-6️⃣ Testing chat list retrieval... ✅
-7️⃣ Testing chat deletion... ✅
-🎉 All smoke tests passed!
-```
+   - Get AI response with streaming!
 
 ---
 
 ## Environment Variables Summary
 
-Your current `.env` should have:
+### Backend (`backend/.env`)
 
 ```env
-# ✅ CONFIGURED
-GROQ_API_KEY=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
-JWT_SECRET=b17b4a982101e9dc9f75d42f0225f628b6d230a2df90ce9c13cdafb8f3459577
+# ✅ Database (PostgreSQL)
+DATABASE_URL=postgresql://user:pass@host/database?sslmode=require
 
-# ⚠️ NEEDS CONFIGURATION (choose one option above)
-MONGODB_URI=mongodb://localhost:27017/soulsync  # Option 2: Local
-# OR
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/soulsync  # Option 1: Atlas
+# ✅ AI Services
+GROQ_API_KEY=your_groq_api_key
+OPENAI_API_KEY=your_openai_api_key
+EMBEDDING_MODEL=text-embedding-3-small
 
-# ✅ OPTIONAL (defaults are fine)
+# ✅ Vector Database
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_INDEX_NAME=soulsync-memories
+
+# ✅ Authentication
+JWT_SECRET=your_super_secret_jwt_key_min_32_chars
+JWT_EXPIRES_IN=7d
+
+# ✅ Server
 NODE_ENV=development
 PORT=5001
-JWT_EXPIRES_IN=7d
+```
+
+### Frontend (`frontend/.env`)
+
+```env
+VITE_API_URL=http://localhost:5001/api
 ```
 
 ---
 
 ## Troubleshooting
 
-### "MongoDB connection error"
-- **Atlas:** Check username, password, IP whitelist
-- **Local:** Verify MongoDB service is running: `Get-Service MongoDB`
+### "Database connection error"
+- Check `DATABASE_URL` format
+- Verify Neon project is active
+- Check IP whitelist (Neon allows all by default)
+
+### "Prisma Client not generated"
+```powershell
+cd backend
+npx prisma generate
+```
 
 ### "Port 5001 already in use"
 ```powershell
@@ -219,83 +198,57 @@ Get-Process -Name node | Stop-Process -Force
 
 ### "Module not found"
 ```powershell
-# Reinstall dependencies
-npm install
-cd client && npm install
+cd backend && npm install
+cd ../frontend && npm install
 ```
 
-### "Cannot find module 'mongoose'"
+---
+
+## Database Commands
+
 ```powershell
-# Install missing packages
-npm install
+# Generate Prisma Client
+npx prisma generate
+
+# Push schema to database
+npx prisma db push
+
+# Open Prisma Studio (GUI)
+npx prisma studio
+
+# View database in terminal
+npx prisma db pull
 ```
-
----
-
-## Next Steps
-
-Once everything is running:
-
-1. ✅ Register multiple accounts
-2. ✅ Create multiple chats
-3. ✅ Test chat history and continuity
-4. ✅ Try deleting chats
-5. ✅ Test logout and login again
-6. ✅ Run smoke tests
-
----
-
-## Production Deployment (Vercel)
-
-When ready to deploy:
-
-1. **Create MongoDB Atlas** (if not done already)
-
-2. **Add Environment Variables in Vercel:**
-   - Go to Project Settings → Environment Variables
-   - Add:
-     - `GROQ_API_KEY`: Your Groq key
-     - `MONGODB_URI`: Your Atlas connection string
-     - `JWT_SECRET`: Your JWT secret
-     - `NODE_ENV`: production
-
-3. **Deploy from GitHub:**
-   - Push your code to GitHub
-   - Vercel will auto-deploy
-
-4. **Test Production:**
-   ```powershell
-   API_URL=https://your-domain.vercel.app/api npm run smoke
-   ```
-
----
-
-## Need Help?
-
-- **MongoDB Atlas:** https://www.mongodb.com/docs/atlas/getting-started/
-- **MongoDB Local:** https://www.mongodb.com/docs/manual/installation/
-- **Project Docs:** Check `docs/` folder for detailed guides
 
 ---
 
 ## Quick Command Reference
 
 ```powershell
-# Development
-npm run dev              # Start everything
+# Development (from root)
+npm run dev              # Start backend only
 
-# Server only
-npm run server:dev       # Backend only
+# Backend
+cd backend
+npm run dev              # Start backend
+npx prisma studio        # Database GUI
+
+# Frontend
+cd frontend
+npm run dev              # Start frontend
 
 # Testing
-npm run smoke            # Quick validation
-npm run test:auth        # Auth tests
-npm run test:chat        # Chat tests
-
-# Database (if using local MongoDB)
-Get-Service MongoDB      # Check if running
-Start-Service MongoDB    # Start MongoDB
-Stop-Service MongoDB     # Stop MongoDB
+npm test                 # Run tests
 ```
 
-**You're almost there! Just set up MongoDB and you're ready to go! 🚀**
+---
+
+## Need Help?
+
+- **Neon PostgreSQL:** https://neon.tech/docs
+- **Prisma:** https://www.prisma.io/docs
+- **Project Docs:** Check `docs/` folder
+
+---
+
+**You're almost there! Just set up PostgreSQL and you're ready to go! 🚀**

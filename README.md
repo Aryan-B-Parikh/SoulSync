@@ -1,11 +1,11 @@
 # 🌟 SoulSync AI
 
-A sophisticated AI companion with **real-time streaming**, **long-term memory**, **personality modes**, and a **premium glassmorphic UI**. Built with the MERN stack and advanced AI features.
+A sophisticated AI companion with **real-time streaming**, **long-term memory**, **personality modes**, and a **premium glassmorphic UI**. Built with React, Node.js, Prisma/PostgreSQL, and advanced AI features.
 
 ![SoulSync](https://img.shields.io/badge/AI-Companion-purple?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-336791?style=for-the-badge&logo=postgresql)
 
 ---
 
@@ -30,46 +30,47 @@ A sophisticated AI companion with **real-time streaming**, **long-term memory**,
 - **✨ Creative & Poetic**: Metaphorical, artistic
 - Persistent personality preferences per user
 
-### 📊 Feedback System
-- **Thumbs up/down** on AI responses
-- Training data export for fine-tuning
-- **JSONL format** compatible with OpenAI/Groq
-- Analytics dashboard for feedback statistics
-
-### 💭 Mood Intelligence (NEW)
+### 📊 Mood Dashboard
 - **Automatic sentiment analysis** of every message
-- **Mood calendar** view with color-coded daily moods
+- **Emotional Resonance Map** - GitHub-style heatmap of your emotional journey
+- **Mood Calendar** - Weekly view with color-coded daily moods
+- **Mood Distribution** - Visual breakdown of emotional patterns
 - **Trend graphs** showing emotional patterns over time
-- **Mood analytics** dashboard with insights
-- Track your emotional journey alongside conversations
 
 ### 👤 User Profile System
 - **Profile Settings**: Customizable display name and settings
 - **Sidebar Integration**: Quick access to profile, mood, and settings
-- **Persistent Stats**: View your journey statistics (join date, etc.)
+- **Persistent Stats**: View your journey statistics
 
 ### 🎨 Premium UI
+- **Living Organism Design** - Aurora backgrounds with breathing animations
+- **Dark/Light Mode** with seamless transitions
 - **Glassmorphism** design with backdrop blur
 - **Google Fonts** (Playfair Display, Inter)
-- **Animated gradient backgrounds**
-- **Smooth 60fps animations**
-- **"Midnight Glass" aesthetic for a premium feel**
+- **Smooth 60fps animations** with Framer Motion
 - **Interactive Personality Selector Modal**
+
+### 💬 Chat Management
+- Create, rename, and delete conversations
+- Inline editing for chat titles
+- Message feedback (thumbs up/down)
+- Training data export for fine-tuning
 
 ---
 
 ## 🏗️ Tech Stack
 
 ### Frontend
-- **React 18** with Hooks
-- **Recharts** for data visualization
+- **React 18** with Hooks & Context
 - **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **Recharts** for data visualization
 - **Lucide React** for icons
 - **date-fns** for date manipulation
 
 ### Backend
 - **Node.js** with Express
-- **MongoDB** with Mongoose
+- **Prisma ORM** with PostgreSQL (Neon)
 - **JWT** authentication
 - **Server-Sent Events (SSE)** for streaming
 - **Sentiment** library for mood analysis
@@ -86,7 +87,7 @@ A sophisticated AI companion with **real-time streaming**, **long-term memory**,
 
 ### Prerequisites
 - Node.js 18+
-- MongoDB (local or Atlas)
+- PostgreSQL database (Neon recommended)
 - Groq API key
 - OpenAI API key (for embeddings)
 - Pinecone account (free tier)
@@ -101,18 +102,20 @@ cd SoulSync
 
 2. **Install dependencies**
 ```bash
+# Install all dependencies (root, backend, frontend)
 npm install
-cd client && npm install
+cd backend && npm install
+cd ../frontend && npm install
 cd ..
 ```
 
 3. **Set up environment variables**
-```bash
-cp .env.example .env
-```
 
-Edit `.env` with your API keys:
+Create `backend/.env`:
 ```env
+# Database (PostgreSQL via Neon)
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+
 # AI Services
 GROQ_API_KEY=your_groq_api_key
 OPENAI_API_KEY=your_openai_api_key
@@ -120,11 +123,7 @@ EMBEDDING_MODEL=text-embedding-3-small
 
 # Vector Database (Pinecone)
 PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_ENVIRONMENT=us-east-1
 PINECONE_INDEX_NAME=soulsync-memories
-
-# Database
-MONGODB_URI=mongodb://localhost:27017/soulsync
 
 # Authentication
 JWT_SECRET=your_super_secret_jwt_key_min_32_chars
@@ -134,16 +133,28 @@ NODE_ENV=development
 PORT=5001
 ```
 
-4. **Set up Pinecone**
+Create `frontend/.env`:
+```env
+VITE_API_URL=http://localhost:5001/api
+```
+
+4. **Set up Database**
+```bash
+cd backend
+npx prisma generate
+npx prisma db push
+```
+
+5. **Set up Pinecone**
 - Sign up at [pinecone.io](https://www.pinecone.io)
 - Create an index:
   - Name: `soulsync-memories`
   - Dimension: `1536`
   - Metric: `cosine`
-  - Pod type: Starter (free)
 
-5. **Run the application**
+6. **Run the application**
 ```bash
+# From root directory
 npm run dev
 ```
 
@@ -158,37 +169,71 @@ The app will be available at:
 ### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user
 
 ### Chat
 - `GET /api/chats` - Get all chats
 - `POST /api/chats` - Create new chat
-- `GET /api/chats/:id/messages` - Get chat messages
+- `GET /api/chats/:id` - Get chat with messages
+- `PATCH /api/chats/:id` - Rename chat
+- `DELETE /api/chats/:id` - Delete chat
 - `POST /api/chats/:id/messages/stream` - Stream AI response (SSE)
 
 ### Memory
 - `GET /api/memory/stats` - Get memory statistics
 - `GET /api/memory/search?query=...` - Search memories
+- `GET /api/memory/recent` - Get recent memories
 - `DELETE /api/memory/all` - Delete all memories (privacy)
 
-### Feedback
-- `POST /api/messages/:id/feedback` - Submit thumbs up/down
-- `GET /api/analytics/feedback` - Get feedback statistics
+### Mood
+- `GET /api/mood/summary` - Get mood analytics
+- `GET /api/mood/history` - Get mood history
+- `GET /api/mood/calendar/:year/:month` - Get calendar mood data
+- `GET /api/mood/heatmap` - Get heatmap data
 
 ### User
 - `GET /api/user/personality` - Get personality preference
 - `PUT /api/user/personality` - Update personality
+- `GET /api/user/profile` - Get user profile
+- `PUT /api/user/profile` - Update profile
 
 ---
 
-## 🎯 Usage
+## 📁 Project Structure
 
-### Training Data Export
-Export upvoted messages for fine-tuning:
-```bash
-npm run export-data
 ```
-
-This creates a JSONL file in `data/training-data-{timestamp}.jsonl` compatible with OpenAI/Groq fine-tuning.
+SoulSync/
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/    # UI components
+│   │   │   ├── chat/      # Chat components
+│   │   │   ├── mood/      # Mood dashboard components
+│   │   │   └── ...
+│   │   ├── context/       # React context (Auth, Chat, Theme)
+│   │   ├── pages/         # Page components
+│   │   └── config/        # Configuration
+│   └── package.json
+├── backend/                # Express backend
+│   ├── config/            # Database & app config
+│   ├── controllers/       # Request handlers
+│   ├── middleware/        # Express middleware
+│   ├── routes/            # API routes
+│   ├── services/          # Business logic
+│   │   └── sentiment/     # Sentiment analysis
+│   ├── ml/                # Machine Learning
+│   │   ├── models/        # Trained ML models
+│   │   ├── training/      # Training datasets
+│   │   └── scripts/       # Training scripts
+│   ├── prisma/            # Database schema
+│   │   └── schema.prisma
+│   ├── tests/             # Tests
+│   │   ├── unit/          # Unit tests
+│   │   └── integration/   # Integration tests
+│   └── docs/              # Backend documentation
+├── tests/                  # Integration tests
+├── docs/                   # Project documentation
+└── package.json           # Root package.json
+```
 
 ---
 
@@ -203,13 +248,14 @@ Backend (Express)
     ↓
 streaming.controller.js
     ↓
-1. Save user message to MongoDB
-2. Generate embedding → OpenAI
-3. Store in Pinecone (vectorService.js)
-4. Retrieve top-3 memories (cosine similarity)
-5. Inject memories into system prompt
-6. Stream AI response (Groq API)
-7. Save assistant message
+1. Save user message to PostgreSQL (Prisma)
+2. Analyze sentiment
+3. Generate embedding → OpenAI
+4. Store in Pinecone (vectorService.js)
+5. Retrieve top-3 memories (cosine similarity)
+6. Inject memories into system prompt
+7. Stream AI response (Groq API)
+8. Save assistant message
     ↓
 Frontend receives SSE stream
     ↓
@@ -224,69 +270,47 @@ MessageBubble displays with animations
 - **Groq**: Free tier with rate limits
 - **OpenAI Embeddings**: ~$0.10 per 1M tokens
 - **Pinecone**: 100,000 vectors (~200 users)
-- **MongoDB Atlas**: Free M0 cluster (512MB)
+- **Neon PostgreSQL**: Free tier (500MB storage)
 
 ### Monthly Costs
 - **10 users, 100 messages each**: ~$0.05/month
 - **100 users, 500 messages each**: ~$2/month
-- **Scaling**: Pinecone paid tier at $70/month for 10M vectors
+
+---
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+# Unit tests
+cd backend
+node tests/unit/sentiment.test.js
+
+# Integration tests
+npm test
+```
+
+### Manual Testing Checklist
+- [x] Send message, verify streaming works
+- [x] Change personality mode, verify AI tone changes
+- [x] Test memory recall ("My favorite color is purple" → ask later)
+- [x] Verify mood dashboard updates with new messages
+- [x] Test dark/light mode toggle
+- [x] Test chat rename and delete
 
 ---
 
 ## 🎓 Portfolio Highlights
 
 ### Technical Achievements
-✅ **Production RAG System** - Real vector database, not mock memory  
+✅ **Production RAG System** - Real vector database with Pinecone  
 ✅ **Streaming Architecture** - SSE with async generators  
-✅ **Personality System** - Dynamic AI behavior  
-✅ **Training Pipeline** - Data export for fine-tuning  
+✅ **PostgreSQL + Prisma** - Modern ORM with type safety  
+✅ **Sentiment Analysis** - 93.3% accuracy mood detection  
+✅ **Premium UI** - Living organism design with aurora effects  
+✅ **Dark Mode** - Full theme system with smooth transitions  
 ✅ **Full-Stack Implementation** - Backend + Frontend + Database  
-✅ **Privacy-First Design** - User isolation, GDPR compliance  
-✅ **Performance Optimized** - < 500ms overhead  
-
-### Talking Points
-- "Implemented RAG-based memory using Pinecone and OpenAI embeddings"
-- "Built real-time streaming with Server-Sent Events and async generators"
-- "Designed personality system with dynamic system prompts"
-- "Created training data pipeline for model fine-tuning"
-- "Architected for graceful degradation — chat works even if memory fails"
-
----
-
-## 📝 Project Structure
-
-```
-SoulSync/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/    # UI components
-│   │   ├── context/       # React context (Auth, Chat)
-│   │   ├── chat/          # Chat page components
-│   │   └── index.css      # Global styles + glassmorphism
-│   └── package.json
-├── server/                # Express backend
-│   ├── controllers/       # Route controllers
-│   ├── models/           # Mongoose models
-│   ├── routes/           # API routes
-│   ├── services/         # AI & vector services
-│   └── index.js          # Server entry point
-├── scripts/              # Utility scripts
-│   └── export-training-data.js
-├── .env.example          # Environment variables template
-└── package.json          # Root package.json
-```
-
----
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-- [x] Send message, verify tokens appear incrementally
-- [x] Change personality mode, verify AI tone changes
-- [x] Send "My favorite color is purple", then ask "What's my favorite color?"
-- [x] Verify AI recalls purple from memory
-- [x] Click thumbs up, verify feedback persisted
-- [x] Run `npm run export-data`, verify JSONL created
+✅ **Privacy-First Design** - User isolation, secure memory management  
 
 ---
 
@@ -307,6 +331,7 @@ MIT License - feel free to use this project for learning or portfolio purposes.
 - **Groq** for fast LLM inference
 - **OpenAI** for embeddings API
 - **Pinecone** for vector database
+- **Neon** for serverless PostgreSQL
 - **Framer Motion** for animations
 
 ---
@@ -319,4 +344,4 @@ MIT License - feel free to use this project for learning or portfolio purposes.
 
 ---
 
-**Built using React, Node.js, MongoDB, Groq, OpenAI, and Pinecone**
+**Built with React, Node.js, PostgreSQL, Prisma, Groq, OpenAI, and Pinecone**

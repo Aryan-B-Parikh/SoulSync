@@ -14,11 +14,10 @@ async function getStats(req, res, next) {
     try {
         const stats = await getMemoryStats(req.user.userId);
 
-        // Also get count from Postgres for verification
+        // Also get count from Postgres for verification (scoped to current user)
         const dbCount = await prisma.message.count({
             where: {
-                // Prisma doesn't support $ne: null directly for nullable strings in same way, 
-                // but NOT: { vectorId: null } works.
+                chat: { userId: req.user.userId },
                 NOT: { vectorId: null }
             }
         });
@@ -99,12 +98,19 @@ async function toggleMemoryStatus(req, res, next) {
     try {
         const { id } = req.params;
 
+        // Find message and verify ownership through chat
         const message = await prisma.message.findUnique({
-            where: { id }
+            where: { id },
+            include: { chat: { select: { userId: true } } }
         });
 
         if (!message) {
             return res.status(404).json({ error: 'Message not found' });
+        }
+
+        // Security: Verify the message belongs to the current user
+        if (message.chat.userId !== req.user.userId) {
+            return res.status(403).json({ error: 'Access denied' });
         }
 
         // Toggle memory flag

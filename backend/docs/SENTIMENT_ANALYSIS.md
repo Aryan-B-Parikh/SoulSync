@@ -122,7 +122,7 @@ const customWords = {
 
 **Production:**
 - `backend/services/sentimentService.js` - Main service ✅
-- `backend/tests/sentiment.test.js` - Test suite ✅
+- `backend/tests/unit/sentiment.test.js` - Test suite ✅
 
 **Reference (Optional):**
 - `backend/services/sentimentServiceML.js` - ML implementation
@@ -143,12 +143,12 @@ To reach 95%+ accuracy:
 ## Support
 
 For questions or issues:
-1. Check test suite: `node backend/tests/sentiment.test.js`
+1. Check test suite: `node backend/tests/unit/sentiment.test.js`
 2. Review logs for confidence scores (low = uncertain)
 3. Add edge cases to training data for future retuning
 
 ---
 
-**Last Updated**: 2026-02-04  
+**Last Updated**: 2026-02-05  
 **Version**: 1.0 (Production)  
 **Maintained by**: SoulSync Team

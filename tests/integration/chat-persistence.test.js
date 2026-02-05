@@ -238,7 +238,7 @@ describe('Chat Persistence Endpoints', () => {
 
       // Verify messages are deleted using Prisma
       const messages = await prisma.message.findMany({
-        where: { chatId: parseInt(chatId) || chatId }
+        where: { chatId }
       });
       expect(messages).toHaveLength(0);
     });
