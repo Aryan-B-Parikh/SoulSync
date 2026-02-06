@@ -58,7 +58,7 @@ export default function LandingPage({ onStart }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h1 className="text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-slate-600 dark:from-slate-100 dark:to-slate-300 drop-shadow-sm leading-tight pb-4">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-slate-600 dark:from-slate-100 dark:to-slate-300 drop-shadow-sm leading-tight pb-4">
                             Speak to the Soul,<br />
                             <span className="italic text-text-muted-light dark:text-slate-300 bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Not the System.</span>
                         </h1>

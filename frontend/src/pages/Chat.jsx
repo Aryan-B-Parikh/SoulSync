@@ -15,7 +15,7 @@ import MoodDashboard from '../components/mood/MoodDashboard';
 import UserProfile from '../components/profile/UserProfile';
 import PersonalitySelector from '../components/profile/PersonalitySelector';
 import ThemeToggle from '../components/ThemeToggle';
-import { Menu, X, Heart, MessageSquare, Sparkles } from 'lucide-react';
+import { Menu, X, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
@@ -117,16 +117,34 @@ function ChatPage() {
         {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
       </button>
 
+      {/* Mobile New Chat FAB - Thumb Zone Friendly */}
+      <button
+        onClick={() => createChat()}
+        className="md:hidden fixed bottom-24 right-6 z-30 p-4 bg-gradient-to-r from-soul-violet to-soul-gold rounded-full text-white shadow-lg shadow-soul-violet/30 hover:scale-105 active:scale-95 transition-all duration-300"
+        aria-label="New Chat"
+      >
+        <Plus size={24} />
+      </button>
+
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar (Collapsible Dock) */}
       <div
         className={`
-          fixed md:relative z-40 h-[calc(100vh-24px)] 
+          fixed md:relative z-40 h-[calc(100vh-24px)] md:h-[calc(100vh-24px)] h-full
           ${isSidebarExpanded ? 'w-72' : 'w-16'} 
           bg-white dark:bg-slate-800/95 backdrop-blur-2xl 
-          rounded-2xl border border-black/5 dark:border-white/10
+          rounded-r-2xl md:rounded-2xl border border-black/5 dark:border-white/10
           flex flex-col transition-all duration-300 ease-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           shadow-xl shadow-black/10 dark:shadow-black/30
+          top-0 left-0 md:top-auto md:left-auto
         `}
         onMouseEnter={() => setSidebarHovered(true)}
         onMouseLeave={() => setSidebarHovered(false)}
@@ -164,7 +182,10 @@ function ChatPage() {
         {/* Mood Journal Button */}
         <div className={`p-3 border-t border-white/5 ${!isSidebarExpanded ? 'flex justify-center' : ''}`}>
           <button
-            onClick={() => setView(view === 'chat' ? 'mood' : 'chat')}
+            onClick={() => {
+              setView(view === 'chat' ? 'mood' : 'chat');
+              setSidebarOpen(false); // Close sidebar on mobile when switching views
+            }}
             className={`
               ${isSidebarExpanded ? 'w-full py-2.5 px-4' : 'w-10 h-10'} 
               rounded-xl transition-all duration-300 flex items-center justify-center gap-2
@@ -228,7 +249,7 @@ function ChatPage() {
             </div>
 
             {/* Floating Input Area (The Wand) */}
-            <div className="absolute bottom-6 left-0 right-0 px-4 md:px-8 z-20 pointer-events-none">
+            <div className="absolute bottom-0 md:bottom-6 left-0 right-0 px-0 md:px-8 z-20 pointer-events-none">
               {/* Pointer events auto applied to children */}
               <div className="pointer-events-auto w-full max-w-3xl mx-auto">
                 <MessageInput
