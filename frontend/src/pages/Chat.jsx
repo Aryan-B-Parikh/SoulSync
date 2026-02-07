@@ -15,7 +15,7 @@ import MoodDashboard from '../components/mood/MoodDashboard';
 import UserProfile from '../components/profile/UserProfile';
 import PersonalitySelector from '../components/profile/PersonalitySelector';
 import ThemeToggle from '../components/ThemeToggle';
-import { Menu, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
+import { Menu, X, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
@@ -133,7 +133,7 @@ function ChatPage() {
         onMouseLeave={() => setSidebarHovered(false)}
       >
         {/* User Profile / Status */}
-        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'}`}>
+        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'} mt-12 md:mt-0`}>
           {isSidebarExpanded ? (
             <>
               <UserProfile />
@@ -145,6 +145,14 @@ function ChatPage() {
             </div>
           )}
         </div>
+
+        {/* Mobile Close Button - Inside Sidebar */}
+        <button
+          onClick={() => setSidebarOpen(false)}
+          className="md:hidden absolute top-4 right-4 p-2 text-slate-500 hover:text-rose-500 transition-colors bg-white/5 rounded-full"
+        >
+          <X size={20} />
+        </button>
 
         {/* Chat List */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
