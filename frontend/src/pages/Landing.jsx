@@ -60,9 +60,9 @@ export default function LandingPage({ onStart }) {
                     >
                         <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-slate-600 dark:from-slate-100 dark:to-slate-300 drop-shadow-sm leading-tight pb-4">
                             Speak to the Soul,<br />
-                            <span className="italic text-text-muted-light dark:text-slate-300 bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Not the System.</span>
+                            <span className="italic text-indigo-600 dark:text-slate-300 bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Not the System.</span>
                         </h1>
-                        <p className="text-xl text-text-muted-light dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-xl text-slate-600 dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
                             An AI companion that <span className="font-medium text-soul-violet">remembers your past</span>, <span className="font-medium text-soul-violet">visualizes your mood</span>, and <span className="font-medium text-soul-violet">adapts to your personality</span>. Built for deep, long-term connection.
                         </p>
                     </motion.div>
@@ -73,7 +73,7 @@ export default function LandingPage({ onStart }) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="mb-12 glass-panel p-2 rounded-full flex items-center gap-2 relative bg-white/5 border border-white/10"
+                    className="mb-12 glass-panel p-2 rounded-full flex items-center gap-2 relative bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md shadow-sm"
                 >
                     {Object.entries(vibes).map(([key, data]) => {
                         const Icon = data.icon;
@@ -82,7 +82,10 @@ export default function LandingPage({ onStart }) {
                             <button
                                 key={key}
                                 onClick={() => setVibe(key)}
-                                className={`relative px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300 ${isActive ? 'bg-white/10 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                                className={`relative px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300 ${isActive
+                                    ? 'bg-white/80 dark:bg-white/10 text-slate-800 dark:text-white shadow-lg'
+                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                                    }`}
                             >
                                 <Icon className={`w-4 h-4 ${isActive ? data.accent : ''}`} />
                                 <span className={`text-sm font-medium ${isActive ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all'}`}>
@@ -91,7 +94,7 @@ export default function LandingPage({ onStart }) {
                                 {isActive && (
                                     <motion.div
                                         layoutId="vibe-indicator"
-                                        className="absolute inset-0 border border-white/20 rounded-full"
+                                        className="absolute inset-0 border border-black/5 dark:border-white/20 rounded-full"
                                     />
                                 )}
                             </button>
@@ -106,7 +109,7 @@ export default function LandingPage({ onStart }) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className={`text-lg font-serif italic mb-8 ${vibes[vibe].accent}`}
+                        className={`text-lg font-serif italic mb-8 ${vibes[vibe].accent} drop-shadow-sm`}
                     >
                         "{vibes[vibe].text}"
                     </motion.p>
@@ -120,13 +123,13 @@ export default function LandingPage({ onStart }) {
                 >
                     <button
                         onClick={onStart}
-                        className="group relative px-10 py-5 bg-white/10 dark:bg-white/5 hover:bg-white/20 dark:hover:bg-white/10 border border-white/20 dark:border-white/10 rounded-full transition-all duration-300 shadow-xl backdrop-blur-md overflow-hidden"
+                        className="group relative px-10 py-5 bg-white/80 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-white/40 dark:border-white/10 rounded-full transition-all duration-300 shadow-xl backdrop-blur-md overflow-hidden"
                     >
-                        <div className="flex items-center gap-3 text-xl font-medium tracking-wide text-text-primary-light dark:text-slate-100">
+                        <div className="flex items-center gap-3 text-xl font-medium tracking-wide text-slate-800 dark:text-slate-100">
                             <span>Begin Journey</span>
                             <Sparkles className="w-6 h-6 text-soul-violet dark:text-violet-400 group-hover:rotate-12 transition-transform" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </button>
                 </motion.div>
 
@@ -179,15 +182,15 @@ function FeatureCard({ icon: Icon, title, description, delay }) {
             viewport={{ once: true }}
             transition={{ delay, duration: 0.6 }}
             whileHover={{ y: -5 }}
-            className="glass-card p-8 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors group text-left"
+            className="glass-card p-8 rounded-2xl border border-white/20 dark:border-white/5 bg-white/40 dark:bg-white/5 backdrop-blur-sm hover:bg-white/60 dark:hover:bg-white/10 transition-colors group text-left shadow-sm hover:shadow-md"
         >
-            <div className="mb-4 w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="mb-4 w-12 h-12 rounded-xl bg-white/50 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Icon className="w-6 h-6 text-soul-violet dark:text-violet-300" />
             </div>
-            <h3 className="text-xl font-serif font-medium text-slate-200 mb-3 group-hover:text-soul-violet transition-colors">
+            <h3 className="text-xl font-serif font-medium text-slate-800 dark:text-slate-200 mb-3 group-hover:text-soul-violet transition-colors">
                 {title}
             </h3>
-            <p className="text-slate-400 leading-relaxed text-sm">
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
                 {description}
             </p>
         </motion.div>
