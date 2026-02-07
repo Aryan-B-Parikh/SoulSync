@@ -109,23 +109,6 @@ function ChatPage() {
   return (
     <div className="flex h-screen w-full overflow-hidden font-sans p-3 gap-3">
 
-      {/* Mobile Sidebar Toggle - Visible only on mobile */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-6 left-6 z-50 p-2.5 bg-surface-dark/80 backdrop-blur-xl rounded-full text-text-primary-dark border border-white/10 shadow-lg"
-      >
-        {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
-      </button>
-
-      {/* Mobile New Chat FAB - Thumb Zone Friendly */}
-      <button
-        onClick={() => createChat()}
-        className="md:hidden fixed bottom-24 right-6 z-30 p-4 bg-gradient-to-r from-soul-violet to-soul-gold rounded-full text-white shadow-lg shadow-soul-violet/30 hover:scale-105 active:scale-95 transition-all duration-300"
-        aria-label="New Chat"
-      >
-        <Plus size={24} />
-      </button>
-
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
@@ -205,17 +188,43 @@ function ChatPage() {
       {/* Main Chat Area (Levitating Glass Container) */}
       <div className="flex-1 flex flex-col relative bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-300">
 
+        {/* Unified Application Header - Always Visible */}
+        <div className="h-14 min-h-[3.5rem] flex items-center justify-between px-4 border-b border-white/5 relative z-10 shrink-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden p-2 -ml-2 text-slate-500 hover:text-soul-violet transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
+            aria-label="Open Menu"
+          >
+            <Menu size={20} />
+          </button>
+
+          {/* App Title */}
+          <h1 className="font-serif text-lg tracking-widest text-text-muted-light dark:text-slate-400 opacity-80 select-none">
+            SoulSync
+          </h1>
+
+          {/* Mobile New Chat Action */}
+          <button
+            onClick={() => createChat()}
+            className="md:hidden p-2 -mr-2 text-soul-violet hover:text-soul-gold transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
+            aria-label="New Chat"
+          >
+            <Plus size={20} />
+          </button>
+
+          {/* Desktop Spacer to balance center text */}
+          <div className="hidden md:block w-6" />
+        </div>
+
         {view === 'mood' ? (
           // Mood Dashboard View
-          <MoodDashboard />
+          <div className="flex-1 overflow-hidden relative">
+            <MoodDashboard />
+          </div>
         ) : (
           // Chat View
           <>
-            {/* Header */}
-            <div className="h-14 flex items-center justify-center border-b border-white/5 relative z-10">
-              <h1 className="font-serif text-lg tracking-widest text-text-muted-light dark:text-slate-400 opacity-80">SoulSync</h1>
-            </div>
-
             {/* Messages Stream */}
             <div className="flex-1 overflow-y-auto px-4 py-8 md:px-12 scroll-smooth">
               {loading && !activeChat ? (
