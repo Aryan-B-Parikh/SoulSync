@@ -21,10 +21,10 @@
     "node-fetch": "^2.7.0",
     "node-nlp": "^5.0.0-alpha.5",
     "openai": "^6.17.0",
-    "sentiment": "^5.0.2"
+    "sentiment": "^5.0.2",
+    "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
     "cross-env": "^7.0.3",
@@ -33,12 +33,13 @@
     "tailwindcss": "^3.3.0"
   },
   "scripts": {
+    "postinstall": "npx prisma generate --schema=backend/prisma/schema.prisma",
     "start": "cross-env NODE_ENV=production node backend/index.js",
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
     "frontend:dev": "cd frontend && npm run dev",
     "backend:dev": "cross-env NODE_ENV=development node backend/index.js",
     "backend:start": "node backend/index.js",
-    "build": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
     "export-data": "node scripts/export-training-data.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:frontend": "cd frontend && npm test",
@@ -50,8 +51,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "verify": "npm run lint && npm run test",
     "setup": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
-    "deploy": "bash scripts/deploy.sh",
-    "vercel-build": "cd client && npm install && npm run build"
+    "deploy": "bash scripts/deploy.sh"
   },
   "eslintConfig": {
     "extends": [

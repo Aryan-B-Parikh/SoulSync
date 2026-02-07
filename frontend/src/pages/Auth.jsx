@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_CONFIG } from '../config/constants';
 import { Eye, EyeOff, Loader2, Sparkles, User, Lock, Mail } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -22,7 +23,7 @@ export default function AuthCard({ onComplete }) {
         setLoading(true);
 
         const endpoint = isLogin ? '/auth/login' : '/auth/register';
-        const url = `http://localhost:5001/api${endpoint}`;
+        const url = `${API_CONFIG.BASE_URL}${endpoint}`;
 
         try {
             const body = isLogin

@@ -10,7 +10,7 @@ export const AI_CONFIG = {
 };
 
 export const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api',
+  BASE_URL: process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? 'https://soul-sync-taupe.vercel.app/api' : 'http://localhost:5001/api'),
   ENDPOINTS: {
     CHAT: '/chat',
     CHAT_FALLBACK: '/chat-fallback',

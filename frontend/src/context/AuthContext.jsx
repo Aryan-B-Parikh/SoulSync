@@ -4,6 +4,7 @@
  */
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { API_CONFIG } from '../config/constants';
 
 const AuthContext = createContext(null);
 
@@ -16,12 +17,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-    
+
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
     }
-    
+
     setLoading(false);
   }, []);
 
@@ -41,7 +42,7 @@ export function AuthProvider({ children }) {
 
   const updateUser = async (updates) => {
     try {
-      const response = await fetch('http://localhost:5001/api/auth/profile', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/auth/profile`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -57,10 +58,10 @@ export function AuthProvider({ children }) {
 
       const data = await response.json();
       const updatedUser = data.user;
-      
+
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
-      
+
       return updatedUser;
     } catch (error) {
       console.error('Update profile error:', error);

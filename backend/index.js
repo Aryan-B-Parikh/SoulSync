@@ -81,22 +81,24 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // Start server
-const server = app.listen(config.port, () => {
-  console.log('\n╔════════════════════════════════════════╗');
-  console.log('║   🚀 SoulSync AI Server Started       ║');
-  console.log('╚════════════════════════════════════════╝');
-  console.log(`\n  Environment: ${config.nodeEnv}`);
-  console.log(`  Port: ${config.port}`);
-  console.log(`  URL: http://localhost:${config.port}`);
-  console.log(`  API: http://localhost:${config.port}/api`);
-  console.log('\n  Endpoints:');
-  console.log(`    POST /api/auth/register`);
-  console.log(`    POST /api/auth/login`);
-  console.log(`    GET  /api/chats`);
-  console.log(`    POST /api/chats/:id/messages`);
-  console.log(`    GET  /api/health`);
-  console.log('\n═══════════════════════════════════════════\n');
-});
+if (require.main === module) {
+  const server = app.listen(config.port, () => {
+    console.log('\n╔════════════════════════════════════════╗');
+    console.log('║   🚀 SoulSync AI Server Started       ║');
+    console.log('╚════════════════════════════════════════╝');
+    console.log(`\n  Environment: ${config.nodeEnv}`);
+    console.log(`  Port: ${config.port}`);
+    console.log(`  URL: http://localhost:${config.port}`);
+    console.log(`  API: http://localhost:${config.port}/api`);
+    console.log('\n  Endpoints:');
+    console.log(`    POST /api/auth/register`);
+    console.log(`    POST /api/auth/login`);
+    console.log(`    GET  /api/chats`);
+    console.log(`    POST /api/chats/:id/messages`);
+    console.log(`    GET  /api/health`);
+    console.log('\n═══════════════════════════════════════════\n');
+  });
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
