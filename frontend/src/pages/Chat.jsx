@@ -15,7 +15,7 @@ import MoodDashboard from '../components/mood/MoodDashboard';
 import UserProfile from '../components/profile/UserProfile';
 import PersonalitySelector from '../components/profile/PersonalitySelector';
 import ThemeToggle from '../components/ThemeToggle';
-import { Menu, X, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
+import { Menu, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
