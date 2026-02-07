@@ -133,11 +133,19 @@ function ChatPage() {
         onMouseLeave={() => setSidebarHovered(false)}
       >
         {/* User Profile / Status */}
-        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'} mt-12 md:mt-0`}>
+        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'}`}>
           {isSidebarExpanded ? (
             <>
               <UserProfile />
-              <ThemeToggle />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="md:hidden p-2 text-slate-500 hover:text-rose-500 transition-colors bg-white/5 rounded-full"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </>
           ) : (
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-soul-violet to-soul-gold flex items-center justify-center text-white font-semibold text-sm">
@@ -145,14 +153,6 @@ function ChatPage() {
             </div>
           )}
         </div>
-
-        {/* Mobile Close Button - Inside Sidebar */}
-        <button
-          onClick={() => setSidebarOpen(false)}
-          className="md:hidden absolute top-4 right-4 p-2 text-slate-500 hover:text-rose-500 transition-colors bg-white/5 rounded-full"
-        >
-          <X size={20} />
-        </button>
 
         {/* Chat List */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
