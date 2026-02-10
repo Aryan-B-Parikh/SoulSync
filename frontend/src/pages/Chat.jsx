@@ -209,8 +209,8 @@ function ChatPage() {
 
           {/* App Title */}
           <div className="flex items-center gap-1 select-none">
-            <div className="w-10 h-10 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              <img src="/soulsync.png" alt="SoulSync Logo" className="w-full h-full object-contain scale-150" />
+            <div className="w-12 h-12 flex-shrink-0 overflow-hidden flex items-center justify-center">
+              <img src="/soulsync.png" alt="SoulSync Logo" className="w-full h-full object-contain scale-[2.5]" />
             </div>
             <h1 className="font-serif text-3xl font-bold tracking-widest text-text-primary-light dark:text-slate-200">
               SoulSync
