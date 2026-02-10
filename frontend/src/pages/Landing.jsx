@@ -45,7 +45,7 @@ export default function LandingPage({ onStart }) {
             <div className="absolute top-8 left-0 right-0 flex justify-between items-center px-8 z-20 max-w-7xl mx-auto w-full">
                 <div className="flex items-center gap-3 glass-subtle px-6 py-2 rounded-full">
                     <img src="/soulsync.png" alt="SoulSync Logo" className="w-12 h-12 object-contain drop-shadow-lg" />
-                    <span className="font-serif text-4xl font-bold tracking-widest text-text-primary-light dark:text-slate-100 drop-shadow-sm">SoulSync</span>
+                    <span className="font-serif text-4xl font-bold tracking-widest text-slate-900 dark:text-white drop-shadow-md">SoulSync</span>
                 </div>
                 <ThemeToggle />
             </div>

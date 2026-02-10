@@ -210,7 +210,7 @@ function ChatPage() {
           {/* App Title */}
           <div className="flex items-center gap-2 select-none">
             <img src="/soulsync.png" alt="SoulSync Logo" className="w-10 h-10 object-contain" />
-            <h1 className="font-serif text-3xl font-bold tracking-widest text-text-primary-light dark:text-slate-200">
+            <h1 className="font-serif text-3xl font-bold tracking-widest text-slate-800 dark:text-white">
               SoulSync
             </h1>
           </div>
