@@ -12,9 +12,12 @@ const Hero = () => {
 
   return (
     <section className="text-center py-10 animate-fade-in">
-      <h1 className="text-6xl font-extrabold text-teal-400 mb-2 tracking-widest animate-drop-in">
-        SoulSync
-      </h1>
+      <div className="flex items-center justify-center gap-4 mb-2 animate-drop-in">
+        <img src="/soulsync.png" alt="SoulSync Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_0_20px_rgba(20,184,166,0.4)]" />
+        <h1 className="text-7xl md:text-8xl font-extrabold text-teal-400 tracking-widest">
+          SoulSync
+        </h1>
+      </div>
       <p className="italic text-xl text-gray-400">
         Your high-class AI companion 🕊️💬
       </p>
