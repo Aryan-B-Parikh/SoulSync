@@ -58,12 +58,12 @@ export default function LandingPage({ onStart }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-slate-600 dark:from-slate-100 dark:to-slate-300 drop-shadow-sm leading-tight pb-4">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-slate-800 dark:text-slate-100 drop-shadow-sm leading-tight pb-4">
                             Speak to the Soul,<br />
-                            <span className="italic text-indigo-600 dark:text-slate-300 bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Not the System.</span>
+                            <span className="italic text-violet-700 dark:text-violet-300">Not the System.</span>
                         </h1>
-                        <p className="text-xl text-slate-600 dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
-                            An AI companion that <span className="font-medium text-soul-violet">remembers your past</span>, <span className="font-medium text-soul-violet">visualizes your mood</span>, and <span className="font-medium text-soul-violet">adapts to your personality</span>. Built for deep, long-term connection.
+                        <p className="text-xl text-slate-700 dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
+                            An AI companion that <span className="font-semibold text-violet-700 dark:text-violet-400">remembers your past</span>, <span className="font-semibold text-violet-700 dark:text-violet-400">visualizes your mood</span>, and <span className="font-semibold text-violet-700 dark:text-violet-400">adapts to your personality</span>. Built for deep, long-term connection.
                         </p>
                     </motion.div>
                 </div>
@@ -73,7 +73,7 @@ export default function LandingPage({ onStart }) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="mb-12 glass-panel p-2 rounded-full flex items-center gap-2 relative bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md shadow-sm"
+                    className="mb-12 p-2 rounded-full flex items-center gap-2 relative bg-white/70 dark:bg-white/5 border border-white/30 dark:border-white/10 backdrop-blur-md shadow-md"
                 >
                     {Object.entries(vibes).map(([key, data]) => {
                         const Icon = data.icon;
@@ -160,7 +160,7 @@ export default function LandingPage({ onStart }) {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    className="mt-20 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2"
+                    className="mt-20 text-sm text-slate-700 dark:text-slate-400 font-medium flex items-center gap-2"
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></span>
                     Your memories are safe. Encrypted, private, and yours alone.
