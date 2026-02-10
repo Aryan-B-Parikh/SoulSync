@@ -43,9 +43,9 @@ export default function LandingPage({ onStart }) {
 
             {/* Header */}
             <div className="absolute top-8 left-0 right-0 flex justify-between items-center px-8 z-20 max-w-7xl mx-auto w-full">
-                <div className="flex items-center gap-3 glass-subtle px-6 py-2 rounded-full">
+                <div className="flex items-center gap-3 bg-white/60 dark:bg-slate-800/80 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/30 dark:border-white/10">
                     <img src="/soulsync.png" alt="SoulSync Logo" className="w-12 h-12 object-contain drop-shadow-lg" />
-                    <span className="font-serif text-4xl font-bold tracking-widest text-slate-900 dark:text-white drop-shadow-md">SoulSync</span>
+                    <span className="font-serif text-4xl font-bold tracking-widest drop-shadow-md" style={{ color: '#0f172a' }}>SoulSync</span>
                 </div>
                 <ThemeToggle />
             </div>
