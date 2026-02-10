@@ -43,9 +43,11 @@ export default function LandingPage({ onStart }) {
 
             {/* Header */}
             <div className="absolute top-8 left-0 right-0 flex justify-between items-center px-8 z-20 max-w-7xl mx-auto w-full">
-                <div className="flex items-center gap-3 glass-subtle px-6 py-2 rounded-full">
-                    <img src="/soulsync.png" alt="SoulSync Logo" className="w-10 h-10 object-contain drop-shadow-lg" />
-                    <span className="font-serif text-3xl font-bold tracking-widest text-text-primary-light dark:text-slate-100 drop-shadow-sm">SoulSync</span>
+                <div className="flex items-center gap-1 glass-subtle px-5 py-2 rounded-full">
+                    <div className="w-14 h-14 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src="/soulsync.png" alt="SoulSync Logo" className="w-full h-full object-contain scale-150 drop-shadow-lg" />
+                    </div>
+                    <span className="font-serif text-4xl font-bold tracking-widest text-text-primary-light dark:text-slate-100 drop-shadow-sm">SoulSync</span>
                 </div>
                 <ThemeToggle />
             </div>
