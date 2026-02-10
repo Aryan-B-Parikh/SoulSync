@@ -12,10 +12,8 @@ const Hero = () => {
 
   return (
     <section className="text-center py-10 animate-fade-in">
-      <div className="flex items-center justify-center gap-2 mb-2 animate-drop-in">
-        <div className="w-28 h-28 md:w-36 md:h-36 flex-shrink-0 overflow-hidden flex items-center justify-center">
-          <img src="/soulsync.png" alt="SoulSync Logo" className="w-full h-full object-contain scale-[2.5] drop-shadow-[0_0_25px_rgba(20,184,166,0.5)]" />
-        </div>
+      <div className="flex items-center justify-center gap-4 mb-2 animate-drop-in">
+        <img src="/soulsync.png" alt="SoulSync Logo" className="w-20 h-20 md:w-28 md:h-28 object-contain drop-shadow-[0_0_25px_rgba(20,184,166,0.5)]" />
         <h1 className="text-7xl md:text-9xl font-extrabold text-teal-400 tracking-widest">
           SoulSync
         </h1>
