@@ -45,9 +45,10 @@ function Register({ onSwitchToLogin }) {
     <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-[radial-gradient(circle_at_20%_20%,rgba(34,197,94,0.12),transparent_25%),radial-gradient(circle_at_80%_0%,rgba(20,184,166,0.12),transparent_30%),#0b0c0f]">
       <div className="max-w-md w-full">
         <div className="text-center mb-6 animate-fade-in">
-          <p className="text-sm text-emerald-200/80">Create your space</p>
-          <h2 className="text-3xl font-semibold text-slate-50 mt-1">Join SoulSync</h2>
-          <p className="text-sm text-slate-400 mt-2">A calm companion ready to listen.</p>
+          <img src="/soulsync.png" alt="SoulSync Logo" className="w-24 h-24 mx-auto mb-3 object-contain drop-shadow-[0_0_20px_rgba(16,185,129,0.4)]" />
+          <h2 className="text-5xl font-bold text-slate-50 font-serif tracking-wider">SoulSync</h2>
+          <p className="text-sm text-emerald-200/80 mt-2">Create your space</p>
+          <p className="text-sm text-slate-400 mt-1">A calm companion ready to listen.</p>
         </div>
 
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-emerald-500/10 animate-drop-in">

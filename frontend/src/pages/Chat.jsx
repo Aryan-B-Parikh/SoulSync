@@ -133,7 +133,7 @@ function ChatPage() {
         onMouseLeave={() => setSidebarHovered(false)}
       >
         {/* User Profile / Status */}
-        <div className={`p-3 border-b border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'}`}>
+        <div className={`p-3 border-b border-black/5 dark:border-white/5 flex items-center ${isSidebarExpanded ? 'justify-between' : 'justify-center'}`}>
           {isSidebarExpanded ? (
             <>
               <UserProfile />
@@ -163,7 +163,7 @@ function ChatPage() {
           ) : (
             <div className="flex flex-col items-center py-4 gap-3">
               {/* Icon-only mode - show recent chat indicators */}
-              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-text-muted-dark hover:bg-white/10 cursor-pointer transition-colors">
+              <div className="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center text-text-muted-light dark:text-text-muted-dark hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer transition-colors">
                 <MessageSquare size={16} />
               </div>
             </div>
@@ -171,7 +171,7 @@ function ChatPage() {
         </div>
 
         {/* Mood Journal Button */}
-        <div className={`p-3 border-t border-white/5 ${!isSidebarExpanded ? 'flex justify-center' : ''}`}>
+        <div className={`p-3 border-t border-black/5 dark:border-white/5 ${!isSidebarExpanded ? 'flex justify-center' : ''}`}>
           <button
             onClick={() => {
               setView(view === 'chat' ? 'mood' : 'chat');
@@ -197,7 +197,7 @@ function ChatPage() {
       <div className="flex-1 flex flex-col relative bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20 overflow-hidden transition-colors duration-300">
 
         {/* Unified Application Header - Always Visible */}
-        <div className="h-14 min-h-[3.5rem] flex items-center justify-between px-4 border-b border-white/5 relative z-10 shrink-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="h-14 min-h-[3.5rem] flex items-center justify-between px-4 border-b border-black/5 dark:border-white/5 relative z-10 shrink-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setSidebarOpen(true)}
@@ -208,9 +208,12 @@ function ChatPage() {
           </button>
 
           {/* App Title */}
-          <h1 className="font-serif text-lg tracking-widest text-text-muted-light dark:text-slate-400 opacity-80 select-none">
-            SoulSync
-          </h1>
+          <div className="flex items-center gap-2 select-none">
+            <img src="/soulsync.png" alt="SoulSync Logo" className="w-10 h-10 object-contain" />
+            <h1 className="font-serif text-3xl font-bold tracking-widest text-slate-800 dark:text-white">
+              SoulSync
+            </h1>
+          </div>
 
           {/* Mobile New Chat Action */}
           <button

@@ -43,9 +43,9 @@ export default function LandingPage({ onStart }) {
 
             {/* Header */}
             <div className="absolute top-8 left-0 right-0 flex justify-between items-center px-8 z-20 max-w-7xl mx-auto w-full">
-                <div className="flex items-center gap-2 glass-subtle px-6 py-2 rounded-full">
-                    <span className="text-2xl">✨</span>
-                    <span className="font-serif text-xl tracking-widest text-text-primary-light dark:text-slate-200">SoulSync</span>
+                <div className="flex items-center gap-3">
+                    <img src="/soulsync.png" alt="SoulSync Logo" className="w-12 h-12 object-contain drop-shadow-lg" />
+                    <span className="font-serif text-4xl font-bold tracking-widest drop-shadow-md text-slate-900 dark:text-white">SoulSync</span>
                 </div>
                 <ThemeToggle />
             </div>
@@ -58,12 +58,12 @@ export default function LandingPage({ onStart }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-slate-600 dark:from-slate-100 dark:to-slate-300 drop-shadow-sm leading-tight pb-4">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-slate-800 dark:text-slate-100 drop-shadow-sm leading-tight pb-4">
                             Speak to the Soul,<br />
-                            <span className="italic text-indigo-600 dark:text-slate-300 bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Not the System.</span>
+                            <span className="italic text-violet-700 dark:text-violet-300">Not the System.</span>
                         </h1>
-                        <p className="text-xl text-slate-600 dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
-                            An AI companion that <span className="font-medium text-soul-violet">remembers your past</span>, <span className="font-medium text-soul-violet">visualizes your mood</span>, and <span className="font-medium text-soul-violet">adapts to your personality</span>. Built for deep, long-term connection.
+                        <p className="text-xl text-slate-700 dark:text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
+                            An AI companion that <span className="font-semibold text-violet-700 dark:text-violet-400">remembers your past</span>, <span className="font-semibold text-violet-700 dark:text-violet-400">visualizes your mood</span>, and <span className="font-semibold text-violet-700 dark:text-violet-400">adapts to your personality</span>. Built for deep, long-term connection.
                         </p>
                     </motion.div>
                 </div>
@@ -73,7 +73,7 @@ export default function LandingPage({ onStart }) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="mb-12 glass-panel p-2 rounded-full flex items-center gap-2 relative bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md shadow-sm"
+                    className="mb-12 p-2 rounded-full flex items-center gap-2 relative bg-white/15 dark:bg-white/5 border border-white/30 dark:border-white/10 backdrop-blur-md shadow-md"
                 >
                     {Object.entries(vibes).map(([key, data]) => {
                         const Icon = data.icon;
@@ -83,8 +83,8 @@ export default function LandingPage({ onStart }) {
                                 key={key}
                                 onClick={() => setVibe(key)}
                                 className={`relative px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300 ${isActive
-                                    ? 'bg-white/80 dark:bg-white/10 text-slate-800 dark:text-white shadow-lg'
-                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                                    ? 'bg-white/25 dark:bg-white/10 text-slate-800 dark:text-white shadow-lg'
+                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/10 dark:hover:bg-white/5'
                                     }`}
                             >
                                 <Icon className={`w-4 h-4 ${isActive ? data.accent : ''}`} />
@@ -123,7 +123,7 @@ export default function LandingPage({ onStart }) {
                 >
                     <button
                         onClick={onStart}
-                        className="group relative px-10 py-5 bg-white/80 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-white/40 dark:border-white/10 rounded-full transition-all duration-300 shadow-xl backdrop-blur-md overflow-hidden"
+                        className="group relative px-10 py-5 bg-white/15 dark:bg-white/5 hover:bg-white/25 dark:hover:bg-white/10 border border-white/40 dark:border-white/10 rounded-full transition-all duration-300 shadow-xl backdrop-blur-md overflow-hidden"
                     >
                         <div className="flex items-center gap-3 text-xl font-medium tracking-wide text-slate-800 dark:text-slate-100">
                             <span>Begin Journey</span>
@@ -160,7 +160,7 @@ export default function LandingPage({ onStart }) {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    className="mt-20 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2"
+                    className="mt-20 text-sm text-slate-700 dark:text-slate-400 font-medium flex items-center gap-2"
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></span>
                     Your memories are safe. Encrypted, private, and yours alone.
@@ -182,9 +182,9 @@ function FeatureCard({ icon: Icon, title, description, delay }) {
             viewport={{ once: true }}
             transition={{ delay, duration: 0.6 }}
             whileHover={{ y: -5 }}
-            className="glass-card p-8 rounded-2xl border border-white/20 dark:border-white/5 bg-white/40 dark:bg-white/5 backdrop-blur-sm hover:bg-white/60 dark:hover:bg-white/10 transition-colors group text-left shadow-sm hover:shadow-md"
+            className="glass-card p-8 rounded-2xl border border-white/20 dark:border-white/5 bg-white/15 dark:bg-white/5 backdrop-blur-sm hover:bg-white/25 dark:hover:bg-white/10 transition-colors group text-left shadow-sm hover:shadow-md"
         >
-            <div className="mb-4 w-12 h-12 rounded-xl bg-white/50 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="mb-4 w-12 h-12 rounded-xl bg-white/20 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Icon className="w-6 h-6 text-soul-violet dark:text-violet-300" />
             </div>
             <h3 className="text-xl font-serif font-medium text-slate-800 dark:text-slate-200 mb-3 group-hover:text-soul-violet transition-colors">
