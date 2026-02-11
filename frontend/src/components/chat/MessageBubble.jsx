@@ -46,7 +46,7 @@ const MessageBubble = ({ role, content, isError, isStreaming, messageId, feedbac
         {/* Message Content */}
         <div
           className={`relative text-sm whitespace-pre-wrap transition-all duration-300 ${isUser
-            ? 'bg-surface-light dark:bg-surface-dark backdrop-blur-md px-6 py-3 rounded-2xl rounded-tr-sm text-text-primary-light dark:text-text-primary-dark shadow-sm border border-white/10 font-sans'
+            ? 'bg-surface-light dark:bg-surface-dark backdrop-blur-md px-6 py-3 rounded-2xl rounded-tr-sm text-text-primary-light dark:text-text-primary-dark shadow-sm border border-black/5 dark:border-white/10 font-sans'
             : isError
               ? 'text-rose-500 bg-rose-500/10 px-4 py-2 rounded-lg border border-rose-500/20'
               : 'text-text-primary-light dark:text-text-primary-dark font-serif text-lg leading-relaxed px-1'

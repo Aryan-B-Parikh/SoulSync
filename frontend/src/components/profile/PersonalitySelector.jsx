@@ -83,12 +83,12 @@ export default function PersonalitySelector({ onClose }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-[#1a1a1c] border border-gray-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl">
+            <div className="bg-white dark:bg-[#1a1a1c] border border-slate-200 dark:border-gray-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-semibold text-white">Choose Your AI Companion's Personality</h2>
+                    <h2 className="text-2xl font-semibold text-slate-800 dark:text-white">Choose Your AI Companion's Personality</h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        className="text-slate-400 hover:text-slate-800 dark:text-gray-400 dark:hover:text-white transition-colors"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -106,7 +106,7 @@ export default function PersonalitySelector({ onClose }) {
                 relative p-6 rounded-xl border-2 transition-all text-left
                 ${currentPersonality === personality.id
                                     ? 'border-purple-500 bg-purple-500/10'
-                                    : 'border-gray-700 hover:border-gray-600 bg-gray-800/30'
+                                    : 'border-slate-200 hover:border-slate-300 bg-slate-50 dark:border-gray-700 dark:hover:border-gray-600 dark:bg-gray-800/30'
                                 }
                 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02]'}
               `}
@@ -116,10 +116,10 @@ export default function PersonalitySelector({ onClose }) {
                                     {personality.icon}
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-semibold text-white mb-1">
+                                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-1">
                                         {personality.name}
                                     </h3>
-                                    <p className="text-gray-400 text-sm mb-3">
+                                    <p className="text-slate-500 dark:text-gray-400 text-sm mb-3">
                                         {personality.description}
                                     </p>
                                     {currentPersonality === personality.id && (
@@ -140,7 +140,7 @@ export default function PersonalitySelector({ onClose }) {
                     ))}
                 </div>
 
-                <p className="text-gray-500 text-sm mt-6 text-center">
+                <p className="text-slate-500 dark:text-gray-500 text-sm mt-6 text-center">
                     Your personality choice affects how SoulSync responds to you. You can change this anytime.
                 </p>
             </div>

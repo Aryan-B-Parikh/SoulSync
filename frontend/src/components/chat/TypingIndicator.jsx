@@ -5,8 +5,8 @@ const TypingIndicator = () => {
   return (
     <div className="flex items-start gap-4 animate-fade-in pl-1">
       {/* Avatar */}
-      <div className="w-8 h-8 rounded-full bg-violet-900/50 flex items-center justify-center border border-white/10 shrink-0 mt-1">
-        <Sparkles className="w-4 h-4 text-violet-400 animate-pulse" />
+      <div className="w-8 h-8 rounded-full bg-violet-200 dark:bg-violet-900/50 flex items-center justify-center border border-violet-300 dark:border-white/10 shrink-0 mt-1">
+        <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400 animate-pulse" />
       </div>
 
       <div className="flex items-center h-8 gap-1.5 px-2">
