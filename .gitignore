@@ -21,6 +21,7 @@ lerna-debug.log*
 /dist
 *.local
 client/build/
+frontend/build/
 
 # Testing
 coverage/
