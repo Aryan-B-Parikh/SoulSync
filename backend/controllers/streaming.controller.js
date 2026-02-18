@@ -117,11 +117,19 @@ async function streamMessage(req, res, next) {
             }
 
             // Save complete assistant message to database
+            // Include retrieved RAG memories in metadata for training data collection
             assistantMessage = await prisma.message.create({
                 data: {
                     chatId,
                     role: 'assistant',
                     content: fullResponse,
+                    metadata: memories.length > 0 ? {
+                        retrievedMemories: memories.map(m => ({
+                            content: m.content,
+                            score: m.score,
+                            timestamp: m.timestamp,
+                        }))
+                    } : undefined,
                 }
             });
 

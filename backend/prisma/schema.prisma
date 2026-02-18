@@ -59,6 +59,10 @@ model Message {
   // Feedback
   feedback       String? // up, down
   feedbackAt     DateTime?
+  rating         Int?     // 1 = good, -1 = bad (numeric for ML training pipelines)
+
+  // RAG Context Logging (for training data)
+  metadata       Json?    // Stores retrieved memory chunks used to generate this response
   
   // Sentiment Analysis Flattened
   sentimentScore       Float     @default(0)
