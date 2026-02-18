@@ -22,7 +22,7 @@
 const fetch = require('node-fetch');
 require('dotenv').config();
 
-const BASE_URL = process.env.TEST_API_URL || 'http://localhost:3001';
+const BASE_URL = process.env.TEST_API_URL || 'http://localhost:5001';
 const TEST_EMAIL = `rag-stress-test-${Date.now()}@soulsync-test.local`;
 const TEST_PASSWORD = 'TestPassword123!';
 

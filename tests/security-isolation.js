@@ -21,7 +21,7 @@
 const fetch = require('node-fetch');
 require('dotenv').config();
 
-const BASE_URL = process.env.TEST_API_URL || 'http://localhost:3001';
+const BASE_URL = process.env.TEST_API_URL || 'http://localhost:5001';
 const TS = Date.now();
 const USER_A_EMAIL = `security-test-a-${TS}@soulsync-test.local`;
 const USER_B_EMAIL = `security-test-b-${TS}@soulsync-test.local`;
