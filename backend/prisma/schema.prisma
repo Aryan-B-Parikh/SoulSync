@@ -63,12 +63,17 @@ model Message {
 
   // RAG Context Logging (for training data)
   metadata       Json?    // Stores retrieved memory chunks used to generate this response
-  
-  // Sentiment Analysis Flattened
+  context_used   Json?    // Pinecone memory IDs used to generate this response (lightweight audit log)
+
+  // Sentiment Analysis Flattened (Lexicon-based)
   sentimentScore       Float     @default(0)
   sentimentComparative Float     @default(0)
   sentimentMood        String    @default("neutral") // very_positive, positive, neutral, negative, very_negative
   sentimentConfidence  Float     @default(0)
+
+  // Hybrid Sentiment (LLM second opinion)
+  sentimentLLM       String?  // LLM mood classification (second opinion)
+  sentimentDeviation Float?   // Abs deviation between lexicon and LLM scores (>0.2 = flagged)
 
   createdAt      DateTime  @default(now())
 
