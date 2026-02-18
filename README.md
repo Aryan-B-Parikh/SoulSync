@@ -286,9 +286,30 @@ MessageBubble displays with animations
 cd backend
 node tests/unit/sentiment.test.js
 
-# Integration tests
-npm test
+# Data pipeline audit (check training data health)
+npm run audit-data
+
+# Security isolation test (cross-tenant memory leak check)
+npm run test:security
+
+# RAG stress test (memory poisoning resistance)
+npm run test:rag
+
+# Load test (Vercel timeout simulation)
+npm run load-test
 ```
+
+> ⚠️ Live tests (`test:security`, `test:rag`, `load-test`) require the backend running: `npm run backend:dev`
+
+### Data Flywheel — Smoke Test
+After chatting and rating messages, run:
+```bash
+node scripts/audit-training-data.js
+```
+**Success criteria:**
+- `Total messages` > 0
+- `Missing context_used` = 0
+- `Upvoted (rating=1)` > 0
 
 ### Manual Testing Checklist
 - [x] Send message, verify streaming works
@@ -297,6 +318,7 @@ npm test
 - [x] Verify mood dashboard updates with new messages
 - [x] Test dark/light mode toggle
 - [x] Test chat rename and delete
+- [x] Click 👍 on a message → verify `rating=1` in DB via audit script
 
 ---
 
@@ -306,15 +328,27 @@ npm test
 ✅ **Production RAG System** - Real vector database with Pinecone  
 ✅ **Streaming Architecture** - SSE with async generators  
 ✅ **PostgreSQL + Prisma** - Modern ORM with type safety  
-✅ **Sentiment Analysis** - 93.3% accuracy mood detection  
+✅ **Sentiment Analysis** - 93.3% accuracy + LLM hybrid second opinion  
 ✅ **Premium UI** - Living organism design with aurora effects  
 ✅ **Dark Mode** - Full theme system with smooth transitions  
 ✅ **Full-Stack Implementation** - Backend + Frontend + Database  
-✅ **Privacy-First Design** - User isolation, secure memory management  
+✅ **Privacy-First Design** - User isolation, PII scrubbing, secure memory management  
+✅ **Data Flywheel** - Self-improving architecture: logs → filter → fine-tune  
 
 ---
 
-## 🤝 Contributing
+## 🔒 Data & Privacy
+
+**Privacy-First Design** — SoulSync is built with user privacy as a core principle.
+
+- **User Isolation:** All memories and conversations are strictly scoped to your account. No user can access another user's data.
+- **No Third-Party Tracking:** SoulSync does not use analytics trackers or sell user data.
+- **Data Deletion:** Users can delete all their memories and conversations at any time via the app.
+- **AI Model Improvement:** Anonymized conversation data may be used to improve the quality of SoulSync's AI models. Before any processing, all personal identifiers (email addresses, phone numbers, URLs) are automatically scrubbed and replaced with placeholder tokens. Raw conversation data is never shared with third parties for this purpose.
+- **Feedback is Optional:** Thumbs up/down ratings are entirely optional and only used to identify high-quality training examples.
+
+---
+
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 

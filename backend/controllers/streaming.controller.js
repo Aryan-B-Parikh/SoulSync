@@ -184,28 +184,6 @@ async function streamMessage(req, res, next) {
                 }
             });
 
-            // Hybrid sentiment: get LLM second opinion on user message (non-blocking)
-            try {
-                const llmMood = await getLLMSentiment(content, process.env.GROQ_API_KEY);
-                if (llmMood) {
-                    const lexiconScore = MOOD_SCORES[sentimentData.mood] ?? 0;
-                    const llmScore = MOOD_SCORES[llmMood] ?? 0;
-                    const deviation = Math.abs(lexiconScore - llmScore);
-                    await prisma.message.update({
-                        where: { id: userMessage.id },
-                        data: {
-                            sentimentLLM: llmMood,
-                            sentimentDeviation: deviation,
-                        }
-                    });
-                    if (deviation > 0.2) {
-                        console.warn(`⚠️  Sentiment deviation ${deviation.toFixed(2)} on msg ${userMessage.id} — flagged for review`);
-                    }
-                }
-            } catch (sentimentErr) {
-                console.warn('LLM sentiment scoring failed (non-critical):', sentimentErr.message);
-            }
-
             // Auto-title chat logic
             if (chat.title === 'New Conversation') {
                 await prisma.chat.update({
@@ -244,7 +222,28 @@ async function streamMessage(req, res, next) {
             })}\n\n`);
         }
 
+        // ✅ Close the SSE connection FIRST — user sees completion immediately
         res.end();
+
+        // 🔥 Fire-and-forget: LLM hybrid sentiment runs AFTER response is sent
+        // This prevents the ~400-800ms Groq call from blocking the done event
+        if (userMessage?.id && sentimentData) {
+            getLLMSentiment(content, process.env.GROQ_API_KEY)
+                .then(llmMood => {
+                    if (!llmMood) return;
+                    const lexiconScore = MOOD_SCORES[sentimentData.mood] ?? 0;
+                    const llmScore = MOOD_SCORES[llmMood] ?? 0;
+                    const deviation = Math.abs(lexiconScore - llmScore);
+                    if (deviation > 0.2) {
+                        console.warn(`⚠️  Sentiment deviation ${deviation.toFixed(2)} on msg ${userMessage.id} — flagged for review`);
+                    }
+                    return prisma.message.update({
+                        where: { id: userMessage.id },
+                        data: { sentimentLLM: llmMood, sentimentDeviation: deviation },
+                    });
+                })
+                .catch(err => console.warn('LLM sentiment (background) failed:', err.message));
+        }
 
     } catch (error) {
         console.error('Stream message error:', error);
