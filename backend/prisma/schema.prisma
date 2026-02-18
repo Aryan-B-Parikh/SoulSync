@@ -59,12 +59,21 @@ model Message {
   // Feedback
   feedback       String? // up, down
   feedbackAt     DateTime?
-  
-  // Sentiment Analysis Flattened
+  rating         Int?     // 1 = good, -1 = bad (numeric for ML training pipelines)
+
+  // RAG Context Logging (for training data)
+  metadata       Json?    // Stores retrieved memory chunks used to generate this response
+  context_used   Json?    // Pinecone memory IDs used to generate this response (lightweight audit log)
+
+  // Sentiment Analysis Flattened (Lexicon-based)
   sentimentScore       Float     @default(0)
   sentimentComparative Float     @default(0)
   sentimentMood        String    @default("neutral") // very_positive, positive, neutral, negative, very_negative
   sentimentConfidence  Float     @default(0)
+
+  // Hybrid Sentiment (LLM second opinion)
+  sentimentLLM       String?  // LLM mood classification (second opinion)
+  sentimentDeviation Float?   // Abs deviation between lexicon and LLM scores (>0.2 = flagged)
 
   createdAt      DateTime  @default(now())
 

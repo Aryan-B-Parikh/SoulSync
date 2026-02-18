@@ -39,12 +39,13 @@ async function submitFeedback(req, res, next) {
             return res.status(400).json({ error: 'Can only provide feedback on assistant messages' });
         }
 
-        // Update feedback
+        // Update feedback (string) and rating (numeric for ML pipelines)
         const updatedMessage = await prisma.message.update({
             where: { id },
             data: {
                 feedback,
                 feedbackAt: new Date(),
+                rating: feedback === 'up' ? 1 : -1,
             }
         });
 

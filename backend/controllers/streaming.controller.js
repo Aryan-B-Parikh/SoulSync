@@ -7,6 +7,52 @@ const prisma = require('../config/prisma');
 const { generateStreamingResponse } = require('../services/aiService');
 const { generateEmbedding, storeMemory, retrieveRelevantMemories } = require('../services/vectorService');
 const { analyzeSentiment } = require('../services/sentiment/sentimentService');
+const fetch = require('node-fetch');
+
+// Mood label → numeric score for deviation calculation
+const MOOD_SCORES = {
+    very_positive: 1.0,
+    positive: 0.5,
+    neutral: 0.0,
+    negative: -0.5,
+    very_negative: -1.0,
+};
+
+/**
+ * Get LLM sentiment classification as a second opinion.
+ * Returns mood string or null on failure.
+ */
+async function getLLMSentiment(userMessage, groqApiKey) {
+    if (!groqApiKey) return null;
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${groqApiKey}`,
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are a sentiment classifier. Classify the emotional state of the user message. Respond ONLY with valid JSON in this exact format: {"mood": "neutral"}. Mood must be one of: very_positive, positive, neutral, negative, very_negative.'
+                    },
+                    { role: 'user', content: userMessage }
+                ],
+                max_tokens: 20,
+                temperature: 0.1,
+            }),
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        const raw = data.choices?.[0]?.message?.content?.trim();
+        const parsed = JSON.parse(raw);
+        return parsed.mood || null;
+    } catch {
+        return null; // Never break chat flow for sentiment
+    }
+}
 
 /**
  * Stream AI response for a chat message
@@ -117,11 +163,24 @@ async function streamMessage(req, res, next) {
             }
 
             // Save complete assistant message to database
+            // Include retrieved RAG memories in metadata + context_used (IDs only) for training data
             assistantMessage = await prisma.message.create({
                 data: {
                     chatId,
                     role: 'assistant',
                     content: fullResponse,
+                    metadata: memories.length > 0 ? {
+                        retrievedMemories: memories.map(m => ({
+                            content: m.content,
+                            score: m.score,
+                            timestamp: m.timestamp,
+                        }))
+                    } : undefined,
+                    context_used: memories.length > 0 ? {
+                        memoryIds: memories.map(m => m.messageId),
+                        count: memories.length,
+                        retrievedAt: new Date().toISOString(),
+                    } : null,
                 }
             });
 
@@ -163,7 +222,28 @@ async function streamMessage(req, res, next) {
             })}\n\n`);
         }
 
+        // ✅ Close the SSE connection FIRST — user sees completion immediately
         res.end();
+
+        // 🔥 Fire-and-forget: LLM hybrid sentiment runs AFTER response is sent
+        // This prevents the ~400-800ms Groq call from blocking the done event
+        if (userMessage?.id && sentimentData) {
+            getLLMSentiment(content, process.env.GROQ_API_KEY)
+                .then(llmMood => {
+                    if (!llmMood) return;
+                    const lexiconScore = MOOD_SCORES[sentimentData.mood] ?? 0;
+                    const llmScore = MOOD_SCORES[llmMood] ?? 0;
+                    const deviation = Math.abs(lexiconScore - llmScore);
+                    if (deviation > 0.2) {
+                        console.warn(`⚠️  Sentiment deviation ${deviation.toFixed(2)} on msg ${userMessage.id} — flagged for review`);
+                    }
+                    return prisma.message.update({
+                        where: { id: userMessage.id },
+                        data: { sentimentLLM: llmMood, sentimentDeviation: deviation },
+                    });
+                })
+                .catch(err => console.warn('LLM sentiment (background) failed:', err.message));
+        }
 
     } catch (error) {
         console.error('Stream message error:', error);
