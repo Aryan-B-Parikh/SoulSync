@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Sparkles, Brain, HeartPulse, Moon, Sun, Wand2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Footer from '../components/landing/Footer';
 import ThemeToggle from '../components/ThemeToggle';
+import Footer from '../components/landing/Footer';
 
 export default function LandingPage({ onStart }) {
     const [vibe, setVibe] = useState('deep'); // 'deep' | 'supportive' | 'creative'
@@ -155,21 +155,8 @@ export default function LandingPage({ onStart }) {
                     />
                 </div>
 
-                {/* Trust Footer Line */}
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="mt-20 text-sm text-slate-700 dark:text-slate-400 font-medium flex items-center gap-2"
-                >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></span>
-                    Your memories are safe. Encrypted, private, and yours alone.
-                </motion.p>
             </main>
-
-            <div className="pb-4 relative z-20">
-                <Footer />
-            </div>
+            <Footer />
         </div>
     );
 }

@@ -7,7 +7,7 @@ const prisma = require('../config/prisma');
 const { generateStreamingResponse } = require('../services/aiService');
 const { generateEmbedding, storeMemory, retrieveRelevantMemories } = require('../services/vectorService');
 const { analyzeSentiment } = require('../services/sentiment/sentimentService');
-const fetch = require('node-fetch');
+// Note: Uses Node 18+ built-in fetch (no node-fetch required)
 
 // Mood label → numeric score for deviation calculation
 const MOOD_SCORES = {

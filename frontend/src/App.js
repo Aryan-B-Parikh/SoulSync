@@ -4,6 +4,7 @@ import { ChatProvider } from './context/ChatContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import AuroraBackground from './components/AuroraBackground';
+import Footer from './components/landing/Footer';
 import LandingPage from './pages/Landing';
 import AuthPage from './pages/Auth';
 import ChatPage from './pages/Chat';
@@ -13,7 +14,7 @@ function AppContent() {
   const { isAuthenticated, loading } = useAuth();
   const [view, setView] = useState('landing'); // 'landing', 'auth', 'chat'
 
-  // Effect to automatically switch to chat if already authenticated
+  // Automatically switch to chat if already authenticated
   useEffect(() => {
     if (!loading && isAuthenticated) {
       setView('chat');
@@ -30,7 +31,7 @@ function AppContent() {
     );
   }
 
-  // If authenticated, always show ChatPage (unless explicitly logging out, which handles itself)
+  // Chat has its own full-screen layout — no footer
   if (isAuthenticated) {
     return (
       <ChatProvider>
@@ -39,15 +40,14 @@ function AppContent() {
     );
   }
 
-  // Navigation flow
-  switch (view) {
-    case 'landing':
-      return <LandingPage onStart={() => setView('auth')} />;
-    case 'auth':
-      return <AuthPage onComplete={() => setView('chat')} />;
-    default:
-      return <LandingPage onStart={() => setView('auth')} />;
-  }
+  // Views handle their own backgrounds and footers
+  return (
+    <>
+      {view === 'landing' && <LandingPage onStart={() => setView('auth')} />}
+      {view === 'auth' && <AuthPage onComplete={() => setView('chat')} />}
+      {view !== 'landing' && view !== 'auth' && <LandingPage onStart={() => setView('auth')} />}
+    </>
+  );
 }
 
 function App() {
@@ -65,4 +65,3 @@ function App() {
 }
 
 export default App;
-

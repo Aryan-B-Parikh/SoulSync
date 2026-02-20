@@ -1,14 +1,12 @@
 /**
- * User Personality Routes
- * GET /api/user/personality - Get current personality setting
- * PUT /api/user/personality - Update personality preference
+ * User Personality & Consent Routes
  */
 
 const express = require('express');
 const { body } = require('express-validator');
 const authenticate = require('../middleware/auth');
 const { handleValidationErrors } = require('../middleware/validator');
-const { getPersonality, updatePersonality } = require('../controllers/user.controller');
+const { getPersonality, updatePersonality, giveConsent } = require('../controllers/user.controller');
 
 const router = express.Router();
 
@@ -23,14 +21,13 @@ const updatePersonalityValidation = [
     handleValidationErrors,
 ];
 
-/**
- * Get current user's personality setting
- */
 router.get('/personality', getPersonality);
+router.put('/personality', updatePersonalityValidation, updatePersonality);
 
 /**
- * Update user's personality preference
+ * Record that the user has accepted the AI training data policy.
+ * Called once from the ConsentGate modal.
  */
-router.put('/personality', updatePersonalityValidation, updatePersonality);
+router.put('/consent', giveConsent);
 
 module.exports = router;

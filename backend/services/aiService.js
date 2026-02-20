@@ -1,9 +1,9 @@
 /**
  * AI Service - Handles interactions with AI providers
  * Supports Groq (primary) and HuggingFace (fallback)
+ * Note: Uses Node 18+ built-in fetch (no node-fetch required)
  */
 
-const fetch = require('node-fetch');
 
 const PERSONALITY_PROMPTS = {
   reflective: "You're SoulSync, a sophisticated AI confidante — wise, thoughtful, calm, and deeply introspective. You respond with philosophical depth, poetic insight, and gentle wisdom. You help users explore their inner world through thoughtful questions and profound observations. Keep responses contemplative yet concise.",

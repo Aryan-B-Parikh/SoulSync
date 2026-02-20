@@ -70,7 +70,28 @@ async function updatePersonality(req, res, next) {
     }
 }
 
+/**
+ * Record that the user has consented to the AI training data policy.
+ * Called once from the frontend Consent Gate modal.
+ */
+async function giveConsent(req, res, next) {
+    try {
+        await prisma.user.update({
+            where: { id: req.user.userId },
+            data: { hasConsented: true },
+        });
+
+        res.json({ message: 'Consent recorded. Thank you.' });
+    } catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        next(error);
+    }
+}
+
 module.exports = {
     getPersonality,
-    updatePersonality
+    updatePersonality,
+    giveConsent,
 };

@@ -14,7 +14,9 @@ datasource db {
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
-  passwordHash  String
+  passwordHash  String?   // Optional: null for Google-only users
+  googleId      String?   @unique // Google sub claim
+  hasConsented  Boolean   @default(false) // GDPR / AI training consent
   name          String?
   personality   String    @default("reflective") // reflective, supportive, creative
   createdAt     DateTime  @default(now())
