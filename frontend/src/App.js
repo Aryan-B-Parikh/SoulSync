@@ -4,7 +4,6 @@ import { ChatProvider } from './context/ChatContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import AuroraBackground from './components/AuroraBackground';
-import Footer from './components/landing/Footer';
 import LandingPage from './pages/Landing';
 import AuthPage from './pages/Auth';
 import ChatPage from './pages/Chat';
