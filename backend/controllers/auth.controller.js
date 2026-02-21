@@ -11,6 +11,9 @@ const { hashPassword, verifyPassword, generateToken } = require('../services/aut
 const { toMongo } = require('../utils/formatter');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const hasGoogleIdField = prisma?._dmmf?.datamodel?.models?.some(
+  (model) => model.name === 'User' && model.fields.some((field) => field.name === 'googleId'),
+);
 
 /**
  * Register — intentionally disabled.
@@ -94,25 +97,21 @@ async function googleAuth(req, res, next) {
     let user = await prisma.user.findUnique({ where: { email } });
 
     if (user) {
-      // Existing user — link Google ID if not already linked
-      if (!user.googleId) {
-        user = await prisma.user.update({
-          where: { id: user.id },
-          data: { googleId, lastLoginAt: new Date() },
-        });
-      } else {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { lastLoginAt: new Date() },
-        });
-      }
+      const updateData = { lastLoginAt: new Date() };
+      if (!user.googleId && hasGoogleIdField) updateData.googleId = googleId;
+
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: updateData,
+      });
     } else {
       // New user — create without password
       user = await prisma.user.create({
         data: {
           email,
-          googleId,
+          ...(hasGoogleIdField ? { googleId } : {}),
           name: name || email.split('@')[0],
+          lastLoginAt: new Date(),
           // passwordHash intentionally omitted
         },
       });
