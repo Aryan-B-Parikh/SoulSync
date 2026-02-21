@@ -14,6 +14,9 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const hasGoogleIdField = prisma?._dmmf?.datamodel?.models?.some(
   (model) => model.name === 'User' && model.fields.some((field) => field.name === 'googleId'),
 );
+const hasConsentField = prisma?._dmmf?.datamodel?.models?.some(
+  (model) => model.name === 'User' && model.fields.some((field) => field.name === 'hasConsented'),
+);
 
 /**
  * Register — intentionally disabled.
@@ -57,7 +60,7 @@ async function login(req, res, next) {
         id: user.id,
         email: user.email,
         name: user.name,
-        hasConsented: user.hasConsented,
+        ...(hasConsentField ? { hasConsented: user.hasConsented } : {}),
       }),
     });
   } catch (error) {
@@ -127,7 +130,7 @@ async function googleAuth(req, res, next) {
         email: user.email,
         name: user.name,
         picture: picture || null,
-        hasConsented: user.hasConsented,
+        ...(hasConsentField ? { hasConsented: user.hasConsented } : {}),
       }),
     });
   } catch (error) {
@@ -151,8 +154,8 @@ async function getProfile(req, res, next) {
         email: true,
         name: true,
         personality: true,
-        hasConsented: true,
         createdAt: true,
+        ...(hasConsentField ? { hasConsented: true } : {}),
       },
     });
 
