@@ -128,7 +128,7 @@ In Railway → **Settings**:
 In Vercel → **Settings** → **Environment Variables**:
 
 ```env
-VITE_API_URL=https://soulsync-backend-production.up.railway.app/api
+REACT_APP_API_URL=https://soulsync-backend-production.up.railway.app/api
 ```
 
 > ⚠️ Replace with your actual Railway backend URL!

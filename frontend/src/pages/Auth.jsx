@@ -27,6 +27,11 @@ export default function AuthCard({ onComplete }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ credential: response.credential }),
             });
+
+            if (res.status === 404) {
+                throw new Error('Authentication service is unavailable. Check the configured API deployment.');
+            }
+
             const data = await res.json();
 
             if (!res.ok) throw new Error(data.error || 'Authentication failed');
@@ -41,7 +46,11 @@ export default function AuthCard({ onComplete }) {
                 onComplete?.();
             }
         } catch (err) {
-            setError(err.message || 'Something went wrong. Please try again.');
+            if (err.name === 'TypeError') {
+                setError('Could not reach the authentication service. Check the configured API URL.');
+            } else {
+                setError(err.message || 'Something went wrong. Please try again.');
+            }
         } finally {
             setLoading(false);
         }

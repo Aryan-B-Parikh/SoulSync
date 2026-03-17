@@ -11,12 +11,6 @@ const { hashPassword, verifyPassword, generateToken } = require('../services/aut
 const { toMongo } = require('../utils/formatter');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const hasGoogleIdField = prisma?._dmmf?.datamodel?.models?.some(
-  (model) => model.name === 'User' && model.fields.some((field) => field.name === 'googleId'),
-);
-const hasConsentField = prisma?._dmmf?.datamodel?.models?.some(
-  (model) => model.name === 'User' && model.fields.some((field) => field.name === 'hasConsented'),
-);
 
 /**
  * Register — intentionally disabled.
@@ -60,7 +54,7 @@ async function login(req, res, next) {
         id: user.id,
         email: user.email,
         name: user.name,
-        ...(hasConsentField ? { hasConsented: user.hasConsented } : {}),
+        hasConsented: user.hasConsented,
       }),
     });
   } catch (error) {
@@ -101,7 +95,7 @@ async function googleAuth(req, res, next) {
 
     if (user) {
       const updateData = { lastLoginAt: new Date() };
-      if (!user.googleId && hasGoogleIdField) updateData.googleId = googleId;
+      if (!user.googleId) updateData.googleId = googleId;
 
       user = await prisma.user.update({
         where: { id: user.id },
@@ -112,7 +106,7 @@ async function googleAuth(req, res, next) {
       user = await prisma.user.create({
         data: {
           email,
-          ...(hasGoogleIdField ? { googleId } : {}),
+          googleId,
           name: name || email.split('@')[0],
           lastLoginAt: new Date(),
           // passwordHash intentionally omitted
@@ -130,7 +124,7 @@ async function googleAuth(req, res, next) {
         email: user.email,
         name: user.name,
         picture: picture || null,
-        ...(hasConsentField ? { hasConsented: user.hasConsented } : {}),
+        hasConsented: user.hasConsented,
       }),
     });
   } catch (error) {
@@ -155,7 +149,7 @@ async function getProfile(req, res, next) {
         name: true,
         personality: true,
         createdAt: true,
-        ...(hasConsentField ? { hasConsented: true } : {}),
+        hasConsented: true,
       },
     });
 

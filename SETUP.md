@@ -172,7 +172,7 @@ PORT=5001
 ### Frontend (`frontend/.env`)
 
 ```env
-VITE_API_URL=http://localhost:5001/api
+REACT_APP_API_URL=/api
 ```
 
 ---

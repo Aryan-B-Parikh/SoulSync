@@ -145,8 +145,9 @@ export function ChatProvider({ children }) {
   };
 
   // Send message with streaming response
-  const sendStreamingMessage = async (content, onChunk) => {
-    if (!activeChat || !token) {
+  const sendStreamingMessage = async (content, onChunk, overrideChatId) => {
+    const chatId = overrideChatId || activeChat?._id;
+    if (!chatId || !token) {
       console.error('Cannot send message: no active chat or token');
       return;
     }
@@ -173,7 +174,7 @@ export function ChatProvider({ children }) {
       setMessages((prev) => [...prev, tempAssistantMessage]);
 
       const response = await fetch(
-        `${API_CONFIG.BASE_URL}/chats/${activeChat._id}/messages/stream`,
+        `${API_CONFIG.BASE_URL}/chats/${chatId}/messages/stream`,
         {
           method: 'POST',
           headers: {
@@ -242,11 +243,11 @@ export function ChatProvider({ children }) {
                 );
 
                 // Update chat title if changed
-                if (data.chatTitle && data.chatTitle !== activeChat.title) {
+                if (data.chatTitle && data.chatTitle !== activeChat?.title) {
                   setActiveChat((prev) => ({ ...prev, title: data.chatTitle }));
                   setChats((prevChats) =>
                     prevChats.map((c) =>
-                      c._id === activeChat._id ? { ...c, title: data.chatTitle } : c
+                      c._id === chatId ? { ...c, title: data.chatTitle } : c
                     )
                   );
                 }
