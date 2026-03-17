@@ -1,11 +1,14 @@
 {
     "version": 2,
-    "functions": {
-        "backend/index.js": {
-            "maxDuration": 60,
-            "runtime": "nodejs18.x"
+    "builds": [
+        {
+            "src": "backend/index.js",
+            "use": "@vercel/node",
+            "config": {
+                "maxDuration": 60
+            }
         }
-    },
+    ],
     "rewrites": [
         {
             "source": "/api/(.*)",
