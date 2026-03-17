@@ -33,6 +33,8 @@ app.set('config', config);
 
 // Middleware
 app.use(cors(config.cors));
+app.options('*', cors(config.cors)); // Handle preflight requests for all routes
+
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
