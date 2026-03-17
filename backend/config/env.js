@@ -71,11 +71,14 @@ function getConfig() {
       maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
     },
     cors: {
-      origin: process.env.CORS_ORIGIN
-        ? (process.env.CORS_ORIGIN.includes(',')
-          ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-          : process.env.CORS_ORIGIN)
-        : '*',
+      origin: [
+        'http://localhost:3000',
+        'https://heysoulsync.vercel.app',
+        'https://soul-sync-gamma.vercel.app',
+        ...(process.env.CORS_ORIGIN 
+          ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()) 
+          : [])
+      ],
       credentials: true,
     },
   };
