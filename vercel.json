@@ -3,7 +3,10 @@
     "builds": [
         {
             "src": "backend/index.js",
-            "use": "@vercel/node"
+            "use": "@vercel/node",
+            "config": {
+                "maxDuration": 60
+            }
         }
     ],
     "rewrites": [
@@ -11,10 +14,5 @@
             "source": "/api/(.*)",
             "destination": "/backend/index.js"
         }
-    ],
-    "functions": {
-        "backend/index.js": {
-            "maxDuration": 60
-        }
-    }
+    ]
 }
