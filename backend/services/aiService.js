@@ -76,43 +76,63 @@ async function* callGroqAPIStreaming(messages, apiKey, personality, systemPrompt
         { role: 'system', content: systemPrompt },
         ...messages,
       ],
-      max_tokens: AI_CONFIG.MAX_TOKENS,
-      temperature: AI_CONFIG.TEMPERATURE,
+      max_tokens: AI_CONFIG.MAX_TOKens || 500, // Ensure it exists
+      temperature: AI_CONFIG.TEMPERATURE || 0.7,
       stream: true, // Enable streaming
     }),
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error?.message || 'Groq API error');
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.error?.message || `Groq API error: HTTP ${response.status}`);
   }
 
-  // Read the stream
-  const reader = response.body;
+  // Read the stream using Web API standard getReader()
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder('utf-8');
   let buffer = '';
 
-  for await (const chunk of reader) {
-    buffer += chunk.toString();
-    const lines = buffer.split('\n');
-    buffer = lines.pop() || ''; // Keep incomplete line in buffer
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
 
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed === 'data: [DONE]') continue;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      // Keep incomplete line in buffer
+      buffer = lines.pop() || '';
 
-      if (trimmed.startsWith('data: ')) {
-        try {
-          const json = JSON.parse(trimmed.slice(6));
-          const content = json.choices?.[0]?.delta?.content;
-          if (content) {
-            yield content;
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed === 'data: [DONE]') continue;
+
+        if (trimmed.startsWith('data: ')) {
+          try {
+            const json = JSON.parse(trimmed.slice(6));
+            const content = json.choices?.[0]?.delta?.content;
+            if (content) {
+              yield content;
+            }
+          } catch (e) {
+            // Skip invalid JSON
+            console.warn('Failed to parse SSE chunk:', e.message);
           }
-        } catch (e) {
-          // Skip invalid JSON
-          console.warn('Failed to parse SSE chunk:', e.message);
         }
       }
     }
+    // Flush any remaining decoder buffer
+    const finalChunk = decoder.decode();
+    if (finalChunk && finalChunk.startsWith('data: ')) {
+      try {
+        const json = JSON.parse(finalChunk.slice(6).trim());
+        const content = json.choices?.[0]?.delta?.content;
+        if (content) yield content;
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  } finally {
+    reader.releaseLock();
   }
 }
 

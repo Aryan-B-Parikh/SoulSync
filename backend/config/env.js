@@ -71,12 +71,27 @@ function getConfig() {
       maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
     },
     cors: {
-      origin: process.env.CORS_ORIGIN
-        ? (process.env.CORS_ORIGIN.includes(',')
-          ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-          : process.env.CORS_ORIGIN)
-        : '*',
+      origin: (origin, callback) => {
+        const allowedOrigins = [
+          'http://localhost:3000',
+          'https://heysoulsync.vercel.app',
+          'https://soul-sync-gamma.vercel.app',
+          'https://soul-sync-taupe.vercel.app',
+          ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()) : [])
+        ];
+        
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
     },
   };
 }

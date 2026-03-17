@@ -228,12 +228,12 @@ export function ChatProvider({ children }) {
                 setMessages((prev) =>
                   prev.map((msg) => {
                     if (msg._id === tempUserMessage._id) {
-                      return { ...msg, _id: data.userMessageId };
+                      return { ...msg, _id: data.userMessageId || msg._id };
                     }
                     if (msg._id === tempAssistantId) {
                       return {
                         ...msg,
-                        _id: data.assistantMessageId,
+                        _id: data.assistantMessageId || msg._id,
                         isStreaming: false,
                       };
                     }
@@ -265,11 +265,11 @@ export function ChatProvider({ children }) {
       return fullResponse;
     } catch (error) {
       console.error('Failed to send streaming message:', error);
-      // Remove temp messages on error
+      // Remove temp messages on error (using optional chaining for safety)
       setMessages((prev) =>
         prev.filter(
           (msg) =>
-            !msg._id.startsWith('temp-')
+            !(msg._id?.startsWith('temp-'))
         )
       );
       throw error;
