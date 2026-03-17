@@ -33,7 +33,7 @@
     "tailwindcss": "^3.3.0"
   },
   "scripts": {
-    "postinstall": "npx prisma migrate deploy --schema=backend/prisma/schema.prisma && npx prisma generate --schema=backend/prisma/schema.prisma",
+    "postinstall": "npx prisma generate --schema=backend/prisma/schema.prisma",
     "start": "cross-env NODE_ENV=production node backend/index.js",
     "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
     "frontend:dev": "cd frontend && npm run dev",
