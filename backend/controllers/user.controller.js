@@ -6,10 +6,6 @@
 const prisma = require('../config/prisma');
 const { PERSONALITY_PROMPTS } = require('../services/aiService');
 
-const hasConsentField = prisma?._dmmf?.datamodel?.models?.some(
-    (model) => model.name === 'User' && model.fields.some((field) => field.name === 'hasConsented'),
-);
-
 /**
  * Get current user's personality setting
  */
@@ -80,11 +76,6 @@ async function updatePersonality(req, res, next) {
  */
 async function giveConsent(req, res, next) {
     try {
-        if (!hasConsentField) {
-            // Field not in schema/client; treat as best-effort no-op.
-            return res.json({ message: 'Consent recorded. Thank you.' });
-        }
-
         await prisma.user.update({
             where: { id: req.user.userId },
             data: { hasConsented: true },

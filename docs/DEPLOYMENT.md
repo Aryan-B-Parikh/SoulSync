@@ -177,7 +177,7 @@ Push to your main branch, and Vercel will automatically deploy.
 GROQ_API_KEY=your_development_key
 NODE_ENV=development
 PORT=5001
-REACT_APP_API_URL=http://localhost:5001
+REACT_APP_API_URL=/api
 ```
 
 ### Production (Vercel)

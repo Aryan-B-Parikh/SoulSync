@@ -9,8 +9,22 @@ export const AI_CONFIG = {
   TEMPERATURE: 0.7,
 };
 
+const DEFAULT_API_BASE_URL = '/api';
+
+function resolveApiBaseUrl() {
+  const configuredBaseUrl = process.env.REACT_APP_API_URL?.trim();
+
+  if (!configuredBaseUrl) {
+    return DEFAULT_API_BASE_URL;
+  }
+
+  return configuredBaseUrl.replace(/\/+$/, '');
+}
+
 export const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? 'https://soul-sync-taupe.vercel.app/api' : 'http://localhost:5001/api'),
+  // Default to a relative API path so CRA proxying works in development and
+  // same-origin deployments work without a separate frontend env override.
+  BASE_URL: resolveApiBaseUrl(),
   ENDPOINTS: {
     CHAT: '/chat',
     CHAT_FALLBACK: '/chat-fallback',

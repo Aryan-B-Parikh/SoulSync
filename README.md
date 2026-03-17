@@ -135,7 +135,7 @@ PORT=5001
 
 Create `frontend/.env`:
 ```env
-VITE_API_URL=http://localhost:5001/api
+REACT_APP_API_URL=/api
 ```
 
 4. **Set up Database**

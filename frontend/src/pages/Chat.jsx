@@ -19,7 +19,7 @@ import { Menu, X, Heart, MessageSquare, Sparkles, Plus } from 'lucide-react';
 
 function ChatPage() {
   const { token } = useAuth();
-  const { activeChat, messages, loading, sendStreamingMessage, createChat, loadChat } = useChat();
+  const { activeChat, messages, loading, sendStreamingMessage, createChat } = useChat();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
@@ -51,28 +51,10 @@ function ChatPage() {
 
     try {
       if (!activeChat) {
-        // Create new chat first
+        // Create new chat first, then stream into it
         const newChat = await createChat();
         if (!newChat) throw new Error('Failed to create chat');
-
-        // Send message to new chat
-        const response = await fetch(
-          `${API_CONFIG.BASE_URL}/chats/${newChat._id}/messages/stream`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ content: messageContent }),
-          }
-        );
-
-        if (response.ok) {
-          await loadChat(newChat._id);
-        } else {
-          throw new Error('Failed to send message');
-        }
+        await sendStreamingMessage(messageContent, undefined, newChat._id);
       } else {
         // Use streaming for existing chat
         await sendStreamingMessage(messageContent);

@@ -76,7 +76,7 @@ async function* callGroqAPIStreaming(messages, apiKey, personality, systemPrompt
         { role: 'system', content: systemPrompt },
         ...messages,
       ],
-      max_tokens: AI_CONFIG.MAX_TOKens || 500, // Ensure it exists
+      max_tokens: AI_CONFIG.MAX_TOKENS,
       temperature: AI_CONFIG.TEMPERATURE || 0.7,
       stream: true, // Enable streaming
     }),
